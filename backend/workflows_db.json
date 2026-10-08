@@ -1,0 +1,42 @@
+{
+  "workflows": {
+    "224e09a7-fa3f-4246-be56-221dc6f4ecd7": {
+      "workflow_id": "224e09a7-fa3f-4246-be56-221dc6f4ecd7",
+      "user_id": "test_user",
+      "workflow_type": "gst_prep",
+      "current_step": 2,
+      "total_steps": 4,
+      "status": "active",
+      "steps_completed": [
+        true,
+        false,
+        false,
+        false
+      ],
+      "data": {
+        "test_key": "test_value"
+      },
+      "created_at": "2026-08-07T06:17:27.483054",
+      "updated_at": "2026-08-07T06:17:27.492032"
+    },
+    "c58d858e-7208-4467-8e1f-6889c6ffb3af": {
+      "workflow_id": "c58d858e-7208-4467-8e1f-6889c6ffb3af",
+      "user_id": "test_user",
+      "workflow_type": "gst_prep",
+      "current_step": 2,
+      "total_steps": 4,
+      "status": "active",
+      "steps_completed": [
+        true,
+        false,
+        false,
+        false
+      ],
+      "data": {
+        "test_key": "test_value"
+      },
+      "created_at": "2026-08-07T06:19:19.337688",
+      "updated_at": "2026-08-07T06:19:19.346645"
+    }
+  }
+}
