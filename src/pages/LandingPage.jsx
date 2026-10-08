@@ -295,11 +295,11 @@ export default function LandingPage() {
                   {item}
                 </a>
               ))}
-              <Link to="/workspace">
+              <Link to="/dashboard">
                 <button className="group relative px-6 py-2.5 bg-slate-900 text-white rounded-full font-semibold overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/30 hover:-translate-y-0.5">
                   <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-blue-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   <span className="relative z-10 flex items-center gap-2">
-                    Open Workspace
+                    Open Dashboard
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </span>
                 </button>
@@ -323,8 +323,8 @@ export default function LandingPage() {
                     <a href="#features" onClick={() => setMobileMenuOpen(false)} className="text-slate-600 font-medium">Features</a>
                     <a href="#how-it-works" onClick={() => setMobileMenuOpen(false)} className="text-slate-600 font-medium">How It Works</a>
                     <a href="#faq" onClick={() => setMobileMenuOpen(false)} className="text-slate-600 font-medium">FAQ</a>
-                    <Link to="/workspace">
-                        <button className="w-full py-3 bg-blue-600 text-white rounded-xl font-bold">Open Workspace</button>
+                    <Link to="/dashboard">
+                        <button className="w-full py-3 bg-blue-600 text-white rounded-xl font-bold">Open Dashboard</button>
                     </Link>
                 </div>
             </div>
@@ -371,20 +371,22 @@ export default function LandingPage() {
             {/* CTA Buttons */}
             <Reveal delay={300}>
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <Link to="/workspace">
+                <Link to="/dashboard">
                   <button className="group relative px-8 py-4 bg-blue-600 text-white rounded-2xl font-bold text-lg overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/40 w-full sm:w-auto">
                     <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-shine" />
                     <span className="flex items-center justify-center gap-2">
-                      Open Legal Workspace
+                      Launch Legal Dashboard
                       <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                     </span>
                   </button>
                 </Link>
 
-                <button className="group px-8 py-4 bg-white text-slate-700 rounded-2xl font-bold text-lg border border-slate-200 hover:border-blue-200 hover:bg-blue-50 transition-all duration-300 hover:scale-105 hover:shadow-xl w-full sm:w-auto flex items-center justify-center gap-2">
-                  <Play className="w-5 h-5 fill-current" />
-                  Watch Demo
-                </button>
+                <Link to="/dashboard">
+                  <button className="group px-8 py-4 bg-white text-slate-700 rounded-2xl font-bold text-lg border border-slate-200 hover:border-blue-200 hover:bg-blue-50 transition-all duration-300 hover:scale-105 hover:shadow-xl w-full sm:w-auto flex items-center justify-center gap-2">
+                    <Play className="w-5 h-5 fill-current text-blue-600" />
+                    Live Interactive Demo
+                  </button>
+                </Link>
               </div>
             </Reveal>
 

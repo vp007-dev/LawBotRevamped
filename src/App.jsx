@@ -22,7 +22,6 @@ import OnboardingWizard from "./pages/OnboardingWizard";
 import RegulatoryUpdates from "./pages/RegulatoryUpdates";
 import WorkflowManager from "./pages/WorkflowManager";
 import Login from "./pages/Login";
-import LandingWorkspace from "./pages/LandingWorkspace";
 import SarvamVoice from "./pages/SarvamVoice";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import ObsidianGraphModal from "./components/ObsidianGraphModal";
@@ -90,7 +89,7 @@ function AppContent() {
           } 
         />
         <Route path="/home" element={<Navigate to="/dashboard/chat" replace />} />
-        <Route path="/workspace" element={<LandingWorkspace />} />
+        <Route path="/workspace" element={<Navigate to="/dashboard" replace />} />
         <Route 
           path="/dashboard" 
           element={
