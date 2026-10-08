@@ -1,0 +1,19 @@
+{
+  "framework": "vite",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "rewrites": [
+    {
+      "source": "/api/sarvam/:path*",
+      "destination": "https://apps.sarvam.ai/:path*"
+    },
+    {
+      "source": "/api/kanoon/:path*",
+      "destination": "https://api.indiankanoon.org/:path*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
