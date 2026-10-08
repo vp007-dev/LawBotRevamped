@@ -38,11 +38,24 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    // Check local guest session
+    const savedGuest = localStorage.getItem("lawbot-guest-session");
+    if (savedGuest) {
+      try {
+        setUser(JSON.parse(savedGuest));
+        setLoading(false);
+      } catch (e) {
+        // ignore
+      }
+    }
+
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       if (firebaseUser) {
         setUser(getUserProfile(firebaseUser));
       } else {
-        setUser(null);
+        if (!localStorage.getItem("lawbot-guest-session")) {
+          setUser(null);
+        }
       }
       setLoading(false);
     });
@@ -144,6 +157,7 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     setLoading(true);
     try {
+      localStorage.removeItem("lawbot-guest-session");
       await signOut(auth);
       setUser(null);
     } catch (error) {
@@ -151,6 +165,20 @@ export const AuthProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
+  };
+
+  // One-click Demo/Guest sign in for hackathons & evaluation
+  const signInAsGuest = (name = "Executive Legal Counsel") => {
+    const guestUser = {
+      uid: "guest-" + Date.now(),
+      displayName: name,
+      email: "counsel@lawbot360.ai",
+      photoURL: null,
+      phoneNumber: "+91 98765 43210"
+    };
+    localStorage.setItem("lawbot-guest-session", JSON.stringify(guestUser));
+    setUser(guestUser);
+    return guestUser;
   };
 
   // Manually update custom phone number (e.g. for Google users)
@@ -167,6 +195,7 @@ export const AuthProvider = ({ children }) => {
         loading,
         signInWithGoogle,
         signInWithPhone,
+        signInAsGuest,
         confirmOTP,
         logout,
         updateUserPhone,

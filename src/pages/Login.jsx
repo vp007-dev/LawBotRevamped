@@ -16,7 +16,7 @@ import {
 import logo from "../assets/lawbot360-logo-updated.svg";
 
 export default function Login() {
-  const { signInWithGoogle, signInWithPhone, confirmOTP, user } = useAuth();
+  const { signInWithGoogle, signInWithPhone, signInAsGuest, confirmOTP, user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -36,6 +36,20 @@ export default function Login() {
       navigate(from, { replace: true });
     }
   }, [user, navigate, from]);
+
+  const handleGuestSignIn = () => {
+    setLoading(true);
+    try {
+      signInAsGuest("Executive Legal Counsel");
+      setSuccessMsg("Entering LawBot360 Demo Session...");
+      navigate("/dashboard", { replace: true });
+    } catch (err) {
+      console.error(err);
+      setError("Failed to enter demo session.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleGoogleSignIn = async () => {
     setLoading(true);
@@ -335,8 +349,22 @@ export default function Login() {
             </div>
           )}
 
+          {/* Quick Demo Access for Evaluation & Hackathons */}
+          <div className="w-full mt-6 pt-5 border-t border-slate-800/80">
+            <button
+              type="button"
+              onClick={handleGuestSignIn}
+              disabled={loading}
+              className="w-full py-3 px-4 bg-gradient-to-r from-slate-900 to-indigo-950/80 hover:from-indigo-900/40 hover:to-indigo-800/40 text-indigo-300 hover:text-white border border-indigo-500/30 hover:border-indigo-400/60 font-bold text-xs rounded-xl transition-all duration-300 flex items-center justify-center gap-2 shadow-lg group cursor-pointer"
+            >
+              <Sparkles className="w-4 h-4 text-amber-400 animate-pulse group-hover:scale-110 transition-transform" />
+              <span>Explore Demo Session (1-Click Instant Access)</span>
+              <ArrowRight className="w-3.5 h-3.5 text-indigo-400 group-hover:translate-x-1 transition-transform ml-auto" />
+            </button>
+          </div>
+
           {/* Secure Trust Badges */}
-          <div className="mt-10 pt-6 border-t border-white/5 w-full text-center space-y-3">
+          <div className="mt-6 pt-5 border-t border-white/5 w-full text-center space-y-2.5">
             <p className="text-[10px] text-slate-500 leading-normal flex items-center justify-center gap-1.5">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
               <span>Compliant with DPDP Act 2023 & BNS Directives</span>
