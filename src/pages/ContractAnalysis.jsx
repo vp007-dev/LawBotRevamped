@@ -14,6 +14,7 @@ const ContractAnalysis = () => {
   const [showModal, setShowModal] = useState(false);
   const [dragActive, setDragActive] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
+  const [analysisStatus, setAnalysisStatus] = useState('');
 
   // Text-to-speech for accessibility
   const speakText = (text) => {
@@ -60,8 +61,11 @@ const ContractAnalysis = () => {
     }
 
     setIsAnalyzing(true);
+    setAnalysisStatus('Reading document...');
     try {
-      const analysis = await contractAnalysisService.analyzeContract(file);
+      const analysis = await contractAnalysisService.analyzeContract(file, (status) => {
+        setAnalysisStatus(status);
+      });
       loadAnalyses();
       setSelectedAnalysis(analysis);
       setShowModal(true);
@@ -69,6 +73,7 @@ const ContractAnalysis = () => {
       alert('Analysis failed: ' + error.message);
     } finally {
       setIsAnalyzing(false);
+      setAnalysisStatus('');
     }
   };
 
@@ -756,7 +761,7 @@ Answer based on the contract analysis above. Be specific and reference details f
                     <Shield className="absolute inset-0 m-auto w-8 h-8 text-blue-600 animate-pulse" />
                   </div>
                   <h3 className="text-2xl font-bold text-slate-900 mb-2">Analyzing Your Contract...</h3>
-                  <p className="text-slate-500 max-w-sm text-lg">Please wait while we check for risks</p>
+                  <p className="text-blue-600 font-semibold max-w-sm text-base">{analysisStatus || 'Checking for legal risks & obligations...'}</p>
                 </div>
               ) : (
                 <>
