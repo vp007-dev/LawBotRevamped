@@ -19,23 +19,51 @@ import deepgramService from '../services/deepgramService';
 import LoadingStatus from './LoadingStatus';
 
 const AIChat = ({ isOpen, onClose }) => {
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      type: 'ai',
-      content: "Hello! I'm LawBot360, your AI legal assistant. I can help you with Indian law queries, document generation, and legal guidance. How can I assist you today?",
-      timestamp: new Date()
+  const activeSpeakerRef = useRef(null);
+  const activeVoiceStopRef = useRef(null);
+
+  // Initialize messages with persistent storage
+  const [messages, setMessages] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('lawbot-modal-chat-messages');
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            return parsed.map(m => ({ ...m, timestamp: new Date(m.timestamp) }));
+          }
+        } catch (e) {}
+      }
     }
-  ]);
+    return [
+      {
+        id: 1,
+        type: 'ai',
+        content: "Hello! I'm LawBot360, your AI legal assistant. I can help you with Indian law queries, document generation, and legal guidance. How can I assist you today?",
+        timestamp: new Date()
+      }
+    ];
+  });
+
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isListening, setIsListening] = useState(false);
+  const [isMicReady, setIsMicReady] = useState(false);
   const [interimTranscript, setInterimTranscript] = useState('');
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [error, setError] = useState(null);
 
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
+
+  // Persist modal messages
+  useEffect(() => {
+    if (typeof window !== 'undefined' && messages.length > 0) {
+      try {
+        localStorage.setItem('lawbot-modal-chat-messages', JSON.stringify(messages));
+      } catch (e) {}
+    }
+  }, [messages]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -57,13 +85,20 @@ const AIChat = ({ isOpen, onClose }) => {
       timestamp: new Date()
     };
 
-    setMessages(prev => [...prev, userMessage]);
+    const updatedMessages = [...messages, userMessage];
+    setMessages(updatedMessages);
     setInputMessage('');
     setIsLoading(true);
     setError(null);
 
     try {
-      const response = await lawBot360AI.sendMessage(userMessage.content);
+      const response = await lawBot360AI.sendMessage(userMessage.content, {
+        conversationHistory: updatedMessages.map(m => ({
+          role: m.type === 'user' ? 'user' : 'assistant',
+          content: m.content
+        })),
+        sessionId: 'modal_chat'
+      });
 
       const aiMessage = {
         id: Date.now() + 1,
@@ -95,59 +130,109 @@ const AIChat = ({ isOpen, onClose }) => {
 
   const handleVoiceInput = async () => {
     if (isListening) {
+      if (activeVoiceStopRef.current) {
+        try { activeVoiceStopRef.current(); } catch (e) {}
+        activeVoiceStopRef.current = null;
+      }
+      deepgramService.stopListening();
       lawBot360AI.stopListening();
       setIsListening(false);
+      setIsMicReady(false);
       setInterimTranscript('');
       return;
     }
 
-    try {
-      setIsListening(true);
-      setError(null);
-      setInterimTranscript('');
+    setIsListening(true);
+    setIsMicReady(false);
+    setError(null);
+    setInterimTranscript('');
 
-      // Use Deepgram streaming for real-time display if available
-      if (deepgramService.isAvailable()) {
-        let finalText = '';
+    let baseText = inputMessage ? inputMessage.trim() + ' ' : '';
 
+    const startWebSpeechFallback = () => {
+      setIsMicReady(true);
+      const stopFn = lawBot360AI.startListeningStreaming('en-IN', {
+        onTranscript: (finalText) => {
+          baseText += finalText + ' ';
+          setInputMessage(baseText.trim());
+          setInterimTranscript('');
+        },
+        onInterim: (interim) => {
+          setInterimTranscript(interim);
+        },
+        onError: (err) => {
+          console.warn('[AIChat Voice] WebSpeech error:', err);
+          setIsListening(false);
+          setIsMicReady(false);
+          setInterimTranscript('');
+        },
+        onEnd: () => {
+          setIsListening(false);
+          setIsMicReady(false);
+          setInterimTranscript('');
+        }
+      });
+      activeVoiceStopRef.current = stopFn;
+    };
+
+    if (deepgramService.isAvailable()) {
+      try {
         await deepgramService.startListening({
+          language: 'multi',
+          onReady: () => setIsMicReady(true),
           onTranscript: ({ transcript, isFinal }) => {
             if (isFinal) {
-              finalText += transcript + ' ';
-              setInputMessage(finalText.trim());
+              baseText += transcript + ' ';
+              setInputMessage(baseText.trim());
               setInterimTranscript('');
             } else {
               setInterimTranscript(transcript);
             }
           },
           onError: (err) => {
-            setError('Voice recognition error: ' + err);
+            console.warn('[AIChat Voice] Deepgram error, falling back to Web Speech:', err);
+            deepgramService.stopListening();
+            startWebSpeechFallback();
           }
         });
-      } else {
-        // Fallback: simple promise-based Web Speech API
-        const transcript = await lawBot360AI.startListening();
-        setInputMessage(transcript);
-        setIsListening(false);
+        activeVoiceStopRef.current = () => deepgramService.stopListening();
+      } catch (err) {
+        console.warn('[AIChat Voice] Deepgram start failed, falling back to Web Speech:', err);
+        startWebSpeechFallback();
       }
-    } catch (err) {
-      setError('Voice recognition failed: ' + err.message);
-      setIsListening(false);
-      setInterimTranscript('');
+    } else {
+      startWebSpeechFallback();
     }
   };
 
   const handleSpeak = (text) => {
     if (isSpeaking) {
+      if (activeSpeakerRef.current) {
+        try { activeSpeakerRef.current.stop(); } catch (e) {}
+        activeSpeakerRef.current = null;
+      }
       lawBot360AI.stopSpeaking();
       setIsSpeaking(false);
     } else {
-      const utterance = lawBot360AI.speak(text);
+      if (activeSpeakerRef.current) {
+        try { activeSpeakerRef.current.stop(); } catch (e) {}
+        activeSpeakerRef.current = null;
+      }
+      lawBot360AI.stopSpeaking();
       setIsSpeaking(true);
 
-      utterance.onend = () => {
-        setIsSpeaking(false);
-      };
+      const controller = lawBot360AI.speak(text, {
+        onStart: () => setIsSpeaking(true),
+        onEnd: () => {
+          setIsSpeaking(false);
+          activeSpeakerRef.current = null;
+        },
+        onError: () => {
+          setIsSpeaking(false);
+          activeSpeakerRef.current = null;
+        }
+      });
+      activeSpeakerRef.current = controller;
     }
   };
 

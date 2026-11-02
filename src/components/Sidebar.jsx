@@ -16,19 +16,14 @@ const MENU_DATA = [
       { path: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
       { path: "/dashboard/chat", icon: MessageSquare, label: "AI Research Chat" },
       { path: "/dashboard/sarvam-voice", icon: PhoneCall, label: "Sarvam 24/7 Helpline", isNew: true },
-      { path: "/dashboard/regulatory-updates", icon: Bell, label: "Regulatory Feed", isNew: true },
       { path: "/contract-analysis", icon: FileSearch, label: "Contract Analysis" },
     ]
   },
   {
     group: "Agentic Vault & Intelligence",
     items: [
-      { path: "/dashboard/onboarding", icon: UserCheck, label: "Onboarding Wizard", isNew: true },
       { path: "/dashboard/vault", icon: FolderLock, label: "Knowledge Vault & SIS", isNew: true },
       { path: "#graph", icon: Network, label: "Obsidian Graph RAG", isNew: true, action: 'open_graph' },
-      { path: "/dashboard/calendar", icon: Calendar, label: "Compliance Calendar", isNew: true },
-      { path: "/dashboard/schemes", icon: Award, label: "Scheme Discovery", isNew: true },
-      { path: "/dashboard/workflows", icon: Zap, label: "Compliance Workflows", isNew: true },
     ]
   },
   {

@@ -60,11 +60,21 @@ class DeepgramService {
             });
 
             // Open WebSocket to Deepgram
-            // NOTE: Do NOT specify encoding/sample_rate — Deepgram auto-detects
-            // the webm container format that MediaRecorder produces
+            // Normalize language: Deepgram expects standard BCP-47 tags or detect_language flag
             const wsUrl = new URL('wss://api.deepgram.com/v1/listen');
             wsUrl.searchParams.set('model', 'nova-3');
-            wsUrl.searchParams.set('language', language);
+
+            if (!language || language === 'multi') {
+                wsUrl.searchParams.set('language', 'en-IN');
+                wsUrl.searchParams.set('detect_language', 'true');
+            } else if (language === 'hi') {
+                wsUrl.searchParams.set('language', 'hi');
+            } else if (language === 'en') {
+                wsUrl.searchParams.set('language', 'en-IN');
+            } else {
+                wsUrl.searchParams.set('language', language);
+            }
+
             wsUrl.searchParams.set('smart_format', 'true');
             wsUrl.searchParams.set('interim_results', 'true');
             wsUrl.searchParams.set('utterance_end_ms', '1500');
@@ -85,16 +95,31 @@ class DeepgramService {
             this.ws = new WebSocket(wsUrl.toString(), ['token', this.apiKey]);
 
             await new Promise((resolve, reject) => {
+                let resolved = false;
+                const timeoutId = setTimeout(() => {
+                    if (!resolved) {
+                        resolved = true;
+                        try { if (this.ws) this.ws.close(); } catch (e) {}
+                        reject(new Error('Deepgram connection timeout (3.5s)'));
+                    }
+                }, 3500);
+
                 this.ws.onopen = () => {
-                    console.log('[Deepgram STT] WebSocket connected');
-                    resolve();
+                    if (!resolved) {
+                        resolved = true;
+                        clearTimeout(timeoutId);
+                        console.log('[Deepgram STT] WebSocket connected');
+                        resolve();
+                    }
                 };
                 this.ws.onerror = (err) => {
-                    console.error('[Deepgram STT] WebSocket error:', err);
-                    reject(new Error('Failed to connect to Deepgram'));
+                    if (!resolved) {
+                        resolved = true;
+                        clearTimeout(timeoutId);
+                        console.error('[Deepgram STT] WebSocket error during handshake:', err);
+                        reject(new Error('Failed to connect to Deepgram STT stream'));
+                    }
                 };
-                // Timeout after 10s
-                setTimeout(() => reject(new Error('Deepgram connection timeout')), 10000);
             });
 
             // Handle incoming transcription results

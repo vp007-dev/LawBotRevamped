@@ -1,10 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Scale, Send, Mic, MicOff, FileText, Download, Users, Shield, Menu, X, Plus, MessageSquare, Clock, ChevronDown, ChevronRight, Sparkles, AlertCircle, CheckCircle, Copy, RotateCcw, Settings, Upload, Globe, Volume2, Eye, Edit2, Trash2, MoreVertical, LayoutDashboard, Bot, Phone, User, FileSearch, ArrowRight, Paperclip, Gavel, BookOpen, Network, ExternalLink } from 'lucide-react';
+import { Scale, Send, Mic, MicOff, FileText, Download, Users, Shield, Menu, X, Plus, MessageSquare, Clock, ChevronDown, ChevronRight, Sparkles, AlertCircle, CheckCircle, Copy, RotateCcw, Settings, Upload, Globe, Volume2, VolumeX, Eye, Edit2, Trash2, MoreVertical, LayoutDashboard, Bot, Phone, User, FileSearch, ArrowRight, Paperclip, Gavel, BookOpen, Network, ExternalLink, Brain, History } from 'lucide-react';
 import LoadingStatus from '../components/LoadingStatus';
 import { Link } from "react-router-dom";
 import lawBot360AI from '../services/aiService';
 import deepgramService from '../services/deepgramService';
 import documentService from '../services/documentService';
+import persistentMemoryService from '../services/persistentMemoryService';
 import Sidebar from '../components/Sidebar';
 import logo from '../assets/lawbot360-logo-updated.svg';
 import VoiceCallModal from '../components/VoiceCallModal';
@@ -68,9 +69,12 @@ const renderMarkdown = (text) => {
 
 // --- LOGIC SECTION (UNCHANGED FUNCTIONALITY) ---
 
-const generateAIResponse = async (message, conversationHistory) => {
+const generateAIResponse = async (message, conversationHistory, sessionId) => {
   try {
-    const response = await lawBot360AI.sendMessage(message);
+    const response = await lawBot360AI.sendMessage(message, {
+      conversationHistory,
+      sessionId
+    });
     if (response.success) {
       const content = response.response;
       const lowerMsg = message.toLowerCase();
@@ -123,7 +127,8 @@ const generateAIResponse = async (message, conversationHistory) => {
         kanoonUsed: response.kanoonUsed,
         activeModel: response.activeModel,
         retrievedDocs: response.retrievedDocs,
-        retrievedSources: response.retrievedSources
+        retrievedSources: response.retrievedSources,
+        persistentMemory: response.persistentMemory
       };
     } else if (response && response.response) {
       return {
@@ -137,7 +142,8 @@ const generateAIResponse = async (message, conversationHistory) => {
         constitutionUsed: response.constitutionUsed,
         kanoonUsed: response.kanoonUsed,
         activeModel: response.activeModel,
-        retrievedDocs: response.retrievedDocs
+        retrievedDocs: response.retrievedDocs,
+        persistentMemory: response.persistentMemory
       };
     }
   } catch (error) {
@@ -209,10 +215,17 @@ const generateDocument = (type, context) => {
 // --- UI COMPONENTS ---
 
 // Enhanced Chat Message Component
-const ChatMessage = ({ message, isUser, onCopy, onGenerateDoc, isGeneratingDoc }) => {
+const ChatMessage = ({ 
+  message, 
+  isUser, 
+  onCopy, 
+  onGenerateDoc, 
+  isGeneratingDoc, 
+  isSpeaking = false, 
+  onToggleSpeak 
+}) => {
   const [showActions, setShowActions] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [isSpeaking, setIsSpeaking] = useState(false);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(message.content);
@@ -352,19 +365,15 @@ const ChatMessage = ({ message, isUser, onCopy, onGenerateDoc, isGeneratingDoc }
                 {copied ? <CheckCircle className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
               </button>
               <button
-                onClick={() => {
-                  if (isSpeaking) {
-                    lawBot360AI.stopSpeaking();
-                    setIsSpeaking(false);
-                  } else {
-                    lawBot360AI.speak(message.content);
-                    setIsSpeaking(true);
-                    setTimeout(() => setIsSpeaking(false), message.content.length * 50);
-                  }
-                }}
-                className={`p-1.5 hover:bg-slate-50 rounded-md transition-colors ${isSpeaking ? 'text-indigo-600 animate-pulse' : 'text-slate-500 hover:text-indigo-600'}`}
+                onClick={() => onToggleSpeak?.(message.id, message.content)}
+                className={`p-1.5 hover:bg-slate-50 rounded-md transition-colors ${isSpeaking ? 'text-indigo-600 bg-indigo-50 animate-pulse' : 'text-slate-500 hover:text-indigo-600'}`}
+                title={isSpeaking ? 'Stop speaking' : 'Read aloud with AI voice'}
               >
-                <Volume2 className="w-4 h-4" />
+                {isSpeaking ? (
+                  <VolumeX className="w-4 h-4 text-indigo-600" />
+                ) : (
+                  <Volume2 className="w-4 h-4" />
+                )}
               </button>
             </div>
           )}
@@ -555,21 +564,305 @@ const SettingsModal = ({ isOpen, onClose, language, setLanguage }) => {
   );
 };
 
+// Persistent Memory Inspector Modal (LSTM Cell State & Facts)
+const MemoryModal = ({ isOpen, onClose, memoryStats, onClearMemory }) => {
+  if (!isOpen) return null;
+
+  const entities = memoryStats?.entities || {};
+  const recentQueries = memoryStats?.recentQueries || [];
+  const entityEntries = Object.entries(entities).filter(([_, v]) => v && typeof v === 'string');
+
+  return (
+    <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fadeIn">
+      <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[85vh] flex flex-col overflow-hidden animate-slideUp ring-1 ring-slate-900/5">
+        {/* Header */}
+        <div className="px-6 py-5 border-b border-slate-100 flex items-center justify-between bg-gradient-to-r from-purple-50 via-indigo-50 to-white">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-purple-600 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-purple-200">
+              <Brain className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h3 className="text-lg font-bold text-slate-900">Persistent Legal Memory</h3>
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-100 text-purple-700 border border-purple-200 uppercase tracking-wide">
+                  Fast LSTM Cell State
+                </span>
+              </div>
+              <p className="text-xs text-slate-500 font-medium">Auto-retained case facts & previous queries across all chat turns</p>
+            </div>
+          </div>
+          <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-full transition-colors text-slate-400 hover:text-slate-600">
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-slate-50/50">
+          {/* Status metrics card */}
+          <div className="grid grid-cols-3 gap-3">
+            <div className="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1">Retention Health</span>
+              <div className="flex items-baseline gap-1">
+                <span className="text-2xl font-black text-purple-700">{memoryStats?.retentionScore || 100}%</span>
+                <span className="text-[10px] text-emerald-600 font-semibold">Active</span>
+              </div>
+            </div>
+            <div className="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1">Facts In Cell</span>
+              <div className="flex items-baseline gap-1">
+                <span className="text-2xl font-black text-indigo-700">{entityEntries.length}</span>
+                <span className="text-[10px] text-slate-400">entities</span>
+              </div>
+            </div>
+            <div className="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1">Queries Preserved</span>
+              <div className="flex items-baseline gap-1">
+                <span className="text-2xl font-black text-slate-800">{recentQueries.length}</span>
+                <span className="text-[10px] text-slate-400">turns</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Retained Facts & Entities */}
+          <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs">
+            <div className="flex items-center justify-between mb-3">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-slate-600 flex items-center gap-1.5">
+                <Shield className="w-3.5 h-3.5 text-indigo-600" />
+                Verified Client & Dispute Facts
+              </h4>
+              <span className="text-[10px] text-slate-400 font-medium">Persisted in Local Storage</span>
+            </div>
+
+            {entityEntries.length === 0 && !memoryStats?.disputeType ? (
+              <p className="text-xs text-slate-400 italic py-3 text-center">
+                No case facts established yet. As you chat about your legal problem, names, amounts, locations, and roles will be automatically consolidated here.
+              </p>
+            ) : (
+              <div className="grid grid-cols-2 gap-2.5">
+                {memoryStats?.disputeType && (
+                  <div className="bg-purple-50/70 border border-purple-100 rounded-xl p-3">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-purple-600 block">Dispute Classification</span>
+                    <span className="text-sm font-bold text-purple-900 capitalize">{memoryStats.disputeType.replace('_', ' ')}</span>
+                  </div>
+                )}
+                {entityEntries.map(([key, val]) => (
+                  <div key={key} className="bg-slate-50 border border-slate-200/70 rounded-xl p-3">
+                    <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block">
+                      {key.replace(/([A-Z])/g, ' $1')}
+                    </span>
+                    <span className="text-sm font-semibold text-slate-800 break-words">{val}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Chronological Questions History */}
+          <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-600 flex items-center gap-1.5 mb-3">
+              <History className="w-3.5 h-3.5 text-purple-600" />
+              What You Previously Asked in this Matter
+            </h4>
+
+            {recentQueries.length === 0 ? (
+              <p className="text-xs text-slate-400 italic py-3 text-center">
+                No past questions yet. Ask any questions in chat and LawBot will remember every inquiry and answer.
+              </p>
+            ) : (
+              <div className="space-y-2.5">
+                {recentQueries.map((item, idx) => (
+                  <div key={idx} className="p-3 rounded-xl bg-slate-50 border border-slate-200/60 text-xs">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="font-bold text-slate-700">Turn {item.turn}: "{item.query}"</span>
+                      <span className="text-[10px] text-slate-400">
+                        {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      </span>
+                    </div>
+                    {item.takeaway && (
+                      <p className="text-slate-500 font-medium text-[11px] mt-1 pl-2 border-l-2 border-indigo-400">
+                        Advice Given: {item.takeaway}
+                      </p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="p-3 bg-indigo-50/60 rounded-xl border border-indigo-100 flex items-start gap-2.5">
+            <Sparkles className="w-4 h-4 text-indigo-600 flex-shrink-0 mt-0.5" />
+            <p className="text-[11px] text-indigo-800 leading-relaxed font-medium">
+              LawBot360 uses recurrent memory gating (LSTM Cell State) to carry facts and queries forward. You can ask follow-ups like "What penalty applies to what I mentioned earlier?" without repeating your story.
+            </p>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="px-6 py-4 border-t border-slate-100 bg-white flex items-center justify-between">
+          <button
+            onClick={onClearMemory}
+            className="px-4 py-2 text-xs font-semibold text-rose-600 hover:text-rose-700 hover:bg-rose-50 rounded-xl transition-colors flex items-center gap-1.5"
+          >
+            <RotateCcw className="w-3.5 h-3.5" />
+            Clear Active Memory
+          </button>
+          <button
+            onClick={onClose}
+            className="px-5 py-2.5 bg-slate-900 text-white rounded-xl text-xs font-semibold hover:bg-slate-800 transition-colors shadow-xs"
+          >
+            Done
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Saved Chats & Sessions Modal
+const ChatHistoryModal = ({ isOpen, onClose, chats, currentChatId, onLoadChat, onNewChat, onDeleteChat }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fadeIn">
+      <div className="bg-white rounded-3xl shadow-2xl max-w-lg w-full max-h-[80vh] flex flex-col overflow-hidden animate-slideUp ring-1 ring-slate-900/5">
+        <div className="px-6 py-5 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold">
+              <MessageSquare className="w-5 h-5" />
+            </div>
+            <div>
+              <h3 className="text-lg font-bold text-slate-800">Saved Consultations</h3>
+              <p className="text-xs text-slate-500 font-medium">Persistent chat history & case sessions</p>
+            </div>
+          </div>
+          <button onClick={onClose} className="p-2 hover:bg-slate-200 rounded-full text-slate-400 hover:text-slate-600 transition-colors">
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        <div className="p-4 border-b border-slate-100 bg-white">
+          <button
+            onClick={() => {
+              onNewChat();
+              onClose();
+            }}
+            className="w-full py-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold rounded-xl text-sm transition-all shadow-md shadow-indigo-100 flex items-center justify-center gap-2"
+          >
+            <Plus className="w-4 h-4" /> Start New Consultation
+          </button>
+        </div>
+
+        <div className="flex-1 overflow-y-auto p-4 space-y-2 bg-slate-50">
+          {chats.length === 0 ? (
+            <p className="text-center text-xs text-slate-400 py-8 italic">No previous chats saved yet.</p>
+          ) : (
+            chats.map((chat) => {
+              const isCurrent = String(chat.id) === String(currentChatId);
+              return (
+                <div
+                  key={chat.id}
+                  onClick={() => {
+                    onLoadChat(chat);
+                    onClose();
+                  }}
+                  className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between group ${
+                    isCurrent
+                      ? 'bg-indigo-50 border-indigo-200 ring-1 ring-indigo-500/20 shadow-xs'
+                      : 'bg-white border-slate-200/80 hover:border-indigo-200 hover:shadow-sm'
+                  }`}
+                >
+                  <div className="flex items-center gap-3 flex-1 min-w-0 pr-2">
+                    <div className={`w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 ${isCurrent ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-500 group-hover:text-indigo-600'}`}>
+                      <MessageSquare className="w-4 h-4" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2">
+                        <span className={`text-sm font-bold truncate block ${isCurrent ? 'text-indigo-900' : 'text-slate-800'}`}>
+                          {chat.title || 'Legal Consultation'}
+                        </span>
+                        {isCurrent && (
+                          <span className="px-1.5 py-0.2 rounded-md bg-indigo-600 text-white text-[9px] font-bold uppercase">
+                            Current
+                          </span>
+                        )}
+                      </div>
+                      <span className="text-[11px] text-slate-400 block mt-0.5">
+                        {chat.messages ? `${chat.messages.length} messages` : 'Session'} • {chat.updatedAt ? new Date(chat.updatedAt).toLocaleDateString() : 'Recent'}
+                      </span>
+                    </div>
+                  </div>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDeleteChat(chat.id, e);
+                    }}
+                    className="p-2 hover:bg-rose-50 text-slate-300 hover:text-rose-600 rounded-lg transition-colors"
+                    title="Delete Chat"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
+              );
+            })
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Default initial assistant greeting
+const DEFAULT_GREETING = {
+  id: 1,
+  content: "Hello! I'm LawBot 360, your advanced AI legal assistant for India.\n\nI can help you with:\n\n✓ **Legal Rights & Laws**\n✓ **Drafting Documents** (RTI, FIR, Contracts)\n✓ **Case Strategy & Analysis**\n\nHow can I assist you today?",
+  isUser: false,
+  timestamp: Date.now(),
+  acts: [],
+  canGenerateDocument: false,
+  suggestedFollowups: ["I need to file an RTI", "Consumer complaint help", "What are tenant rights?"]
+};
+
 // Main Chat Application
 export default function ChatApp() {
-  const [chatHistory, setChatHistory] = useState([]);
-  const [currentChatId, setCurrentChatId] = useState(null);
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      content: "Hello! I'm LawBot 360, your advanced AI legal assistant for India.\n\nI can help you with:\n\n✓ **Legal Rights & Laws**\n✓ **Drafting Documents** (RTI, FIR, Contracts)\n✓ **Case Strategy & Analysis**\n\nHow can I assist you today?",
-      isUser: false,
-      timestamp: Date.now(),
-      acts: [],
-      canGenerateDocument: false,
-      suggestedFollowups: ["I need to file an RTI", "Consumer complaint help", "What are tenant rights?"]
+  const [chatHistory, setChatHistory] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('lawbot-chats');
+      if (saved) {
+        try { return JSON.parse(saved); } catch (e) {}
+      }
     }
-  ]);
+    return [];
+  });
+
+  const [currentChatId, setCurrentChatId] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('lawbot_active_chat_id');
+      if (saved) return saved;
+    }
+    return 'chat_' + Date.now();
+  });
+
+  const [messages, setMessages] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const activeId = localStorage.getItem('lawbot_active_chat_id');
+      const savedChats = localStorage.getItem('lawbot-chats');
+      if (savedChats) {
+        try {
+          const parsed = JSON.parse(savedChats);
+          if (activeId) {
+            const active = parsed.find(c => String(c.id) === String(activeId));
+            if (active && active.messages && active.messages.length > 0) {
+              return active.messages;
+            }
+          } else if (parsed.length > 0 && parsed[0].messages) {
+            return parsed[0].messages;
+          }
+        } catch (e) {}
+      }
+    }
+    return [DEFAULT_GREETING];
+  });
+
   const [inputMessage, setInputMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -580,22 +873,80 @@ export default function ChatApp() {
   const [language, setLanguage] = useState('multi');
   const [isGeneratingDoc, setIsGeneratingDoc] = useState(false);
   const [showVoiceCall, setShowVoiceCall] = useState(false);
+  const [showMemoryModal, setShowMemoryModal] = useState(false);
+  const [showChatHistory, setShowChatHistory] = useState(false);
+  
+  // Voice states & references
   const [isListening, setIsListening] = useState(false);
   const [isMicReady, setIsMicReady] = useState(false);
   const [interimTranscript, setInterimTranscript] = useState('');
+  const [speakingMessageId, setSpeakingMessageId] = useState(null);
+
+  // Persistent Memory stats state
+  const [memoryStats, setMemoryStats] = useState(() => persistentMemoryService.getMemoryStats());
+
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
   const fileInputRef = useRef(null);
+  const activeSpeakerRef = useRef(null);
+  const activeVoiceStopRef = useRef(null);
 
   const scrollToBottom = () => messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   useEffect(() => {
     scrollToBottom();
   }, [messages, isTyping]);
 
+  // Connect active session with persistent memory service and listen to changes
   useEffect(() => {
-    const savedChats = localStorage.getItem('lawbot-chats');
-    if (savedChats) setChatHistory(JSON.parse(savedChats));
-  }, []);
+    if (currentChatId) {
+      persistentMemoryService.setActiveSession(currentChatId);
+      setMemoryStats(persistentMemoryService.getMemoryStats());
+    }
+    const unsubscribe = persistentMemoryService.subscribe(stats => {
+      setMemoryStats(stats);
+    });
+    return unsubscribe;
+  }, [currentChatId]);
+
+  // Auto-persist active chat session & messages on every change
+  useEffect(() => {
+    if (!currentChatId || messages.length === 0) return;
+    localStorage.setItem('lawbot_active_chat_id', String(currentChatId));
+
+    setChatHistory(prevChats => {
+      const existingIdx = prevChats.findIndex(c => String(c.id) === String(currentChatId));
+      let title = 'Legal Consultation';
+      const firstUserMsg = messages.find(m => m.isUser);
+      if (firstUserMsg) {
+        title = firstUserMsg.content.trim().substring(0, 32);
+        if (firstUserMsg.content.length > 32) title += '...';
+      }
+
+      let updated;
+      if (existingIdx >= 0) {
+        updated = [...prevChats];
+        updated[existingIdx] = {
+          ...updated[existingIdx],
+          title: prevChats[existingIdx].title !== 'Legal Consultation' ? prevChats[existingIdx].title : title,
+          messages,
+          updatedAt: Date.now()
+        };
+      } else {
+        updated = [
+          {
+            id: currentChatId,
+            title,
+            messages,
+            timestamp: Date.now(),
+            updatedAt: Date.now()
+          },
+          ...prevChats
+        ];
+      }
+      localStorage.setItem('lawbot-chats', JSON.stringify(updated));
+      return updated;
+    });
+  }, [messages, currentChatId]);
 
   const saveChatHistory = (chats) => {
     localStorage.setItem('lawbot-chats', JSON.stringify(chats));
@@ -603,28 +954,43 @@ export default function ChatApp() {
   };
 
   const createNewChat = () => {
-    if (messages.length > 1) {
-      const chatTitle = messages[1]?.content.substring(0, 30) + '...' || 'New Chat';
-      const newChat = { id: Date.now(), title: chatTitle, messages: messages, timestamp: Date.now() };
-      saveChatHistory([newChat, ...chatHistory]);
-    }
-    setMessages([messages[0]]);
-    setCurrentChatId(null);
+    // Stop any active speech or mic
+    handleStopSpeaking();
+    if (isListening) handleVoiceInput();
+
+    const newId = 'chat_' + Date.now();
+    setCurrentChatId(newId);
+    persistentMemoryService.setActiveSession(newId);
+    setMessages([DEFAULT_GREETING]);
   };
 
   const loadChat = (chat) => {
-    setMessages(chat.messages);
+    handleStopSpeaking();
+    if (isListening) handleVoiceInput();
+
+    setMessages(chat.messages || [DEFAULT_GREETING]);
     setCurrentChatId(chat.id);
+    persistentMemoryService.setActiveSession(chat.id);
   };
 
   const deleteChat = (chatId, e) => {
-    e.stopPropagation();
-    const updatedChats = chatHistory.filter(chat => chat.id !== chatId);
+    e?.stopPropagation();
+    const updatedChats = chatHistory.filter(chat => String(chat.id) !== String(chatId));
     saveChatHistory(updatedChats);
-    if (currentChatId === chatId) {
-      setMessages([messages[0]]);
-      setCurrentChatId(null);
+    persistentMemoryService.clearSessionMemory(chatId);
+
+    if (String(currentChatId) === String(chatId)) {
+      if (updatedChats.length > 0) {
+        loadChat(updatedChats[0]);
+      } else {
+        createNewChat();
+      }
     }
+  };
+
+  const handleClearActiveMemory = () => {
+    persistentMemoryService.clearSessionMemory(currentChatId);
+    setMemoryStats(persistentMemoryService.getMemoryStats());
   };
 
   window.handleSuggestedFollowup = (followup) => {
@@ -632,22 +998,57 @@ export default function ChatApp() {
     inputRef.current?.focus();
   };
 
+  // Speech Output Manager (stops any existing utterance cleanly, never glitches)
+  const handleToggleSpeak = (messageId, text) => {
+    if (speakingMessageId === messageId) {
+      handleStopSpeaking();
+    } else {
+      handleStopSpeaking();
+      setSpeakingMessageId(messageId);
+
+      const controller = lawBot360AI.speak(text, {
+        onStart: () => setSpeakingMessageId(messageId),
+        onEnd: () => {
+          setSpeakingMessageId(null);
+          activeSpeakerRef.current = null;
+        },
+        onError: () => {
+          setSpeakingMessageId(null);
+          activeSpeakerRef.current = null;
+        }
+      });
+      activeSpeakerRef.current = controller;
+    }
+  };
+
+  const handleStopSpeaking = () => {
+    if (activeSpeakerRef.current) {
+      try { activeSpeakerRef.current.stop(); } catch (e) {}
+      activeSpeakerRef.current = null;
+    }
+    lawBot360AI.stopSpeaking();
+    setSpeakingMessageId(null);
+  };
+
   const handleSendMessage = async () => {
-    if (!inputMessage.trim()) return;
-    const userMessage = { id: Date.now(), content: inputMessage, isUser: true, timestamp: Date.now() };
-    setMessages(prev => [...prev, userMessage]);
+    if (!inputMessage.trim() || isTyping) return;
+    handleStopSpeaking();
+
+    const userMessage = { id: Date.now(), content: inputMessage.trim(), isUser: true, timestamp: Date.now() };
+    const updatedMessages = [...messages, userMessage];
+    setMessages(updatedMessages);
     setInputMessage('');
     setIsTyping(true);
 
     try {
       const lastMessage = messages[messages.length - 1];
       if (lastMessage && lastMessage.isDocumentRequest) {
-        await generateAIDocument(inputMessage, lastMessage.documentType);
+        await generateAIDocument(userMessage.content, lastMessage.documentType);
         setIsTyping(false);
         return;
       }
 
-      const aiResponse = await generateAIResponse(inputMessage, messages);
+      const aiResponse = await generateAIResponse(userMessage.content, updatedMessages, currentChatId);
       setIsTyping(false);
       setMessages(prev => [...prev, { id: Date.now() + 1, ...aiResponse, isUser: false, timestamp: Date.now() }]);
     } catch (error) {
@@ -668,50 +1069,81 @@ export default function ChatApp() {
     inputRef.current?.focus();
   };
 
+  // High-reliability Voice STT: Deepgram with auto seamless Web Speech API streaming fallback
   const handleVoiceInput = async () => {
+    // If already listening, stop everything cleanly
     if (isListening) {
+      if (activeVoiceStopRef.current) {
+        try { activeVoiceStopRef.current(); } catch (e) {}
+        activeVoiceStopRef.current = null;
+      }
       deepgramService.stopListening();
+      lawBot360AI.stopListening();
       setIsListening(false);
+      setIsMicReady(false);
       setInterimTranscript('');
       return;
     }
 
-    try {
-      setIsListening(true);
-      setInterimTranscript('');
+    setIsListening(true);
+    setIsMicReady(false);
+    setInterimTranscript('');
 
-      if (deepgramService.isAvailable()) {
-        let finalText = inputMessage;
-        setIsMicReady(false);
+    let baseText = inputMessage ? inputMessage.trim() + ' ' : '';
 
+    const startWebSpeechFallback = () => {
+      setIsMicReady(true);
+      const stopFn = lawBot360AI.startListeningStreaming(language === 'hi' ? 'hi' : 'en-IN', {
+        onTranscript: (finalText) => {
+          baseText += finalText + ' ';
+          setInputMessage(baseText.trim());
+          setInterimTranscript('');
+        },
+        onInterim: (interim) => {
+          setInterimTranscript(interim);
+        },
+        onError: (err) => {
+          console.warn('[Voice STT] WebSpeech error:', err);
+          setIsListening(false);
+          setIsMicReady(false);
+          setInterimTranscript('');
+        },
+        onEnd: () => {
+          setIsListening(false);
+          setIsMicReady(false);
+          setInterimTranscript('');
+        }
+      });
+      activeVoiceStopRef.current = stopFn;
+    };
+
+    if (deepgramService.isAvailable()) {
+      try {
         await deepgramService.startListening({
           language: language,
           onReady: () => setIsMicReady(true),
           onTranscript: ({ transcript, isFinal }) => {
             if (isFinal) {
-              finalText = (finalText + ' ' + transcript).trim();
-              setInputMessage(finalText);
+              baseText += transcript + ' ';
+              setInputMessage(baseText.trim());
               setInterimTranscript('');
             } else {
               setInterimTranscript(transcript);
             }
           },
           onError: (err) => {
-            console.error('Voice input error:', err);
-            setIsMicReady(false);
+            console.warn('[Voice STT] Deepgram failed during session, falling back to Web Speech:', err);
+            deepgramService.stopListening();
+            startWebSpeechFallback();
           }
         });
-      } else {
-        // Fallback to aiService (Web Speech API)
-        const transcript = await lawBot360AI.startListening(language);
-        setInputMessage(prev => (prev + ' ' + transcript).trim());
-        setIsListening(false);
+        activeVoiceStopRef.current = () => deepgramService.stopListening();
+      } catch (err) {
+        console.warn('[Voice STT] Deepgram connection error, falling back to Web Speech:', err);
+        startWebSpeechFallback();
       }
-    } catch (err) {
-      console.error('Voice recognition failed:', err);
-      setIsListening(false);
-      setIsMicReady(false);
-      setInterimTranscript('');
+    } else {
+      startWebSpeechFallback();
     }
   };
 
@@ -771,12 +1203,48 @@ export default function ChatApp() {
               <p className="text-xs text-slate-500 font-medium">AI-powered • Secure • Indian Law</p>
             </div>
           </div>
-          <div className="flex items-center gap-3">
-            <div className={`hidden sm:flex items-center text-xs font-semibold px-3 py-1.5 rounded-full border ${language === 'multi' ? 'bg-indigo-50 text-indigo-700 border-indigo-200 animate-pulse' : 'bg-slate-100 text-slate-500 border-slate-200'}`}>
+          <div className="flex items-center gap-2 sm:gap-3 flex-wrap justify-end">
+            {/* Persistent Memory Indicator Button */}
+            <button
+              onClick={() => setShowMemoryModal(true)}
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-purple-50 to-indigo-50 border border-purple-200 hover:border-purple-300 text-purple-700 hover:text-purple-900 rounded-full shadow-xs transition-all font-semibold text-xs active:scale-95 group"
+              title="Inspect Persistent Legal Memory (LSTM Cell State)"
+            >
+              <Brain className="w-3.5 h-3.5 text-purple-600 group-hover:scale-110 transition-transform" />
+              <span className="hidden md:inline">🧠 Memory:</span>
+              <span>{memoryStats?.entityCount > 0 ? `${memoryStats.entityCount} Facts Retained` : 'Active'}</span>
+              <span className="text-[10px] bg-purple-200/80 text-purple-800 font-bold px-1.5 py-0.2 rounded-full">
+                {memoryStats?.retentionScore || 100}%
+              </span>
+            </button>
+
+            {/* Saved Chats Drawer Button */}
+            <button
+              onClick={() => setShowChatHistory(true)}
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-full transition-all font-semibold text-xs active:scale-95"
+              title="Saved Consultations & Case History"
+            >
+              <Clock className="w-3.5 h-3.5 text-slate-500" />
+              <span className="hidden sm:inline">Saved Chats</span>
+              <span className="text-[10px] bg-slate-200 text-slate-700 font-bold px-1.5 py-0.2 rounded-full">
+                {chatHistory.length}
+              </span>
+            </button>
+
+            {/* New Chat Button */}
+            <button
+              onClick={createNewChat}
+              className="p-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200/60 rounded-full transition-all font-semibold text-xs active:scale-95"
+              title="Start New Consultation"
+            >
+              <Plus className="w-4 h-4" />
+            </button>
+
+            <div className={`hidden lg:flex items-center text-xs font-semibold px-3 py-1.5 rounded-full border ${language === 'multi' ? 'bg-indigo-50 text-indigo-700 border-indigo-200 animate-pulse' : 'bg-slate-100 text-slate-500 border-slate-200'}`}>
               {language === 'multi' ? <Sparkles className="w-3 h-3 mr-1.5" /> : <Globe className="w-3 h-3 mr-1.5" />}
-              {language === 'multi' ? 'Smart Auto-Detection Active' : '28 Languages Supported'}
+              {language === 'multi' ? 'Smart Auto-Detection' : '28 Languages'}
             </div>
-            <div className="w-px h-8 bg-slate-200 mx-2 hidden sm:block"></div>
+            <div className="w-px h-8 bg-slate-200 mx-1 hidden sm:block"></div>
             <button
               onClick={() => {
                 if (typeof window !== 'undefined') {
@@ -864,6 +1332,8 @@ export default function ChatApp() {
                 isUser={message.isUser}
                 onGenerateDoc={handleGenerateDocument}
                 isGeneratingDoc={isGeneratingDoc}
+                isSpeaking={speakingMessageId === message.id}
+                onToggleSpeak={handleToggleSpeak}
               />
             ))}
             {isTyping && <TypingIndicator />}
@@ -966,6 +1436,21 @@ export default function ChatApp() {
         isOpen={showVoiceCall}
         onClose={() => setShowVoiceCall(false)}
         userId="user_client_360"
+      />
+      <MemoryModal
+        isOpen={showMemoryModal}
+        onClose={() => setShowMemoryModal(false)}
+        memoryStats={memoryStats}
+        onClearMemory={handleClearActiveMemory}
+      />
+      <ChatHistoryModal
+        isOpen={showChatHistory}
+        onClose={() => setShowChatHistory(false)}
+        chats={chatHistory}
+        currentChatId={currentChatId}
+        onLoadChat={loadChat}
+        onNewChat={createNewChat}
+        onDeleteChat={deleteChat}
       />
 
       <style>{`

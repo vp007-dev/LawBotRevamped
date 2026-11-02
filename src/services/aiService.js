@@ -1,11 +1,13 @@
 import deepgramService from './deepgramService';
 import ragService from './ragService';
 import awsAiService, { AWS_MODELS } from './awsAiService';
+import persistentMemoryService from './persistentMemoryService';
 
 // AI Service for LawBot360 - Powered under the hood by unified AWS Bedrock AI Engine
 class LawBot360AI {
   constructor() {
     this.awsAiService = awsAiService;
+    this.persistentMemory = persistentMemoryService;
     this.availableModels = AWS_MODELS;
     
     // Active Model from AWS Engine
@@ -183,6 +185,8 @@ Ask exactly 2-3 **sharp, specific** follow-up questions to understand their case
 
   // Send message to AI powered under the hood by AWS Bedrock AI Engine
   async sendMessage(message, context = {}) {
+    const sessionId = context.sessionId || this.persistentMemory.activeSessionId || 'session_default';
+
     if (!context.skipHistory) {
       this.conversationHistory.push({
         role: 'user',
@@ -199,6 +203,16 @@ Ask exactly 2-3 **sharp, specific** follow-up questions to understand their case
       systemPrompt = this.getCategoryPrompt('followup', true);
     } else {
       systemPrompt = await this.selectPromptWithAI(message);
+    }
+
+    // 0. Inject Fast LSTM Persistent Memory Context (retained user facts & chronological queries)
+    try {
+      const memoryPrompt = this.persistentMemory.getMemoryPrompt(sessionId);
+      if (memoryPrompt) {
+        systemPrompt = `${memoryPrompt}\n\n${systemPrompt}`;
+      }
+    } catch (e) {
+      console.warn('[LawBotAI] Error loading persistent memory prompt:', e);
     }
 
     // 1. Fetch user profile context from localStorage
@@ -247,6 +261,7 @@ Ask exactly 2-3 **sharp, specific** follow-up questions to understand their case
         res.kanoonUsed = ragResult.hasKanoon;
         res.activeModel = this.activeModel.shortName;
         res.provider = 'AWS Bedrock Engine';
+        res.persistentMemory = this.persistentMemory.getMemoryStats();
       }
       return res;
     };
@@ -276,17 +291,30 @@ Ask exactly 2-3 **sharp, specific** follow-up questions to understand their case
         });
       }
 
+      const fallback = this.getFallbackResponse(message);
+      this.persistentMemory.recordTurn(message, fallback, sessionId);
       return enrichResult({
         success: false,
         error: err.message,
-        response: this.getFallbackResponse(message)
+        response: fallback
       });
     }
   }
+
   // Unified AWS Bedrock Message Dispatcher
   async sendAwsMessage(message, systemPrompt, context = {}) {
+    const sessionId = context.sessionId || this.persistentMemory.activeSessionId || 'session_default';
+
+    // Format previous messages from context or fallback to internal history
+    const historySource = context.conversationHistory 
+      ? context.conversationHistory.map(m => ({
+          role: m.role || (m.isUser ? 'user' : 'assistant'),
+          content: m.content
+        }))
+      : this.conversationHistory;
+
     const messages = [
-      ...(context.isolatedHistory ? [] : this.conversationHistory.slice(-10)),
+      ...(context.isolatedHistory ? [] : historySource.slice(-10)),
       { role: 'user', content: message }
     ];
 
@@ -298,12 +326,17 @@ Ask exactly 2-3 **sharp, specific** follow-up questions to understand their case
     if (rawResponse) {
       const aiResponse = this.cleanAIResponse(rawResponse);
       this.conversationHistory.push({ role: 'assistant', content: aiResponse });
+
+      // Automatically commit turn to persistent LSTM memory
+      this.persistentMemory.recordTurn(message, aiResponse, sessionId);
+
       return {
         success: true,
         response: aiResponse,
         model: this.activeModel.shortName,
         modelId: this.activeModel.id,
-        provider: 'AWS Bedrock'
+        provider: 'AWS Bedrock',
+        persistentMemory: this.persistentMemory.getMemoryStats()
       };
     }
 
@@ -435,77 +468,269 @@ Once configured, all models (**Claude 3.5 Sonnet, Amazon Nova Pro, Llama 3.3 70B
     return "I'm Advocate LawBot360. Please describe your legal issue in detail - what happened, when, where, and who was involved. This will help me identify the applicable law and advise you properly on your legal rights and remedies.";
   }
 
-  // Voice input functionality — Deepgram with Web Speech API fallback
+  // Voice input functionality — Deepgram with automatic Web Speech API fallback
   async startListening(languageCode = 'multi') {
-    const deepgramLang = languageCode;
     const browserLang = languageCode === 'hi' ? 'hi-IN' : 'en-IN';
 
-    // Use Deepgram if available
+    // 1. Try Deepgram if available
     if (deepgramService.isAvailable()) {
       this.isListening = true;
       try {
-        const transcript = await deepgramService.startListeningSimple(deepgramLang);
+        const transcript = await deepgramService.startListeningSimple(languageCode);
         this.isListening = false;
-        return transcript;
+        if (transcript && transcript.trim()) {
+          return transcript.trim();
+        }
       } catch (err) {
+        console.warn('[LawBotAI] Deepgram STT failed, falling back to Web Speech API:', err.message);
         this.isListening = false;
-        throw err;
       }
     }
 
-    // Fallback to Web Speech API
+    // 2. Reliable Fallback to Browser Web Speech API
     return new Promise((resolve, reject) => {
-      if (!this.recognition) {
-        reject(new Error('Speech recognition not supported'));
+      if (typeof window === 'undefined') {
+        reject(new Error('Speech recognition not available outside browser'));
         return;
       }
 
-      this.isListening = true;
-      this.recognition.lang = browserLang;
-      this.recognition.start();
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        reject(new Error('Speech recognition not supported in this browser. Please use Google Chrome or Edge.'));
+        return;
+      }
 
-      this.recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript;
-        this.isListening = false;
-        resolve(transcript);
-      };
+      try {
+        if (this.recognition) {
+          try { this.recognition.abort(); } catch (e) {}
+        }
 
-      this.recognition.onerror = (event) => {
-        this.isListening = false;
-        reject(new Error(`Speech recognition error: ${event.error}`));
-      };
+        const recognition = new SpeechRecognition();
+        this.recognition = recognition;
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        recognition.lang = browserLang;
 
-      this.recognition.onend = () => {
+        let resolved = false;
+
+        recognition.onstart = () => {
+          this.isListening = true;
+        };
+
+        recognition.onresult = (event) => {
+          const transcript = event.results?.[0]?.[0]?.transcript || '';
+          this.isListening = false;
+          if (!resolved) {
+            resolved = true;
+            resolve(transcript);
+          }
+        };
+
+        recognition.onerror = (event) => {
+          this.isListening = false;
+          if (!resolved) {
+            resolved = true;
+            if (event.error === 'no-speech') {
+              resolve('');
+            } else {
+              reject(new Error(`Speech recognition error: ${event.error}`));
+            }
+          }
+        };
+
+        recognition.onend = () => {
+          this.isListening = false;
+          if (!resolved) {
+            resolved = true;
+            resolve('');
+          }
+        };
+
+        recognition.start();
+      } catch (err) {
         this.isListening = false;
-      };
+        reject(err);
+      }
     });
   }
 
-  // Stop listening
+  // Real-time streaming Web Speech API listener (continuous with interim results)
+  startListeningStreaming(languageCode = 'en-IN', { onTranscript, onInterim, onError, onEnd } = {}) {
+    if (typeof window === 'undefined') return () => {};
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      onError?.('Speech recognition not supported in this browser');
+      return () => {};
+    }
+
+    try {
+      if (this.recognition) {
+        try { this.recognition.abort(); } catch (e) {}
+      }
+
+      const recognition = new SpeechRecognition();
+      this.recognition = recognition;
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      recognition.lang = languageCode === 'hi' ? 'hi-IN' : 'en-IN';
+
+      recognition.onstart = () => {
+        this.isListening = true;
+      };
+
+      recognition.onresult = (event) => {
+        let finalTrans = '';
+        let interimTrans = '';
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          if (event.results[i].isFinal) {
+            finalTrans += event.results[i][0].transcript + ' ';
+          } else {
+            interimTrans += event.results[i][0].transcript;
+          }
+        }
+        if (finalTrans) onTranscript?.(finalTrans.trim());
+        if (interimTrans) onInterim?.(interimTrans.trim());
+      };
+
+      recognition.onerror = (event) => {
+        console.warn('[WebSpeech STT] Error:', event.error);
+        if (event.error !== 'no-speech') {
+          onError?.(event.error);
+        }
+      };
+
+      recognition.onend = () => {
+        this.isListening = false;
+        onEnd?.();
+      };
+
+      recognition.start();
+
+      return () => {
+        try { recognition.stop(); } catch (e) {}
+        this.isListening = false;
+      };
+    } catch (err) {
+      console.error('[WebSpeech STT] Failed to start:', err);
+      onError?.(err.message);
+      return () => {};
+    }
+  }
+
+  // Stop listening on any active recognition service
   stopListening() {
     if (deepgramService.isAvailable()) {
-      deepgramService.stopListening();
-      this.isListening = false;
-      return;
+      try { deepgramService.stopListening(); } catch (e) {}
     }
-    if (this.recognition && this.isListening) {
-      this.recognition.stop();
-      this.isListening = false;
+    if (this.recognition) {
+      try { this.recognition.stop(); } catch (e) {}
     }
+    this.isListening = false;
   }
 
-  // Text-to-speech — uses browser speechSynthesis for instant playback
-  // (Deepgram TTS has too much latency for chat UX)
-  speak(text) {
-    const proxy = { onend: null };
+  // Text-to-speech — Chunked playback with event tracking (eliminates Chrome 15s freeze)
+  speak(text, options = {}) {
+    const proxy = typeof options === 'function' 
+      ? { onend: options } 
+      : { onend: options.onend || options.onEnd, onstart: options.onstart || options.onStart, onerror: options.onerror || options.onError };
+
     const cleanText = this._stripMarkdown(text);
-    this._speakBrowser(cleanText, proxy);
-    return proxy;
+    if (!cleanText || !cleanText.trim()) {
+      proxy.onend?.();
+      return { stop: () => {}, onend: null };
+    }
+
+    if (!this.synthesis) {
+      proxy.onend?.();
+      return { stop: () => {}, onend: null };
+    }
+
+    // Cancel any current utterance cleanly
+    this.stopSpeaking();
+
+    // Chunk text by sentences to prevent Chromium from dropping audio mid-stream
+    const sentences = cleanText.match(/[^.!?]+[.!?]+|\s*[^.!?]+$/g) || [cleanText];
+    let currentIndex = 0;
+    let isCancelled = false;
+
+    const speakNextSentence = () => {
+      if (isCancelled || currentIndex >= sentences.length) {
+        this.currentUtterance = null;
+        proxy.onend?.();
+        return;
+      }
+
+      const sentenceText = sentences[currentIndex].trim();
+      if (!sentenceText) {
+        currentIndex++;
+        speakNextSentence();
+        return;
+      }
+
+      const utterance = new SpeechSynthesisUtterance(sentenceText);
+      this.currentUtterance = utterance;
+      utterance.rate = 1.0;
+      utterance.pitch = 1.0;
+      utterance.volume = 1.0;
+
+      const voices = this.synthesis.getVoices();
+      const preferredVoice = voices.find(v =>
+        (v.name.includes('Google') || v.name.includes('Natural') || v.name.includes('Microsoft')) &&
+        (v.lang.includes('en') || v.lang.includes('IN'))
+      ) || voices.find(v => v.lang.includes('en'));
+      if (preferredVoice) utterance.voice = preferredVoice;
+
+      utterance.onstart = () => {
+        if (currentIndex === 0) {
+          proxy.onstart?.();
+        }
+      };
+
+      utterance.onend = () => {
+        currentIndex++;
+        speakNextSentence();
+      };
+
+      utterance.onerror = (e) => {
+        console.warn('[LawBotAI TTS] Utterance error:', e);
+        if (!isCancelled) {
+          currentIndex++;
+          speakNextSentence();
+        }
+      };
+
+      this.synthesis.speak(utterance);
+    };
+
+    // Small delay before speaking so previous cancels clear
+    const startTimeout = setTimeout(() => {
+      speakNextSentence();
+    }, 40);
+
+    const controller = {
+      stop: () => {
+        isCancelled = true;
+        clearTimeout(startTimeout);
+        this.stopSpeaking();
+        proxy.onend?.();
+      },
+      onend: null
+    };
+
+    // Support property assignment: controller.onend = fn
+    Object.defineProperty(controller, 'onend', {
+      set: (fn) => { proxy.onend = fn; },
+      get: () => proxy.onend
+    });
+
+    return controller;
   }
 
-  // Strip markdown so TTS doesn't read symbols like ** # - etc
+  // Strip markdown, URLs, and legal symbols so TTS sounds natural and clear
   _stripMarkdown(text) {
+    if (!text) return '';
     return text
+      .replace(/https?:\/\/[^\s]+/g, '')
       .replace(/\*\*([^*]+)\*\*/g, '$1')
       .replace(/\*([^*]+)\*/g, '$1')
       .replace(/__([^_]+)__/g, '$1')
@@ -516,40 +741,21 @@ Once configured, all models (**Claude 3.5 Sonnet, Amazon Nova Pro, Llama 3.3 70B
       .replace(/^---+$/gm, '')
       .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
       .replace(/`([^`]+)`/g, '$1')
-      .replace(/[📄⚖️💼🏠💰👨‍👩‍👧❌✓✗☐☑️🔴⚠️]/g, '')
+      .replace(/[📄⚖️💼🏠💰👨‍👩‍👧❌✓✗☐☑️🔴⚠️🚨💡🎤]/g, '')
       .replace(/\n{2,}/g, '. ')
       .replace(/\n/g, '. ')
       .replace(/\s{2,}/g, ' ')
       .trim();
   }
 
-  // Browser speechSynthesis — instant, no network delay
-  _speakBrowser(text, proxy) {
-    if (this.synthesis) {
-      this.synthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.rate = 0.95;
-      utterance.pitch = 1;
-      utterance.volume = 0.9;
-
-      const voices = this.synthesis.getVoices();
-      const preferredVoice = voices.find(voice =>
-        voice.name.includes('Google') ||
-        voice.name.includes('Microsoft') ||
-        voice.lang.includes('en')
-      );
-      if (preferredVoice) utterance.voice = preferredVoice;
-
-      utterance.onend = () => proxy.onend?.();
-      this.synthesis.speak(utterance);
-    }
-  }
-
   // Stop speaking
   stopSpeaking() {
     if (this.synthesis) {
-      this.synthesis.cancel();
+      try {
+        this.synthesis.cancel();
+      } catch (e) {}
     }
+    this.currentUtterance = null;
   }
 
   // ElevenLabs TTS integration

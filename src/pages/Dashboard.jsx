@@ -4,7 +4,7 @@ import {
   CheckCircle, AlertCircle, Calendar, Download, Eye, Edit2, 
   Trash2, Phone, Mail, MapPin, Search, Filter, ChevronRight, 
   Plus, Bell, Settings, Menu, X, Home, LayoutDashboard, Sparkles, 
-  Shield, Award, Target, Activity, BarChart3, BookOpen, Gavel, 
+  Shield, Award, Target, Activity, BarChart3, Gavel, 
   IndianRupee, FileSearch, Network, ExternalLink, Copy, Check, 
   Share2, Zap, Building2, CheckCircle2, ArrowRight, PhoneCall, Headphones
 } from 'lucide-react';
@@ -15,7 +15,6 @@ import LocationLawyerFinder from '../components/LocationLawyerFinder';
 import EcosystemGraph from '../components/EcosystemGraph';
 import ComplianceScoreWidget from '../components/ComplianceScoreWidget';
 import RiskRadarWidget from '../components/RiskRadarWidget';
-import ActiveWorkflowsWidget from '../components/ActiveWorkflowsWidget';
 import { useAuth } from '../context/AuthContext';
 import { constitutionKnowledgeService } from '../services/constitutionKnowledgeService';
 
@@ -62,36 +61,6 @@ const TOP_LAWYERS = [
   { id: 3, name: 'Adv. Vikramaditya Sen', specialization: 'Commercial Contracts & Arbitration', court: 'Karnataka High Court', phone: '+91 98765 43212', experience: '16 Years', consultations: 55, rating: 5.0 }
 ];
 
-// Live Regulatory Bulletins
-const REGULATORY_BULLETINS = [
-  {
-    id: 1,
-    authority: 'CBIC / Ministry of Finance',
-    title: 'E-Invoicing Threshold lowered to ₹5 Cr for B2B & E-Commerce',
-    date: '04 Aug 2026',
-    category: 'GST & Indirect Tax',
-    impact: 'High Impact',
-    summary: 'All registered businesses with aggregate turnover exceeding ₹5 Cr must issue electronic invoices with valid IRN.'
-  },
-  {
-    id: 2,
-    authority: 'Income Tax Department (CBDT)',
-    title: 'Section 43B(h) MSME 45-Day Payment Rule Enforcement',
-    date: '02 Aug 2026',
-    category: 'Direct Tax',
-    impact: 'Mandatory',
-    summary: 'Outstanding vendor dues to registered Udyam MSMEs beyond 45 days disallowed as business expenditure.'
-  },
-  {
-    id: 3,
-    authority: 'Ministry of Labour / EPFO',
-    title: 'Universal Account Number (UAN) Mandatory Aadhaar Seeding',
-    date: '28 Jul 2026',
-    category: 'Labour & Employment',
-    impact: 'Compliance',
-    summary: 'Monthly ECR portal submission requires 100% Aadhaar-verified employee accounts to prevent statutory penalties.'
-  }
-];
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -104,7 +73,7 @@ export default function Dashboard() {
   const [selectedLawyer, setSelectedLawyer] = useState(null);
   const [previewDocument, setPreviewDocument] = useState(null);
   const [copySuccess, setCopySuccess] = useState(false);
-  const [activeTab, setActiveTab] = useState('ecosystem'); // 'ecosystem' | 'workflows' | 'documents' | 'regulatory'
+  const [activeTab, setActiveTab] = useState('ecosystem'); // 'ecosystem' | 'workflows' | 'documents'
 
   // Global Omni-Search State
   const [searchQuery, setSearchQuery] = useState('');
@@ -181,11 +150,8 @@ export default function Dashboard() {
       { title: 'Sarvam 24/7 AI Telephony Helpline (+91 7965480318)', category: 'Voice Telephony', action: () => navigate('/dashboard/sarvam-voice') },
       { title: 'AI Legal Advisory & Multilingual Voice', category: 'Core Feature', action: () => navigate('/dashboard/chat') },
       { title: 'Contract & Clause Risk Analyzer', category: 'Core Feature', action: () => navigate('/dashboard/contracts') },
-      { title: 'Statutory Compliance Calendar', category: 'Core Feature', action: () => navigate('/dashboard/calendar') },
       { title: 'Verified Indian Advocates Directory', category: 'Core Feature', action: () => navigate('/dashboard/lawyers') },
-      { title: 'Government Schemes & Subsidies', category: 'Core Feature', action: () => navigate('/dashboard/schemes') },
-      { title: 'Document Vault & Tamper Verification', category: 'Core Feature', action: () => navigate('/dashboard/vault') },
-      { title: 'Regulatory Updates & Gazette Bulletins', category: 'Core Feature', action: () => navigate('/dashboard/regulatory-updates') }
+      { title: 'Document Vault & Tamper Verification', category: 'Core Feature', action: () => navigate('/dashboard/vault') }
     ].filter(f => f.title.toLowerCase().includes(q));
 
     // 2. Matching Constitution Articles
@@ -666,32 +632,7 @@ export default function Dashboard() {
                   </div>
                 </div>
 
-                {/* 4. Statutory Compliance Calendar */}
-                <div 
-                  onClick={() => navigate('/dashboard/calendar')}
-                  className="bg-white rounded-2xl p-5 border border-slate-200/80 hover:border-rose-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer group relative overflow-hidden"
-                >
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="w-11 h-11 rounded-xl bg-rose-50 border border-rose-100 flex items-center justify-center text-rose-600 group-hover:scale-110 group-hover:bg-rose-600 group-hover:text-white transition-all duration-300 shadow-sm">
-                      <Calendar className="w-5 h-5" />
-                    </div>
-                    <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-rose-50 text-rose-700 border border-rose-200">
-                      ROC • GST • TDS Deadlines
-                    </span>
-                  </div>
-                  <h4 className="font-bold text-slate-900 text-sm mb-1 group-hover:text-rose-700 transition-colors">
-                    Statutory Compliance Calendar
-                  </h4>
-                  <p className="text-xs text-slate-500 leading-relaxed line-clamp-2">
-                    Automated calendar tailored to your business structure (Pvt Ltd/LLP). Live statutory penalty counters and filing alerts.
-                  </p>
-                  <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-rose-600">
-                    <span>Check Deadlines</span>
-                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </div>
-
-                {/* 5. Verified Advocates Directory */}
+                {/* 4. Verified Advocates Directory */}
                 <div 
                   onClick={() => setShowLocationFinder(true)}
                   className="bg-white rounded-2xl p-5 border border-slate-200/80 hover:border-blue-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer group relative overflow-hidden"
@@ -712,31 +653,6 @@ export default function Dashboard() {
                   </p>
                   <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-blue-600">
                     <span>Find Local Counsel</span>
-                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </div>
-
-                {/* 6. Government Schemes & Subsidies */}
-                <div 
-                  onClick={() => navigate('/dashboard/schemes')}
-                  className="bg-white rounded-2xl p-5 border border-slate-200/80 hover:border-purple-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer group relative overflow-hidden"
-                >
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="w-11 h-11 rounded-xl bg-purple-50 border border-purple-100 flex items-center justify-center text-purple-600 group-hover:scale-110 group-hover:bg-purple-600 group-hover:text-white transition-all duration-300 shadow-sm">
-                      <Award className="w-5 h-5" />
-                    </div>
-                    <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-purple-50 text-purple-700 border border-purple-200">
-                      MSME • Startup Grants
-                    </span>
-                  </div>
-                  <h4 className="font-bold text-slate-900 text-sm mb-1 group-hover:text-purple-700 transition-colors">
-                    Government Schemes & Subsidies
-                  </h4>
-                  <p className="text-xs text-slate-500 leading-relaxed line-clamp-2">
-                    Automated eligibility engine for state capital subsidies, MSME collateral-free loans, and Startup India seed funds.
-                  </p>
-                  <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-purple-600">
-                    <span>Explore Subsidies</span>
                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                   </div>
                 </div>
@@ -774,17 +690,7 @@ export default function Dashboard() {
                         <span>Ecosystem Map</span>
                       </button>
 
-                      <button
-                        onClick={() => setActiveTab('workflows')}
-                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-                          activeTab === 'workflows'
-                            ? 'bg-white text-indigo-600 shadow-xs'
-                            : 'text-slate-600 hover:text-slate-900'
-                        }`}
-                      >
-                        <Activity className="w-3.5 h-3.5" />
-                        <span>Workflows</span>
-                      </button>
+
 
                       <button
                         onClick={() => setActiveTab('documents')}
@@ -796,18 +702,6 @@ export default function Dashboard() {
                       >
                         <FileText className="w-3.5 h-3.5" />
                         <span>Documents ({documents.length})</span>
-                      </button>
-
-                      <button
-                        onClick={() => setActiveTab('regulatory')}
-                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-                          activeTab === 'regulatory'
-                            ? 'bg-white text-indigo-600 shadow-xs'
-                            : 'text-slate-600 hover:text-slate-900'
-                        }`}
-                      >
-                        <BookOpen className="w-3.5 h-3.5" />
-                        <span>Gazette</span>
                       </button>
                     </div>
                   </div>
@@ -825,12 +719,7 @@ export default function Dashboard() {
                     </div>
                   )}
 
-                  {/* Tab Body 2: Active Progressive Workflows */}
-                  {activeTab === 'workflows' && (
-                    <div className="pt-4 animate-in fade-in duration-200">
-                      <ActiveWorkflowsWidget />
-                    </div>
-                  )}
+
 
                   {/* Tab Body 3: Document Vault & Notices */}
                   {activeTab === 'documents' && (
@@ -894,41 +783,6 @@ export default function Dashboard() {
                         <Link to="/dashboard/documents" className="text-xs font-bold text-indigo-600 hover:text-indigo-800 hover:underline inline-flex items-center gap-1">
                           Open Full Document Vault <ChevronRight className="w-3.5 h-3.5" />
                         </Link>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Tab Body 4: Live Regulatory Bulletins */}
-                  {activeTab === 'regulatory' && (
-                    <div className="pt-4 animate-in fade-in duration-200 space-y-3">
-                      <div className="flex items-center justify-between mb-2">
-                        <p className="text-xs text-slate-500">Official notifications from Gazette of India, CBIC, and Ministry of Corporate Affairs</p>
-                        <Link to="/dashboard/regulatory-updates" className="text-xs font-bold text-indigo-600 hover:underline">
-                          See All Circulars
-                        </Link>
-                      </div>
-
-                      <div className="space-y-3">
-                        {REGULATORY_BULLETINS.map((item) => (
-                          <div key={item.id} className="p-4 bg-slate-50/70 rounded-2xl border border-slate-200/70 hover:border-indigo-200 transition-all">
-                            <div className="flex items-start justify-between gap-2 mb-1.5">
-                              <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 border border-indigo-200">
-                                {item.authority}
-                              </span>
-                              <span className="text-[10px] font-bold text-rose-600 bg-rose-50 px-2 py-0.5 rounded border border-rose-200">
-                                {item.impact}
-                              </span>
-                            </div>
-                            <h4 className="font-bold text-xs text-slate-900 leading-snug">{item.title}</h4>
-                            <p className="text-xs text-slate-600 mt-1 leading-relaxed">{item.summary}</p>
-                            <div className="mt-2.5 pt-2 border-t border-slate-200/50 flex items-center justify-between text-[11px] text-slate-500">
-                              <span>Published: {item.date}</span>
-                              <Link to="/dashboard/regulatory-updates" className="font-bold text-indigo-600 hover:underline flex items-center gap-1">
-                                Action Plan <ArrowRight className="w-3 h-3" />
-                              </Link>
-                            </div>
-                          </div>
-                        ))}
                       </div>
                     </div>
                   )}

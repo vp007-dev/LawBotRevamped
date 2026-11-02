@@ -16,11 +16,6 @@ import Lawyers from "./pages/Lawyers";
 import ContractAnalysis from "./pages/ContractAnalysis";
 import Help from "./pages/Help";
 import Vault from "./pages/Vault";
-import ComplianceCalendar from "./pages/ComplianceCalendar";
-import Schemes from "./pages/Schemes";
-import OnboardingWizard from "./pages/OnboardingWizard";
-import RegulatoryUpdates from "./pages/RegulatoryUpdates";
-import WorkflowManager from "./pages/WorkflowManager";
 import Login from "./pages/Login";
 import SarvamVoice from "./pages/SarvamVoice";
 import { AuthProvider, useAuth } from "./context/AuthContext";
@@ -108,11 +103,7 @@ function AppContent() {
         />
         <Route 
           path="/dashboard/onboarding" 
-          element={
-            <ProtectedRoute>
-              <OnboardingWizard />
-            </ProtectedRoute>
-          } 
+          element={<Navigate to="/dashboard" replace />} 
         />
         <Route 
           path="/dashboard/vault" 
@@ -124,35 +115,19 @@ function AppContent() {
         />
         <Route 
           path="/dashboard/calendar" 
-          element={
-            <ProtectedRoute>
-              <ComplianceCalendar />
-            </ProtectedRoute>
-          } 
+          element={<Navigate to="/dashboard" replace />} 
         />
         <Route 
           path="/dashboard/schemes" 
-          element={
-            <ProtectedRoute>
-              <Schemes />
-            </ProtectedRoute>
-          } 
+          element={<Navigate to="/dashboard" replace />} 
         />
         <Route 
           path="/dashboard/regulatory-updates" 
-          element={
-            <ProtectedRoute>
-              <RegulatoryUpdates />
-            </ProtectedRoute>
-          } 
+          element={<Navigate to="/dashboard" replace />} 
         />
         <Route 
           path="/dashboard/workflows" 
-          element={
-            <ProtectedRoute>
-              <WorkflowManager />
-            </ProtectedRoute>
-          } 
+          element={<Navigate to="/dashboard" replace />} 
         />
         <Route 
           path="/dashboard/documents" 
@@ -210,9 +185,9 @@ function AppContent() {
         <Route path="/documents" element={<Navigate to="/dashboard/documents" replace />} />
         <Route path="/resources" element={<Navigate to="/dashboard/resources" replace />} />
         <Route path="/vault" element={<Navigate to="/dashboard/vault" replace />} />
-        <Route path="/calendar" element={<Navigate to="/dashboard/calendar" replace />} />
-        <Route path="/schemes" element={<Navigate to="/dashboard/schemes" replace />} />
-        <Route path="/workflows" element={<Navigate to="/dashboard/workflows" replace />} />
+        <Route path="/calendar" element={<Navigate to="/dashboard" replace />} />
+        <Route path="/schemes" element={<Navigate to="/dashboard" replace />} />
+        <Route path="/workflows" element={<Navigate to="/dashboard" replace />} />
         <Route path="/help" element={<Help />} />
       </Routes>
       <ObsidianGraphModal
