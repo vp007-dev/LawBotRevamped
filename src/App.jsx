@@ -18,6 +18,7 @@ import Help from "./pages/Help";
 import Vault from "./pages/Vault";
 import Login from "./pages/Login";
 import SarvamVoice from "./pages/SarvamVoice";
+import CourtSimulation from "./pages/CourtSimulation";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import ObsidianGraphModal from "./components/ObsidianGraphModal";
 
@@ -27,8 +28,8 @@ function ProtectedRoute({ children }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-500"></div>
+      <div className="min-h-screen bg-[#0c0e14] flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500 shadow-purple-glow"></div>
       </div>
     );
   }
@@ -45,8 +46,8 @@ function PublicRoute({ children }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-500"></div>
+      <div className="min-h-screen bg-[#0c0e14] flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500 shadow-purple-glow"></div>
       </div>
     );
   }
@@ -72,7 +73,7 @@ function AppContent() {
   }, []);
 
   return (
-    <div className="min-h-screen ">
+    <div className="min-h-screen bg-[#0c0e14] text-[#f1f5f9] font-sans">
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route 
@@ -177,6 +178,16 @@ function AppContent() {
             </ProtectedRoute>
           } 
         />
+        <Route 
+          path="/dashboard/court-sim" 
+          element={
+            <ProtectedRoute>
+              <CourtSimulation />
+            </ProtectedRoute>
+          } 
+        />
+        <Route path="/court-sim" element={<Navigate to="/dashboard/court-sim" replace />} />
+        <Route path="/simulation" element={<Navigate to="/dashboard/court-sim" replace />} />
         <Route path="/sarvam-voice" element={<Navigate to="/dashboard/sarvam-voice" replace />} />
         <Route path="/voice-helpline" element={<Navigate to="/dashboard/sarvam-voice" replace />} />
         <Route path="/contract-analysis" element={<Navigate to="/dashboard/contracts" replace />} />

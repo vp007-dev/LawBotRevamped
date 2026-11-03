@@ -417,10 +417,10 @@ const RegulatoryUpdates = () => {
           <div className="lg:col-span-4 space-y-6">
             
             {/* Feed Status Summary */}
-            <div className="bg-gradient-to-br from-slate-900 to-indigo-950 text-white rounded-3xl p-6 shadow-lg border border-indigo-900/30">
+            <div className="bg-[#161922] text-white rounded-3xl p-6 shadow-sm border border-white/[0.08]">
               <div className="flex items-center gap-2">
-                <Newspaper className="w-6 h-6 text-indigo-400" />
-                <h3 className="font-bold text-sm uppercase tracking-widest text-indigo-200 font-mono">Feed Overview</h3>
+                <Newspaper className="w-5 h-5 text-violet-400" />
+                <h3 className="font-bold text-xs uppercase tracking-wider text-violet-200 font-mono">Feed Overview</h3>
               </div>
 
               <div className="grid grid-cols-2 gap-4 mt-6">

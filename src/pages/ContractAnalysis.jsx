@@ -101,11 +101,11 @@ const ContractAnalysis = () => {
     switch (riskLevel) {
       case 'High':
       case 'Critical':
-        return 'text-red-700 bg-red-50 border-red-300';
+        return 'text-rose-400 bg-rose-500/10 border-rose-500/30';
       case 'Medium':
-        return 'text-amber-700 bg-amber-50 border-amber-300';
+        return 'text-amber-400 bg-amber-500/10 border-amber-500/30';
       default:
-        return 'text-emerald-700 bg-emerald-50 border-emerald-300';
+        return 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30';
     }
   };
 
@@ -124,13 +124,13 @@ const ContractAnalysis = () => {
   const getSeverityColor = (severity) => {
     switch (severity?.toLowerCase()) {
       case 'critical':
-        return 'bg-red-100 text-red-900 border-red-300';
+        return 'bg-rose-500/10 text-rose-300 border-rose-500/30';
       case 'high':
-        return 'bg-orange-100 text-orange-900 border-orange-300';
+        return 'bg-orange-500/10 text-orange-300 border-orange-500/30';
       case 'medium':
-        return 'bg-yellow-100 text-yellow-900 border-yellow-300';
+        return 'bg-amber-500/10 text-amber-300 border-amber-500/30';
       default:
-        return 'bg-blue-100 text-blue-900 border-blue-300';
+        return 'bg-purple-500/10 text-purple-300 border-purple-500/30';
     }
   };
 
@@ -150,13 +150,13 @@ const ContractAnalysis = () => {
         {data.map((item, index) => (
           <div key={index} className="space-y-2">
             <div className="flex justify-between items-center">
-              <span className="text-sm font-semibold text-slate-700 flex items-center gap-2">
+              <span className="text-sm font-semibold text-slate-300 flex items-center gap-2">
                 {item.icon}
                 {item.label}
               </span>
-              <span className="text-lg font-bold text-slate-900">{item.value}</span>
+              <span className="text-lg font-bold text-white">{item.value}</span>
             </div>
-            <div className="w-full bg-slate-100 rounded-full h-4 overflow-hidden">
+            <div className="w-full bg-[#11131a] border border-white/[0.06] rounded-full h-3 overflow-hidden">
               <div
                 className={`h-full rounded-full transition-all duration-1000 ${item.color}`}
                 style={{ width: `${(item.value / maxValue) * 100}%` }}
@@ -240,54 +240,54 @@ Answer based on the contract analysis above. Be specific and reference details f
       {
         label: 'Problematic Terms',
         value: structuredData.unfairTerms.length,
-        color: 'bg-gradient-to-r from-red-500 to-red-600',
-        icon: <AlertTriangle className="w-5 h-5 text-red-600" />
+        color: 'bg-rose-500',
+        icon: <AlertTriangle className="w-5 h-5 text-rose-400" />
       },
       {
         label: 'Hidden Risks',
         value: structuredData.hiddenRisks.length,
-        color: 'bg-gradient-to-r from-orange-500 to-orange-600',
-        icon: <Eye className="w-5 h-5 text-orange-600" />
+        color: 'bg-amber-500',
+        icon: <Eye className="w-5 h-5 text-amber-400" />
       },
       {
         label: 'Key Clauses',
         value: structuredData.keyClauses.length,
-        color: 'bg-gradient-to-r from-blue-500 to-blue-600',
-        icon: <FileText className="w-5 h-5 text-blue-600" />
+        color: 'bg-violet-500',
+        icon: <FileText className="w-5 h-5 text-violet-400" />
       }
     ];
 
     return (
-      <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
-        <div className="bg-white rounded-2xl shadow-2xl max-w-7xl w-full max-h-[90vh] flex flex-col overflow-hidden">
+      <div className="fixed inset-0 bg-black/75 backdrop-blur-md z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
+        <div className="bg-[#141721] rounded-2xl border border-white/[0.08] shadow-2xl shadow-black/80 max-w-7xl w-full max-h-[90vh] flex flex-col overflow-hidden text-[#f1f5f9]">
           {/* Modal Header */}
-          <div className="bg-gradient-to-r from-slate-50 to-blue-50 p-6 border-b border-slate-200 flex items-start justify-between sticky top-0 z-10">
+          <div className="bg-[#161922] p-6 border-b border-white/[0.08] flex items-start justify-between sticky top-0 z-10">
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-3">
                 <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${getRiskColor(analysis.riskLevel)}`}>
                   {getRiskIcon(analysis.riskLevel)}
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold text-slate-900 leading-tight">{analysis.fileName}</h2>
-                  <p className="text-sm text-slate-600 mt-1">Contract Analysis Report</p>
+                  <h2 className="text-2xl font-bold text-white leading-tight">{analysis.fileName}</h2>
+                  <p className="text-xs uppercase tracking-wider text-slate-400 mt-1 font-medium">Contract Analysis Report</p>
                 </div>
               </div>
 
               <div className="flex flex-wrap items-center gap-3 mt-4">
-                <span className={`px-4 py-2 rounded-lg text-sm font-bold border-2 shadow-sm flex items-center gap-2 ${getRiskColor(analysis.riskLevel)}`}>
+                <span className={`px-4 py-2 rounded-xl text-xs font-bold border shadow-xs flex items-center gap-2 ${getRiskColor(analysis.riskLevel)}`}>
                   {getRiskIcon(analysis.riskLevel)}
-                  <span className="uppercase tracking-wide">{analysis.riskLevel} RISK</span>
+                  <span className="uppercase tracking-wider">{analysis.riskLevel} RISK</span>
                 </span>
 
-                <span className="px-4 py-2 bg-white border-2 border-slate-200 rounded-lg text-sm font-bold text-slate-700 flex items-center gap-2">
-                  <Activity className="w-4 h-4 text-blue-600" />
+                <span className="px-4 py-2 bg-[#11131a] border border-white/[0.08] rounded-xl text-xs font-bold text-slate-300 flex items-center gap-2">
+                  <Activity className="w-4 h-4 text-purple-400" />
                   Score: {analysis.riskScore || 'N/A'}/100
                 </span>
 
                 {/* Audio Button */}
                 <button
                   onClick={() => speakText(structuredData.executiveSummary || analysis.plainLanguageAnalysis)}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2 font-semibold shadow-sm"
+                  className="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white rounded-xl transition-all flex items-center gap-2 font-semibold text-xs shadow-md shadow-purple-900/20 active:scale-95"
                   title="Listen to Summary"
                 >
                   <Volume2 className="w-4 h-4" />
@@ -296,28 +296,28 @@ Answer based on the contract analysis above. Be specific and reference details f
               </div>
             </div>
 
-            <button onClick={onClose} className="p-2 hover:bg-white rounded-lg text-slate-400 hover:text-slate-600 transition-colors">
+            <button onClick={onClose} className="p-2 hover:bg-white/[0.06] rounded-xl text-slate-400 hover:text-white transition-colors">
               <X className="w-6 h-6" />
             </button>
           </div>
 
           {/* Tab Navigation */}
-          <div className="bg-white border-b border-slate-200 px-6 overflow-x-auto">
+          <div className="bg-[#141721] border-b border-white/[0.08] px-6 overflow-x-auto">
             <div className="flex gap-1 min-w-max">
               {[
-                { id: 'overview', label: 'Overview', icon: <BarChart3 className="w-5 h-5" /> },
-                { id: 'clauses', label: 'Key Terms', icon: <FileText className="w-5 h-5" /> },
-                { id: 'risks', label: 'Hidden Risks', icon: <AlertTriangle className="w-5 h-5" /> },
-                { id: 'unfair', label: 'Problem Areas', icon: <XCircle className="w-5 h-5" /> },
-                { id: 'recommendations', label: 'Actions', icon: <CheckCircle className="w-5 h-5" /> },
-                { id: 'questions', label: 'Ask Questions', icon: <MessageCircle className="w-5 h-5" /> }
+                { id: 'overview', label: 'Overview', icon: <BarChart3 className="w-4 h-4" /> },
+                { id: 'clauses', label: 'Key Terms', icon: <FileText className="w-4 h-4" /> },
+                { id: 'risks', label: 'Hidden Risks', icon: <AlertTriangle className="w-4 h-4" /> },
+                { id: 'unfair', label: 'Problem Areas', icon: <XCircle className="w-4 h-4" /> },
+                { id: 'recommendations', label: 'Actions', icon: <CheckCircle className="w-4 h-4" /> },
+                { id: 'questions', label: 'Ask Questions', icon: <MessageCircle className="w-4 h-4" /> }
               ].map((tab) => (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`px-5 py-4 font-semibold text-sm flex items-center gap-2 border-b-3 transition-all ${activeTab === tab.id
-                    ? 'border-blue-600 text-blue-600 bg-blue-50/50'
-                    : 'border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                  className={`px-4 py-3.5 font-semibold text-xs flex items-center gap-2 border-b-2 transition-all ${activeTab === tab.id
+                    ? 'border-purple-500 text-purple-400 bg-purple-500/10'
+                    : 'border-transparent text-slate-400 hover:text-slate-200 hover:bg-white/[0.04]'
                     }`}
                 >
                   {tab.icon}
@@ -328,7 +328,7 @@ Answer based on the contract analysis above. Be specific and reference details f
           </div>
 
           {/* Tab Content */}
-          <div className="flex-1 overflow-y-auto p-8 bg-slate-50">
+          <div className="flex-1 overflow-y-auto p-6 md:p-8 bg-[#0c0e14]">
             <div className="max-w-6xl mx-auto space-y-6">
 
               {/* Overview Tab */}
@@ -336,12 +336,12 @@ Answer based on the contract analysis above. Be specific and reference details f
                 <div className="space-y-6">
                   {/* Executive Summary */}
                   {structuredData.executiveSummary && (
-                    <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-8">
+                    <div className="bg-[#161922] rounded-2xl border border-white/[0.08] shadow-lg shadow-black/30 p-6 md:p-8">
                       <div className="flex items-center gap-3 mb-4">
-                        <Info className="w-6 h-6 text-blue-600" />
-                        <h3 className="text-xl font-bold text-slate-900">Summary in Plain English</h3>
+                        <Info className="w-5 h-5 text-purple-400" />
+                        <h3 className="text-lg font-bold text-white">Summary in Plain English</h3>
                       </div>
-                      <p className="text-lg text-slate-700 leading-relaxed">
+                      <p className="text-slate-300 leading-relaxed text-sm md:text-base">
                         {structuredData.executiveSummary}
                       </p>
                     </div>
@@ -351,9 +351,9 @@ Answer based on the contract analysis above. Be specific and reference details f
                   <div className="grid md:grid-cols-2 gap-6">
                     {/* Risk Category Chart */}
                     {riskCategoryData.some(d => d.value > 0) && (
-                      <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
-                        <h3 className="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2">
-                          <BarChart3 className="w-5 h-5 text-blue-600" />
+                      <div className="bg-[#161922] rounded-2xl border border-white/[0.08] shadow-lg shadow-black/30 p-6">
+                        <h3 className="text-base font-bold text-white mb-6 flex items-center gap-2">
+                          <BarChart3 className="w-4 h-4 text-purple-400" />
                           Issues Found
                         </h3>
                         <SimpleBarChart data={riskCategoryData} />
@@ -362,23 +362,23 @@ Answer based on the contract analysis above. Be specific and reference details f
 
                     {/* Compliance Scores */}
                     {Object.keys(structuredData.complianceScores).length > 0 && (
-                      <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6">
-                        <h3 className="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2">
-                          <Scale className="w-5 h-5 text-green-600" />
+                      <div className="bg-[#161922] rounded-2xl border border-white/[0.08] shadow-lg shadow-black/30 p-6">
+                        <h3 className="text-base font-bold text-white mb-6 flex items-center gap-2">
+                          <Scale className="w-4 h-4 text-emerald-400" />
                           Legal Compliance
                         </h3>
                         <div className="space-y-4">
                           {Object.entries(structuredData.complianceScores).map(([category, score]) => (
                             <div key={category}>
                               <div className="flex justify-between items-center mb-2">
-                                <span className="text-sm font-semibold text-slate-700">{category}</span>
-                                <span className="text-lg font-bold text-slate-900">{score}%</span>
+                                <span className="text-sm font-semibold text-slate-300">{category}</span>
+                                <span className="text-base font-bold text-white">{score}%</span>
                               </div>
-                              <div className="w-full bg-slate-100 rounded-full h-3">
+                              <div className="w-full bg-[#11131a] border border-white/[0.06] rounded-full h-3">
                                 <div
-                                  className={`h-3 rounded-full transition-all duration-1000 ${score >= 70 ? 'bg-gradient-to-r from-green-500 to-green-600' :
-                                    score >= 40 ? 'bg-gradient-to-r from-yellow-500 to-yellow-600' :
-                                      'bg-gradient-to-r from-red-500 to-red-600'
+                                  className={`h-3 rounded-full transition-all duration-1000 ${score >= 70 ? 'bg-emerald-500' :
+                                    score >= 40 ? 'bg-amber-500' :
+                                      'bg-rose-500'
                                     }`}
                                   style={{ width: `${score}%` }}
                                 />
@@ -396,42 +396,42 @@ Answer based on the contract analysis above. Be specific and reference details f
               {activeTab === 'clauses' && (
                 <div className="space-y-4">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-xl font-bold text-slate-900 flex items-center gap-2">
-                      <FileText className="w-6 h-6 text-blue-600" />
+                    <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                      <FileText className="w-5 h-5 text-purple-400" />
                       Main Contract Terms
                     </h3>
-                    <span className="text-sm text-slate-500 bg-slate-100 px-3 py-1 rounded-full font-semibold">
+                    <span className="text-xs text-purple-300 bg-purple-500/10 border border-purple-500/20 px-3 py-1 rounded-full font-semibold">
                       {structuredData.keyClauses.length} clauses
                     </span>
                   </div>
                   {structuredData.keyClauses.length === 0 ? (
-                    <div className="bg-white rounded-xl p-12 text-center border border-slate-200">
-                      <FileText className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-                      <p className="text-slate-500 text-lg">No clauses identified in this analysis</p>
+                    <div className="bg-[#161922] rounded-2xl p-12 text-center border border-white/[0.08]">
+                      <FileText className="w-12 h-12 text-slate-500 mx-auto mb-4" />
+                      <p className="text-slate-400 text-base">No clauses identified in this analysis</p>
                     </div>
                   ) : (
                     <div className="grid gap-4">
                       {structuredData.keyClauses.map((clause, index) => (
-                        <div key={index} className="bg-white rounded-xl border border-slate-200 p-6 hover:shadow-lg transition-shadow">
+                        <div key={index} className="bg-[#161922] rounded-2xl border border-white/[0.08] p-6 hover:border-purple-500/40 transition-all">
                           <div className="flex items-start justify-between mb-3">
                             <div className="flex items-center gap-3">
-                              <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${getRiskColor(clause.riskLevel)}`}>
+                              <div className={`w-9 h-9 rounded-xl flex items-center justify-center ${getRiskColor(clause.riskLevel)}`}>
                                 {getRiskIcon(clause.riskLevel)}
                               </div>
-                              <h4 className="text-lg font-bold text-slate-900">{clause.name}</h4>
+                              <h4 className="text-base font-bold text-white">{clause.name}</h4>
                             </div>
-                            <span className={`px-3 py-1 rounded-lg text-xs font-bold border flex items-center gap-1 ${getRiskColor(clause.riskLevel)}`}>
+                            <span className={`px-2.5 py-1 rounded-lg text-xs font-bold border flex items-center gap-1 ${getRiskColor(clause.riskLevel)}`}>
                               {clause.riskLevel}
                             </span>
                           </div>
-                          <p className="text-slate-700 mb-3 leading-relaxed">{clause.summary}</p>
+                          <p className="text-slate-300 text-sm mb-3 leading-relaxed">{clause.summary}</p>
                           {clause.details && (
-                            <details className="mt-3 text-sm text-slate-600">
-                              <summary className="cursor-pointer font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-2">
-                                <ArrowRight className="w-4 h-4" />
+                            <details className="mt-3 text-xs text-slate-400">
+                              <summary className="cursor-pointer font-semibold text-purple-400 hover:text-purple-300 flex items-center gap-2">
+                                <ArrowRight className="w-3.5 h-3.5" />
                                 Read Full Details
                               </summary>
-                              <p className="mt-3 pl-4 border-l-4 border-blue-200 leading-relaxed">{clause.details}</p>
+                              <p className="mt-3 pl-4 border-l-2 border-purple-500/30 leading-relaxed text-slate-300">{clause.details}</p>
                             </details>
                           )}
                         </div>
@@ -445,44 +445,44 @@ Answer based on the contract analysis above. Be specific and reference details f
               {activeTab === 'risks' && (
                 <div className="space-y-4">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-xl font-bold text-slate-900 flex items-center gap-2">
-                      <Eye className="w-6 h-6 text-orange-600" />
+                    <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                      <Eye className="w-5 h-5 text-orange-400" />
                       Hidden Risks & Red Flags
                     </h3>
-                    <span className="text-sm text-slate-500 bg-slate-100 px-3 py-1 rounded-full font-semibold">
+                    <span className="text-xs text-orange-300 bg-orange-500/10 border border-orange-500/20 px-3 py-1 rounded-full font-semibold">
                       {structuredData.hiddenRisks.length} risks
                     </span>
                   </div>
                   {structuredData.hiddenRisks.length === 0 ? (
-                    <div className="bg-white rounded-xl p-12 text-center border border-slate-200">
-                      <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-                      <p className="text-slate-700 text-lg font-semibold">No hidden risks detected</p>
-                      <p className="text-slate-500 text-sm mt-2">This is a good sign!</p>
+                    <div className="bg-[#161922] rounded-2xl p-12 text-center border border-white/[0.08]">
+                      <CheckCircle className="w-12 h-12 text-emerald-400 mx-auto mb-4" />
+                      <p className="text-white text-base font-semibold">No hidden risks detected</p>
+                      <p className="text-slate-400 text-sm mt-1">This is a clean sign!</p>
                     </div>
                   ) : (
                     <div className="grid gap-4">
                       {structuredData.hiddenRisks.map((risk, index) => (
-                        <div key={index} className={`rounded-xl border-2 p-6 ${getSeverityColor(risk.severity)}`}>
+                        <div key={index} className={`rounded-2xl border p-6 bg-[#161922] ${getSeverityColor(risk.severity)}`}>
                           <div className="flex items-start gap-4">
-                            <div className={`w-12 h-12 rounded-xl flex items-center justify-center bg-white/50 border-2 border-current`}>
-                              <AlertTriangle className="w-6 h-6" />
+                            <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-white/[0.04] border border-current">
+                              <AlertTriangle className="w-5 h-5" />
                             </div>
                             <div className="flex-1">
                               <div className="flex items-center gap-3 mb-2">
-                                <h4 className="text-lg font-bold flex-1">{risk.risk}</h4>
-                                <span className="px-3 py-1 rounded-lg text-xs font-bold bg-white/50 border border-current uppercase">
+                                <h4 className="text-base font-bold flex-1 text-white">{risk.risk}</h4>
+                                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold border border-current uppercase">
                                   {risk.severity}
                                 </span>
                               </div>
-                              <p className="mb-3 leading-relaxed text-sm">
-                                <strong className="font-semibold">Potential Impact:</strong> {risk.impact}
+                              <p className="mb-3 leading-relaxed text-xs md:text-sm text-slate-300">
+                                <strong className="font-semibold text-white">Potential Impact:</strong> {risk.impact}
                               </p>
-                              <div className="bg-white/40 rounded-lg p-4 border border-current">
-                                <p className="font-semibold mb-2 flex items-center gap-2 text-sm">
-                                  <CheckCircle className="w-4 h-4" />
+                              <div className="bg-[#11131a] rounded-xl p-4 border border-white/[0.06]">
+                                <p className="font-semibold mb-1 flex items-center gap-2 text-xs text-emerald-400">
+                                  <CheckCircle className="w-3.5 h-3.5" />
                                   Recommended Action:
                                 </p>
-                                <p className="leading-relaxed text-sm">{risk.recommendation}</p>
+                                <p className="leading-relaxed text-xs text-slate-300">{risk.recommendation}</p>
                               </div>
                             </div>
                           </div>
@@ -497,57 +497,57 @@ Answer based on the contract analysis above. Be specific and reference details f
               {activeTab === 'unfair' && (
                 <div className="space-y-4">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-xl font-bold text-slate-900 flex items-center gap-2">
-                      <XCircle className="w-6 h-6 text-red-600" />
+                    <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                      <XCircle className="w-5 h-5 text-rose-400" />
                       Problematic or Illegal Terms
                     </h3>
-                    <span className="text-sm text-slate-500 bg-slate-100 px-3 py-1 rounded-full font-semibold">
+                    <span className="text-xs text-rose-300 bg-rose-500/10 border border-rose-500/20 px-3 py-1 rounded-full font-semibold">
                       {structuredData.unfairTerms.length} issues
                     </span>
                   </div>
                   {structuredData.unfairTerms.length === 0 ? (
-                    <div className="bg-white rounded-xl p-12 text-center border border-slate-200">
-                      <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-                      <p className="text-slate-700 text-lg font-semibold">No unfair terms detected</p>
-                      <p className="text-slate-500 text-sm mt-2">This contract appears fair and balanced</p>
+                    <div className="bg-[#161922] rounded-2xl p-12 text-center border border-white/[0.08]">
+                      <CheckCircle className="w-12 h-12 text-emerald-400 mx-auto mb-4" />
+                      <p className="text-white text-base font-semibold">No unfair terms detected</p>
+                      <p className="text-slate-400 text-sm mt-1">This contract appears balanced</p>
                     </div>
                   ) : (
                     <div className="grid gap-4">
                       {structuredData.unfairTerms.map((term, index) => (
-                        <div key={index} className="bg-red-50 rounded-xl border-2 border-red-200 p-6">
+                        <div key={index} className="bg-[#1a1419] rounded-2xl border border-rose-500/30 p-6">
                           <div className="flex items-start gap-4">
-                            <div className="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center border-2 border-red-300">
-                              <AlertCircle className="w-6 h-6 text-red-600" />
+                            <div className="w-10 h-10 bg-rose-500/10 rounded-xl flex items-center justify-center border border-rose-500/30">
+                              <AlertCircle className="w-5 h-5 text-rose-400" />
                             </div>
                             <div className="flex-1">
-                              <h4 className="text-lg font-bold text-red-900 mb-3">{term.term}</h4>
+                              <h4 className="text-base font-bold text-white mb-3">{term.term}</h4>
 
                               <div className="space-y-3">
-                                <div className="bg-white rounded-lg p-4 border border-red-200">
-                                  <p className="font-semibold text-red-900 mb-1 text-sm flex items-center gap-2">
-                                    <Scale className="w-4 h-4" />
+                                <div className="bg-[#141721] rounded-xl p-4 border border-white/[0.06]">
+                                  <p className="font-semibold text-rose-300 mb-1 text-xs flex items-center gap-2">
+                                    <Scale className="w-3.5 h-3.5" />
                                     Legal Issue:
                                   </p>
-                                  <p className="text-red-800">{term.legalIssue}</p>
+                                  <p className="text-slate-300 text-xs">{term.legalIssue}</p>
                                 </div>
 
                                 {term.applicableLaw && (
-                                  <div className="bg-white rounded-lg p-4 border border-red-200">
-                                    <p className="font-semibold text-red-900 mb-1 text-sm flex items-center gap-2">
-                                      <BookOpen className="w-4 h-4" />
+                                  <div className="bg-[#141721] rounded-xl p-4 border border-white/[0.06]">
+                                    <p className="font-semibold text-slate-300 mb-1 text-xs flex items-center gap-2">
+                                      <BookOpen className="w-3.5 h-3.5 text-purple-400" />
                                       Applicable Law:
                                     </p>
-                                    <p className="text-red-800">{term.applicableLaw}</p>
+                                    <p className="text-slate-400 text-xs">{term.applicableLaw}</p>
                                   </div>
                                 )}
 
                                 {term.alternative && (
-                                  <div className="bg-green-50 rounded-lg p-4 border-2 border-green-300">
-                                    <p className="font-semibold text-green-900 mb-2 text-sm flex items-center gap-2">
-                                      <CheckCircle className="w-4 h-4" />
+                                  <div className="bg-[#111915] rounded-xl p-4 border border-emerald-500/20">
+                                    <p className="font-semibold text-emerald-400 mb-1 text-xs flex items-center gap-2">
+                                      <CheckCircle className="w-3.5 h-3.5" />
                                       Better Alternative:
                                     </p>
-                                    <p className="text-green-800 leading-relaxed">{term.alternative}</p>
+                                    <p className="text-slate-300 text-xs leading-relaxed">{term.alternative}</p>
                                   </div>
                                 )}
                               </div>
@@ -564,28 +564,28 @@ Answer based on the contract analysis above. Be specific and reference details f
               {activeTab === 'recommendations' && (
                 <div className="space-y-4">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-xl font-bold text-slate-900 flex items-center gap-2">
-                      <CheckCircle className="w-6 h-6 text-green-600" />
+                    <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                      <CheckCircle className="w-5 h-5 text-emerald-400" />
                       Recommended Actions
                     </h3>
-                    <span className="text-sm text-slate-500 bg-slate-100 px-3 py-1 rounded-full font-semibold">
+                    <span className="text-xs text-emerald-300 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 rounded-full font-semibold">
                       {structuredData.recommendations.length} steps
                     </span>
                   </div>
                   {structuredData.recommendations.length === 0 ? (
-                    <div className="bg-white rounded-xl p-12 text-center border border-slate-200">
-                      <Info className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-                      <p className="text-slate-500 text-lg">No specific recommendations</p>
+                    <div className="bg-[#161922] rounded-2xl p-12 text-center border border-white/[0.08]">
+                      <Info className="w-12 h-12 text-slate-500 mx-auto mb-4" />
+                      <p className="text-slate-400 text-base">No specific recommendations</p>
                     </div>
                   ) : (
                     <div className="grid gap-4">
                       {structuredData.recommendations.map((recommendation, index) => (
-                        <div key={index} className="bg-white rounded-xl border border-slate-200 p-6 hover:shadow-md transition-shadow">
+                        <div key={index} className="bg-[#161922] rounded-2xl border border-white/[0.08] p-6 hover:border-purple-500/40 transition-all">
                           <div className="flex items-start gap-4">
-                            <div className="flex-shrink-0 w-10 h-10 bg-green-100 rounded-full flex items-center justify-center border-2 border-green-300">
-                              <span className="text-green-700 font-bold text-lg">{index + 1}</span>
+                            <div className="flex-shrink-0 w-8 h-8 bg-purple-500/10 rounded-full flex items-center justify-center border border-purple-500/30">
+                              <span className="text-purple-300 font-bold text-xs">{index + 1}</span>
                             </div>
-                            <p className="text-base text-slate-700 leading-relaxed flex-1 pt-1">{recommendation}</p>
+                            <p className="text-sm text-slate-300 leading-relaxed flex-1 pt-1">{recommendation}</p>
                           </div>
                         </div>
                       ))}
@@ -599,35 +599,35 @@ Answer based on the contract analysis above. Be specific and reference details f
                 <div className="space-y-4">
                   <div className="flex items-center justify-between mb-4">
                     <div>
-                      <h3 className="text-xl font-bold text-slate-900 flex items-center gap-2">
-                        <MessageCircle className="w-6 h-6 text-blue-600" />
+                      <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                        <MessageCircle className="w-5 h-5 text-purple-400" />
                         Ask Questions About This Contract
                       </h3>
-                      <p className="text-sm text-slate-600 mt-1">Get instant answers about any clause or term</p>
+                      <p className="text-xs text-slate-400 mt-1">Get instant answers about any clause or term</p>
                     </div>
                   </div>
 
                   {/* Chat Messages Container */}
-                  <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+                  <div className="bg-[#161922] rounded-2xl border border-white/[0.08] shadow-lg shadow-black/30 overflow-hidden">
                     {/* Messages Area */}
                     <div className="h-96 overflow-y-auto p-6">
                       {chatMessages.length === 0 ? (
                         <div className="flex flex-col items-center justify-center h-full text-center">
-                          <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
-                            <MessageCircle className="w-8 h-8 text-blue-600" />
+                          <div className="w-14 h-14 bg-purple-500/10 border border-purple-500/20 rounded-2xl flex items-center justify-center mb-4 text-purple-400">
+                            <MessageCircle className="w-7 h-7" />
                           </div>
-                          <h4 className="font-semibold text-slate-900 mb-2">Ask Anything</h4>
-                          <p className="text-slate-500 text-sm max-w-md">
+                          <h4 className="font-semibold text-white mb-1">Ask Anything</h4>
+                          <p className="text-slate-400 text-xs max-w-md">
                             Ask me questions about this contract. For example:
                           </p>
-                          <div className="mt-4 space-y-2 text-left">
-                            <div className="text-xs text-slate-600 bg-slate-50 px-3 py-2 rounded-lg">
+                          <div className="mt-4 space-y-2 text-left w-full max-w-md">
+                            <div className="text-xs text-slate-300 bg-[#11131a] border border-white/[0.06] px-3 py-2 rounded-xl">
                               • "What are the main risks in this contract?"
                             </div>
-                            <div className="text-xs text-slate-600 bg-slate-50 px-3 py-2 rounded-lg">
+                            <div className="text-xs text-slate-300 bg-[#11131a] border border-white/[0.06] px-3 py-2 rounded-xl">
                               • "Explain the termination clause in simple terms"
                             </div>
-                            <div className="text-xs text-slate-600 bg-slate-50 px-3 py-2 rounded-lg">
+                            <div className="text-xs text-slate-300 bg-[#11131a] border border-white/[0.06] px-3 py-2 rounded-xl">
                               • "Is this contract fair to both parties?"
                             </div>
                           </div>
@@ -636,26 +636,26 @@ Answer based on the contract analysis above. Be specific and reference details f
                         <div className="space-y-4">
                           {chatMessages.map((message, index) => (
                             <div key={index} className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                              <div className={`max-w-[80%] rounded-xl p-4 ${message.role === 'user'
-                                  ? 'bg-blue-600 text-white'
-                                  : 'bg-slate-100 text-slate-800 border border-slate-200'
+                              <div className={`max-w-[80%] rounded-2xl p-4 ${message.role === 'user'
+                                  ? 'bg-purple-600 text-white shadow-lg shadow-purple-900/20'
+                                  : 'bg-[#11131a] text-slate-200 border border-white/[0.08]'
                                 }`}>
                                 {message.role === 'assistant' && (
-                                  <div className="flex items-center gap-2 mb-2 text-xs font-semibold text-slate-500">
-                                    <Scale className="w-3 h-3" />
+                                  <div className="flex items-center gap-2 mb-2 text-xs font-semibold text-purple-400">
+                                    <Scale className="w-3.5 h-3.5" />
                                     LawBot AI
                                   </div>
                                 )}
-                                <p className="text-sm whitespace-pre-wrap leading-relaxed">{message.content}</p>
+                                <p className="text-xs md:text-sm whitespace-pre-wrap leading-relaxed">{message.content}</p>
                               </div>
                             </div>
                           ))}
                           {isLoadingChat && (
                             <div className="flex justify-start">
-                              <div className="bg-slate-100 rounded-xl p-4 border border-slate-200">
+                              <div className="bg-[#11131a] rounded-2xl p-4 border border-white/[0.08]">
                                 <div className="flex items-center gap-2">
-                                  <Loader className="w-4 h-4 animate-spin text-blue-600" />
-                                  <span className="text-sm text-slate-600">Analyzing...</span>
+                                  <Loader className="w-4 h-4 animate-spin text-purple-400" />
+                                  <span className="text-xs text-slate-400">Analyzing...</span>
                                 </div>
                               </div>
                             </div>
@@ -665,7 +665,7 @@ Answer based on the contract analysis above. Be specific and reference details f
                     </div>
 
                     {/* Input Area */}
-                    <div className="border-t border-slate-200 p-4 bg-slate-50">
+                    <div className="border-t border-white/[0.08] p-4 bg-[#141721]">
                       <div className="flex gap-3">
                         <input
                           type="text"
@@ -673,19 +673,19 @@ Answer based on the contract analysis above. Be specific and reference details f
                           onChange={(e) => setInputMessage(e.target.value)}
                           onKeyPress={handleKeyPress}
                           placeholder="Type your question here..."
-                          className="flex-1 px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm bg-white"
+                          className="flex-1 px-4 py-2.5 border border-white/[0.1] rounded-xl focus:outline-none focus:border-purple-500 text-xs md:text-sm bg-[#11131a] text-white placeholder:text-slate-500"
                           disabled={isLoadingChat}
                         />
                         <button
                           onClick={handleSendMessage}
                           disabled={!inputMessage.trim() || isLoadingChat}
-                          className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2 font-semibold shadow-sm"
+                          className="px-5 py-2.5 bg-purple-600 text-white rounded-xl hover:bg-purple-500 disabled:opacity-40 disabled:cursor-not-allowed transition-all flex items-center gap-2 font-semibold text-xs shadow-md shadow-purple-900/20"
                         >
                           <Send className="w-4 h-4" />
                           Send
                         </button>
                       </div>
-                      <p className="text-xs text-slate-500 mt-2">Press Enter to send, Shift+Enter for new line</p>
+                      <p className="text-[10px] text-slate-500 mt-2">Press Enter to send, Shift+Enter for new line</p>
                     </div>
                   </div>
                 </div>
@@ -699,178 +699,175 @@ Answer based on the contract analysis above. Be specific and reference details f
 
   // Main Render
   return (
-    <div className="flex h-screen bg-slate-50 font-sans">
+    <div className="flex h-screen bg-[#0c0e14] text-[#f1f5f9] font-sans">
       <Sidebar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
       
       <div className="flex-1 flex flex-col h-full overflow-hidden">
-        <div className="bg-white/80 backdrop-blur-md border-b border-slate-200 px-6 py-4 flex items-center justify-between">
+        <div className="bg-[#141721]/90 backdrop-blur-md border-b border-white/[0.08] px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <button onClick={() => setIsSidebarOpen(true)} className="md:hidden p-2 hover:bg-slate-100 rounded-lg text-slate-600">
+            <button onClick={() => setIsSidebarOpen(true)} className="md:hidden p-2 hover:bg-white/[0.06] rounded-xl text-slate-400 hover:text-white transition-colors">
               <Menu className="w-6 h-6" />
             </button>
             <div>
-              <h1 className="text-2xl font-bold text-slate-900">Contract Analysis</h1>
-              <p className="text-sm text-slate-500">AI-powered contract review</p>
+              <h1 className="text-2xl font-bold text-white tracking-tight">Contract Analysis</h1>
+              <p className="text-xs text-slate-400 font-medium">AI-powered contract & agreement review</p>
             </div>
           </div>
         </div>
         
-        <div className="flex-1 overflow-y-auto p-8">
+        <div className="flex-1 overflow-y-auto p-6 md:p-8">
           <div className="max-w-7xl mx-auto">
             {/* Hero Section */}
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
               <div>
-                <h1 className="text-3xl font-extrabold text-slate-900 mb-3 tracking-tight">Document Analysis</h1>
-                <p className="text-lg text-slate-600 max-w-2xl">
+                <h1 className="text-3xl font-extrabold text-white mb-2 tracking-tight">Document Analysis</h1>
+                <p className="text-sm md:text-base text-slate-400 max-w-2xl leading-relaxed">
                   Upload legal contracts to instantly identify risks, translate legalese into plain English, and detect deviations from standard clauses.
                 </p>
               </div>
               <div className="flex gap-3">
-                 <div className="flex items-center gap-2 text-xs font-semibold bg-white border border-slate-200 px-3 py-1.5 rounded-lg text-slate-500 shadow-sm">
-                    <Shield className="w-3 h-3 text-emerald-500" /> AES-256 Encrypted
+                 <div className="flex items-center gap-2 text-xs font-semibold bg-[#161922] border border-white/[0.08] px-3.5 py-1.5 rounded-full text-slate-300 shadow-sm">
+                    <Shield className="w-3.5 h-3.5 text-emerald-400" /> AES-256 Encrypted
                  </div>
-                 <div className="flex items-center gap-2 text-xs font-semibold bg-white border border-slate-200 px-3 py-1.5 rounded-lg text-slate-500 shadow-sm">
-                    <FileText className="w-3 h-3 text-blue-500" /> OCR Support
+                 <div className="flex items-center gap-2 text-xs font-semibold bg-[#161922] border border-white/[0.08] px-3.5 py-1.5 rounded-full text-slate-300 shadow-sm">
+                    <FileText className="w-3.5 h-3.5 text-purple-400" /> OCR Support
                  </div>
               </div>
             </div>
 
             {/* Upload Section - "The Drop Zone" */}
-            <div className="mb-12">
+            <div className="mb-10">
               <div
                 className={`relative group rounded-2xl border-2 border-dashed transition-all duration-300 ease-out overflow-hidden
                   ${dragActive 
-                    ? 'border-blue-500 bg-blue-50/50 scale-[1.01] shadow-xl shadow-blue-500/10' 
-                    : 'border-slate-300 bg-white hover:border-blue-400 hover:shadow-lg hover:shadow-slate-200/50'
+                    ? 'border-purple-500 bg-purple-950/20 scale-[1.01] shadow-2xl shadow-purple-900/30' 
+                    : 'border-white/[0.1] bg-[#161922] hover:border-purple-500/50 hover:bg-[#1a1d27] shadow-xl shadow-black/20'
                   }
-                  ${isAnalyzing ? 'pointer-events-none border-blue-200 bg-slate-50' : 'cursor-pointer'}
+                  ${isAnalyzing ? 'pointer-events-none border-purple-500/30 bg-[#161922]' : 'cursor-pointer'}
                 `}
                 onDragEnter={handleDrag}
                 onDragLeave={handleDrag}
-                onDragOver={handleDrag}
                 onDrop={handleDrop}
               >
-                <div className="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))] -z-10"></div>
+                <div className="p-10 md:p-14 min-h-[300px] flex flex-col items-center justify-center text-center">
+                  {isAnalyzing ? (
+                    <div className="flex flex-col items-center animate-in fade-in duration-500">
+                      <div className="relative w-20 h-20 mb-6">
+                        <div className="absolute inset-0 border-4 border-white/10 rounded-full"></div>
+                        <div className="absolute inset-0 border-4 border-purple-500 rounded-full border-t-transparent animate-spin"></div>
+                        <Shield className="absolute inset-0 m-auto w-8 h-8 text-purple-400 animate-pulse" />
+                      </div>
+                      <h3 className="text-2xl font-bold text-white mb-2">Analyzing Your Contract...</h3>
+                      <p className="text-purple-400 font-semibold max-w-sm text-sm">{analysisStatus || 'Checking for legal risks & obligations...'}</p>
+                    </div>
+                  ) : (
+                    <>
+                      <div className={`w-20 h-20 rounded-2xl bg-violet-500/10 border border-violet-500/25 flex items-center justify-center mb-6 shadow-sm transition-transform duration-300 ${dragActive ? 'scale-110 rotate-3' : 'group-hover:scale-105'}`}>
+                        <Upload className="w-10 h-10 text-violet-400" />
+                      </div>
 
-                <div className="p-12 min-h-[320px] flex flex-col items-center justify-center text-center">
-              {isAnalyzing ? (
-                <div className="flex flex-col items-center animate-in fade-in duration-500">
-                  <div className="relative w-20 h-20 mb-6">
-                    <div className="absolute inset-0 border-4 border-slate-200 rounded-full"></div>
-                    <div className="absolute inset-0 border-4 border-blue-600 rounded-full border-t-transparent animate-spin"></div>
-                    <Shield className="absolute inset-0 m-auto w-8 h-8 text-blue-600 animate-pulse" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-slate-900 mb-2">Analyzing Your Contract...</h3>
-                  <p className="text-blue-600 font-semibold max-w-sm text-base">{analysisStatus || 'Checking for legal risks & obligations...'}</p>
+                      <h3 className="text-2xl font-bold text-white mb-2">
+                        {dragActive ? 'Drop your document here' : 'Upload Contract Document'}
+                      </h3>
+
+                      <p className="text-slate-400 mb-6 max-w-md mx-auto leading-relaxed text-sm">
+                        Supports PDF, Word, Images, and Text files
+                        <br /><span className="text-xs text-slate-500 mt-1.5 block">Maximum file size: 10MB</span>
+                      </p>
+
+                      <input
+                        type="file"
+                        onChange={(e) => handleFileUpload(e.target.files)}
+                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.tiff,.txt"
+                        className="hidden"
+                        id="contract-upload"
+                      />
+                      <label
+                        htmlFor="contract-upload"
+                        className="px-8 py-3 bg-purple-600 text-white rounded-xl font-bold shadow-lg shadow-purple-900/30 hover:bg-purple-500 transition-all active:scale-95 flex items-center gap-2 cursor-pointer text-sm"
+                      >
+                        <Upload className="w-4 h-4" />
+                        Choose File
+                      </label>
+                    </>
+                  )}
                 </div>
-              ) : (
-                <>
-                  <div className={`w-24 h-24 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center mb-6 shadow-xl shadow-blue-500/30 transition-transform duration-300 ${dragActive ? 'scale-110 rotate-3' : 'group-hover:scale-105'}`}>
-                    <Upload className="w-12 h-12 text-white" />
-                  </div>
-
-                  <h3 className="text-3xl font-bold text-slate-900 mb-3">
-                    {dragActive ? 'Drop your document here' : 'Upload Contract Document'}
-                  </h3>
-
-                  <p className="text-slate-500 mb-8 max-w-md mx-auto leading-relaxed text-lg">
-                    Supports PDF, Word, Images, and Text files
-                    <br /><span className="text-sm text-slate-400 mt-2 block">Maximum file size: 10MB</span>
-                  </p>
-
-                  <input
-                    type="file"
-                    onChange={(e) => handleFileUpload(e.target.files)}
-                    accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.tiff,.txt"
-                    className="hidden"
-                    id="contract-upload"
-                  />
-                  <label
-                    htmlFor="contract-upload"
-                    className="px-10 py-4 bg-blue-600 text-white rounded-xl font-bold shadow-xl hover:bg-blue-700 transition-all active:scale-95 flex items-center gap-3 cursor-pointer text-lg"
-                  >
-                    <Upload className="w-6 h-6" />
-                    Choose File
-                  </label>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Recent Analysis List */}
-        <div>
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold text-slate-900">Recent Analysis</h2>
-          </div>
-
-          <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-            {analyses.length === 0 ? (
-              <div className="text-center py-20 px-6">
-                <FileText className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-                <h3 className="text-slate-900 font-semibold text-xl mb-2">No analyses yet</h3>
-                <p className="text-slate-500">Upload a contract above to get started</p>
               </div>
-            ) : (
-              <div className="divide-y divide-slate-100">
-                {analyses.map((analysis) => (
-                  <div key={analysis.id} className="p-6 hover:bg-slate-50 transition-colors group">
-                    <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+            </div>
 
-                      {/* File Info */}
-                      <div className="flex items-start gap-4 flex-1">
-                        <div className={`w-14 h-14 rounded-xl flex items-center justify-center ${getRiskColor(analysis.riskLevel)}`}>
-                          {getRiskIcon(analysis.riskLevel)}
-                        </div>
-                        <div>
-                          <h3 className="font-bold text-slate-900 group-hover:text-blue-600 transition-colors mb-2 text-lg">
-                            {analysis.fileName}
-                          </h3>
-                          <div className="flex items-center gap-4 text-sm text-slate-600">
-                            <span className="flex items-center gap-1">
-                              <Clock className="w-4 h-4" />
-                              {new Date(analysis.analyzedAt).toLocaleDateString()}
-                            </span>
-                            <span className={`px-3 py-1 rounded-lg font-bold text-xs border ${getRiskColor(analysis.riskLevel)}`}>
-                              {analysis.riskLevel} Risk
-                            </span>
+            {/* Recent Analysis List */}
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-xl font-bold text-white">Recent Analysis</h2>
+              </div>
+
+              <div className="bg-[#161922] rounded-2xl border border-white/[0.08] shadow-xl shadow-black/20 overflow-hidden">
+                {analyses.length === 0 ? (
+                  <div className="text-center py-16 px-6">
+                    <FileText className="w-12 h-12 text-slate-600 mx-auto mb-3" />
+                    <h3 className="text-white font-semibold text-lg mb-1">No analyses yet</h3>
+                    <p className="text-slate-400 text-sm">Upload a contract above to get started</p>
+                  </div>
+                ) : (
+                  <div className="divide-y divide-white/[0.06]">
+                    {analyses.map((analysis) => (
+                      <div key={analysis.id} className="p-6 hover:bg-white/[0.02] transition-colors group">
+                        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+
+                          {/* File Info */}
+                          <div className="flex items-start gap-4 flex-1">
+                            <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${getRiskColor(analysis.riskLevel)}`}>
+                              {getRiskIcon(analysis.riskLevel)}
+                            </div>
+                            <div>
+                              <h3 className="font-bold text-white group-hover:text-purple-300 transition-colors mb-1 text-base">
+                                {analysis.fileName}
+                              </h3>
+                              <div className="flex items-center gap-4 text-xs text-slate-400">
+                                <span className="flex items-center gap-1">
+                                  <Clock className="w-3.5 h-3.5" />
+                                  {new Date(analysis.analyzedAt).toLocaleDateString()}
+                                </span>
+                                <span className={`px-2.5 py-0.5 rounded-full font-bold text-[10px] border ${getRiskColor(analysis.riskLevel)}`}>
+                                  {analysis.riskLevel} Risk
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Actions */}
+                          <div className="flex items-center gap-3">
+                            <button
+                              onClick={() => {
+                                setSelectedAnalysis(analysis);
+                                setShowModal(true);
+                              }}
+                              className="px-5 py-2.5 bg-purple-600 hover:bg-purple-500 text-white font-semibold text-xs rounded-xl shadow-md shadow-purple-900/20 transition-all flex items-center gap-2 active:scale-95"
+                            >
+                              <Eye className="w-4 h-4" /> View Details
+                            </button>
+                            <button
+                              onClick={() => deleteAnalysis(analysis.id)}
+                              className="p-2.5 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-xl transition-colors"
+                              title="Delete"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
                           </div>
                         </div>
                       </div>
-
-                      {/* Actions */}
-                      <div className="flex items-center gap-3">
-                        <button
-                          onClick={() => {
-                            setSelectedAnalysis(analysis);
-                            setShowModal(true);
-                          }}
-                          className="px-6 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2 shadow-sm"
-                        >
-                          <Eye className="w-5 h-5" /> View Details
-                        </button>
-                        <button
-                          onClick={() => deleteAnalysis(analysis.id)}
-                          className="p-3 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                          title="Delete"
-                        >
-                          <Trash2 className="w-5 h-5" />
-                        </button>
-                      </div>
-                    </div>
+                    ))}
                   </div>
-                ))}
+                )}
               </div>
-            )}
-          </div>
-        </div>
+            </div>
 
-        {/* Analysis Modal */}
-        <AnalysisModal 
-          analysis={selectedAnalysis}
-          isOpen={showModal}
-          onClose={() => setShowModal(false)}
-        />
+            {/* Analysis Modal */}
+            <AnalysisModal 
+              analysis={selectedAnalysis}
+              isOpen={showModal}
+              onClose={() => setShowModal(false)}
+            />
           </div>
         </div>
       </div>

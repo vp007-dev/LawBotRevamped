@@ -213,7 +213,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="flex h-screen bg-[#f8fafc] font-sans selection:bg-amber-100 selection:text-amber-900">
+    <div className="flex h-screen bg-[#0c0e14] text-[#f1f5f9] font-sans selection:bg-purple-900/60 selection:text-purple-200">
       
       {/* Global Responsive Sidebar */}
       <Sidebar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
@@ -222,41 +222,44 @@ export default function Dashboard() {
       <div className="flex-1 flex flex-col h-full overflow-hidden relative">
         
         {/* Top Header Bar */}
-        <header className="h-16 bg-white/90 backdrop-blur-md border-b border-slate-200/80 sticky top-0 z-30 px-4 sm:px-8 flex items-center justify-between shrink-0 shadow-xs">
+        <header className="h-16 bg-[#0c0e14]/90 backdrop-blur-xl border-b border-white/[0.08] sticky top-0 z-30 px-4 sm:px-8 flex items-center justify-between shrink-0">
           
           <div className="flex items-center gap-3">
             <button 
               onClick={() => setIsSidebarOpen(true)} 
-              className="lg:hidden p-2 hover:bg-slate-100 rounded-xl text-slate-600 transition-colors"
+              className="lg:hidden p-2 hover:bg-white/[0.06] rounded-xl text-zinc-400 hover:text-white transition-colors"
               title="Open Navigation"
             >
               <Menu className="w-5 h-5" />
             </button>
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white shadow-md shadow-indigo-200">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-xl bg-purple-500/15 border border-purple-500/30 flex items-center justify-center text-purple-400 shadow-[0_0_12px_rgba(168,85,247,0.25)]">
                 <Scale className="w-4 h-4" />
               </div>
-              <div>
-                <h1 className="text-base font-bold text-slate-900 leading-tight">Executive Dashboard</h1>
-                <p className="text-[11px] text-slate-500 font-medium hidden sm:block">Legal OS for Indian Businesses & Citizens</p>
+              <div className="flex items-center gap-2 text-xs">
+                <span className="text-zinc-500">LawBot360</span>
+                <span className="text-zinc-600">/</span>
+                <span className="text-zinc-400">Dashboard</span>
+                <span className="text-zinc-600">/</span>
+                <span className="text-white font-medium truncate max-w-[140px] sm:max-w-none">{currentProfile.entityName}</span>
               </div>
             </div>
           </div>
 
           {/* Center: Live Omni-Search */}
-          <div ref={searchContainerRef} className="relative flex-1 max-w-md mx-4 hidden md:block">
-            <div className="flex items-center bg-slate-100/80 hover:bg-slate-100 rounded-full px-3.5 py-1.5 border border-slate-200/80 focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-100 transition-all">
-              <Search className="w-4 h-4 text-slate-400 mr-2 shrink-0" />
+          <div ref={searchContainerRef} className="relative flex-1 max-w-md mx-6 hidden md:block">
+            <div className="flex items-center bg-[#161922] hover:bg-[#1b202c] rounded-full px-4 py-2 border border-white/[0.08] focus-within:border-purple-500/60 focus-within:ring-2 focus-within:ring-purple-500/20 transition-all">
+              <Search className="w-4 h-4 text-zinc-400 mr-2.5 shrink-0" />
               <input 
                 type="text" 
                 placeholder="Search articles (Art 21), contracts, cases, or features..." 
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 onFocus={() => setIsSearchFocused(true)}
-                className="bg-transparent border-none outline-none text-xs w-full text-slate-800 placeholder:text-slate-400"
+                className="bg-transparent border-none outline-none text-xs w-full text-white placeholder:text-zinc-500"
               />
               {searchQuery && (
-                <button onClick={() => setSearchQuery('')} className="text-slate-400 hover:text-slate-600 p-0.5">
+                <button onClick={() => setSearchQuery('')} className="text-zinc-400 hover:text-white p-0.5">
                   <X className="w-3.5 h-3.5" />
                 </button>
               )}
@@ -264,11 +267,11 @@ export default function Dashboard() {
 
             {/* Omni-Search Live Dropdown */}
             {isSearchFocused && searchResults && (
-              <div className="absolute top-full mt-2 left-0 right-0 bg-white rounded-2xl shadow-2xl border border-slate-200 p-3 z-50 animate-in fade-in slide-in-from-top-2 duration-150 max-h-96 overflow-y-auto">
+              <div className="absolute top-full mt-2 left-0 right-0 bg-[#161922] rounded-2xl shadow-2xl border border-white/[0.12] p-3 z-50 animate-in fade-in slide-in-from-top-2 duration-150 max-h-96 overflow-y-auto">
                 {/* Feature Matches */}
                 {searchResults.features.length > 0 && (
                   <div className="mb-3">
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-2 mb-1">Platform Tools</p>
+                    <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider px-2 mb-1">Platform Tools</p>
                     {searchResults.features.map((item, idx) => (
                       <button
                         key={idx}
@@ -277,10 +280,10 @@ export default function Dashboard() {
                           setIsSearchFocused(false);
                           setSearchQuery('');
                         }}
-                        className="w-full text-left px-2.5 py-1.5 rounded-lg hover:bg-indigo-50 text-xs font-semibold text-slate-800 hover:text-indigo-600 flex items-center justify-between transition-colors"
+                        className="w-full text-left px-2.5 py-1.5 rounded-lg hover:bg-white/[0.05] text-xs font-semibold text-zinc-200 hover:text-purple-300 flex items-center justify-between transition-colors"
                       >
                         <span>{item.title}</span>
-                        <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+                        <ChevronRight className="w-3.5 h-3.5 text-zinc-500" />
                       </button>
                     ))}
                   </div>
@@ -289,7 +292,7 @@ export default function Dashboard() {
                 {/* Constitutional Article Matches */}
                 {searchResults.articles.length > 0 && (
                   <div className="mb-3">
-                    <p className="text-[10px] font-bold text-amber-500 uppercase tracking-wider px-2 mb-1 flex items-center gap-1">
+                    <p className="text-[10px] font-bold text-purple-400 uppercase tracking-wider px-2 mb-1 flex items-center gap-1">
                       <Network className="w-3 h-3" /> Constitution Knowledge Graph
                     </p>
                     {searchResults.articles.map((item, idx) => (
@@ -300,10 +303,10 @@ export default function Dashboard() {
                           setIsSearchFocused(false);
                           setSearchQuery('');
                         }}
-                        className="w-full text-left px-2.5 py-1.5 rounded-lg hover:bg-amber-50 text-xs font-medium text-slate-800 hover:text-amber-800 flex items-center justify-between transition-colors"
+                        className="w-full text-left px-2.5 py-1.5 rounded-lg hover:bg-purple-500/10 text-xs font-medium text-zinc-300 hover:text-purple-200 flex items-center justify-between transition-colors"
                       >
                         <span className="truncate">{item.title}</span>
-                        <span className="text-[9px] bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded font-bold shrink-0 ml-2">Open Graph</span>
+                        <span className="text-[9px] bg-purple-500/20 text-purple-300 border border-purple-500/30 px-1.5 py-0.5 rounded font-bold shrink-0 ml-2">Open Graph</span>
                       </button>
                     ))}
                   </div>
@@ -312,7 +315,7 @@ export default function Dashboard() {
                 {/* Document Matches */}
                 {searchResults.documents.length > 0 && (
                   <div>
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-2 mb-1">Saved Documents</p>
+                    <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider px-2 mb-1">Saved Documents</p>
                     {searchResults.documents.map((item, idx) => (
                       <button
                         key={idx}
@@ -321,17 +324,17 @@ export default function Dashboard() {
                           setIsSearchFocused(false);
                           setSearchQuery('');
                         }}
-                        className="w-full text-left px-2.5 py-1.5 rounded-lg hover:bg-slate-50 text-xs font-medium text-slate-800 flex items-center justify-between transition-colors"
+                        className="w-full text-left px-2.5 py-1.5 rounded-lg hover:bg-white/[0.05] text-xs font-medium text-zinc-300 hover:text-white flex items-center justify-between transition-colors"
                       >
                         <span className="truncate">{item.title}</span>
-                        <Eye className="w-3.5 h-3.5 text-slate-400" />
+                        <Eye className="w-3.5 h-3.5 text-zinc-500" />
                       </button>
                     ))}
                   </div>
                 )}
 
                 {searchResults.features.length === 0 && searchResults.articles.length === 0 && searchResults.documents.length === 0 && (
-                  <div className="text-center py-4 text-xs text-slate-500">
+                  <div className="text-center py-4 text-xs text-zinc-500">
                     No results found for "{searchQuery}". Try "Article 21", "contract", or "lawyer".
                   </div>
                 )}
@@ -345,24 +348,24 @@ export default function Dashboard() {
             {/* Quick Launch Obsidian Graph Button */}
             <button
               onClick={() => window.dispatchEvent(new CustomEvent('open-obsidian-graph', { detail: { artNo: '21' } }))}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-500/10 text-amber-800 border border-amber-300 hover:bg-amber-500/20 text-xs font-bold transition-all hover:scale-105 active:scale-95 shadow-xs"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-violet-500/10 text-violet-300 border border-violet-500/25 hover:bg-violet-500/20 text-xs font-semibold transition-all shadow-sm"
               title="Launch Obsidian Constitution Graph"
             >
-              <Network className="w-3.5 h-3.5 text-amber-600 animate-pulse" />
+              <Network className="w-3.5 h-3.5 text-violet-400" />
               <span className="hidden sm:inline">Graph RAG</span>
-              <span className="bg-amber-500 text-slate-950 text-[9px] px-1.5 py-0.2 rounded-full font-black">448</span>
+              <span className="bg-violet-600 text-white text-[9px] px-1.5 py-0.2 rounded-full font-bold">448</span>
             </button>
 
             {/* Notifications Toggle */}
             <div className="relative">
               <button 
                 onClick={() => setShowNotifications(!showNotifications)}
-                className="relative p-2 hover:bg-slate-100 rounded-full text-slate-600 transition-colors"
+                className="relative p-2 hover:bg-white/[0.06] rounded-full text-zinc-400 hover:text-white transition-colors"
                 title="Notifications"
               >
-                <Bell className="w-5 h-5" />
+                <Bell className="w-4 h-4" />
                 {unreadCount > 0 && (
-                  <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white animate-ping" />
+                  <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-rose-500 rounded-full" />
                 )}
               </button>
 
@@ -370,19 +373,19 @@ export default function Dashboard() {
               {showNotifications && (
                 <>
                   <div className="fixed inset-0 z-40" onClick={() => setShowNotifications(false)}></div>
-                  <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-slate-200 z-50 animate-in fade-in slide-in-from-top-2 duration-150 overflow-hidden">
-                    <div className="p-3.5 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+                  <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-[#161922] rounded-2xl shadow-2xl border border-white/[0.12] z-50 animate-in fade-in slide-in-from-top-2 duration-150 overflow-hidden">
+                    <div className="p-3.5 border-b border-white/[0.08] flex items-center justify-between bg-[#12151e]">
                       <div className="flex items-center gap-2">
-                        <h3 className="font-bold text-xs uppercase tracking-wider text-slate-700">Notifications</h3>
+                        <h3 className="font-bold text-xs uppercase tracking-wider text-zinc-300">Notifications</h3>
                         {unreadCount > 0 && (
-                          <span className="text-[10px] font-bold bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded-full">
+                          <span className="badge-purple">
                             {unreadCount} New
                           </span>
                         )}
                       </div>
                       <button 
                         onClick={handleMarkAllRead}
-                        className="text-[11px] font-bold text-indigo-600 hover:text-indigo-800 hover:underline"
+                        className="text-[11px] font-medium text-violet-400 hover:text-violet-300 hover:underline"
                       >
                         Mark all as read
                       </button>
@@ -398,16 +401,16 @@ export default function Dashboard() {
                             setShowNotifications(false);
                           }}
                           className={`p-3 rounded-xl transition-all cursor-pointer flex items-start gap-3 ${
-                            notif.unread ? 'bg-slate-50/80 hover:bg-slate-100 font-semibold' : 'hover:bg-slate-50 opacity-80'
+                            notif.unread ? 'bg-violet-500/10 hover:bg-violet-500/15 font-semibold text-white' : 'hover:bg-white/[0.03] opacity-80 text-zinc-300'
                           }`}
                         >
                           <span className={`w-2 h-2 mt-1.5 rounded-full shrink-0 ${
-                            notif.color === 'blue' ? 'bg-blue-500' : notif.color === 'emerald' ? 'bg-emerald-500' : 'bg-amber-500'
+                            notif.color === 'blue' ? 'bg-sky-400' : notif.color === 'emerald' ? 'bg-emerald-400' : 'bg-violet-400'
                           }`} />
                           <div className="flex-1">
-                            <p className="text-xs text-slate-900 leading-tight">{notif.title}</p>
-                            <p className="text-[11px] text-slate-500 font-normal mt-0.5">{notif.desc}</p>
-                            <span className="text-[9px] text-slate-400 mt-1 block">{notif.time}</span>
+                            <p className="text-xs text-white leading-tight">{notif.title}</p>
+                            <p className="text-[11px] text-zinc-400 font-normal mt-0.5">{notif.desc}</p>
+                            <span className="text-[9px] text-zinc-500 mt-1 block">{notif.time}</span>
                           </div>
                         </div>
                       ))}
@@ -418,13 +421,13 @@ export default function Dashboard() {
             </div>
 
             {/* User Profile Pill */}
-            <div className="flex items-center gap-2 pl-2 border-l border-slate-200">
-              <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-indigo-600 to-indigo-500 text-white font-bold flex items-center justify-center text-xs shadow-sm ring-2 ring-white">
+            <div className="flex items-center gap-2.5 pl-2.5 border-l border-white/[0.08]">
+              <div className="w-8 h-8 rounded-full bg-violet-500/15 border border-violet-500/25 text-violet-300 font-bold flex items-center justify-center text-xs shadow-sm">
                 {getInitials(user?.displayName || currentProfile.entityName)}
               </div>
               <div className="hidden xl:block text-left">
-                <p className="text-xs font-bold text-slate-800 leading-none truncate max-w-[120px]">{user?.displayName || currentProfile.entityName}</p>
-                <p className="text-[10px] text-slate-500 leading-tight mt-0.5">{currentProfile.state}</p>
+                <p className="text-xs font-semibold text-white leading-none truncate max-w-[120px]">{user?.displayName || currentProfile.entityName}</p>
+                <p className="text-[10px] text-zinc-400 leading-tight mt-0.5">{currentProfile.state}</p>
               </div>
             </div>
 
@@ -436,109 +439,108 @@ export default function Dashboard() {
           <div className="max-w-7xl mx-auto space-y-6">
 
             {/* 1. HACKATHON PITCH HERO STRIP */}
-            <div className="relative overflow-hidden bg-gradient-to-r from-slate-950 via-slate-900 to-indigo-950 rounded-3xl p-6 sm:p-8 text-white shadow-xl border border-slate-800">
-              {/* Background glows */}
-              <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none"></div>
-              <div className="absolute bottom-0 left-1/3 w-80 h-80 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
-
+            <div className="relative overflow-hidden bg-[#161922] rounded-2xl p-6 sm:p-7 text-white border border-white/[0.08] shadow-sm">
               <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-                <div className="space-y-2 max-w-2xl">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/20 border border-indigo-400/30 text-indigo-300 text-xs font-semibold">
-                    <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                    <span>LawBot360 AI Legal Operating System</span>
+                <div className="space-y-2.5 max-w-2xl">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-mono font-medium text-zinc-500 tracking-wider uppercase">PRJ-360-LEGAL</span>
+                    <span className="w-1 h-1 rounded-full bg-zinc-700"></span>
+                    <span className="badge-purple">
+                      <Sparkles className="w-3 h-3 text-violet-300" />
+                      Constitutional Legal OS
+                    </span>
                   </div>
-                  <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
+
+                  <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
                     Intelligent Legal Command Center
                   </h2>
-                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                    AI-powered constitutional knowledge, statutory compliance tracking, contract risk auditing, and automated legal operations for India.
+                  <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
+                    AI-powered constitutional knowledge, statutory compliance tracking, contract risk auditing, and automated legal operations for Indian enterprises & citizens.
                   </p>
                   
-                  {/* Active Business Profile Chip */}
-                  <div className="pt-2 flex flex-wrap items-center gap-2 text-xs">
-                    <span className="bg-white/10 px-2.5 py-1 rounded-lg border border-white/10 font-bold flex items-center gap-1.5 text-slate-200">
-                      <Building2 className="w-3.5 h-3.5 text-indigo-400" />
-                      {currentProfile.entityName}
-                    </span>
-                    <span className="bg-emerald-500/20 text-emerald-300 px-2.5 py-1 rounded-lg border border-emerald-500/30 font-bold flex items-center gap-1 text-[11px]">
-                      <CheckCircle2 className="w-3 h-3 text-emerald-400" />
-                      GST & MSME Verified
-                    </span>
-                    <span className="bg-white/5 text-slate-400 px-2.5 py-1 rounded-lg border border-white/5 text-[11px]">
+                  {/* Entity Metadata Row styled like Orax Key-Value pairs */}
+                  <div className="pt-1.5 flex flex-wrap items-center gap-2 text-xs">
+                    <div className="bg-[#11131a] px-3 py-1.5 rounded-xl border border-white/[0.06] font-medium flex items-center gap-2 text-zinc-300">
+                      <Building2 className="w-3.5 h-3.5 text-violet-400" />
+                      <span>{currentProfile.entityName}</span>
+                    </div>
+                    <span className="badge-low">
                       State: {currentProfile.state}
+                    </span>
+                    <span className="badge-medium">
+                      GST & MSME Verified
                     </span>
                   </div>
                 </div>
 
-                {/* Pitch Live Metrics Badges */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 shrink-0">
-                  <div className="bg-white/5 backdrop-blur-md border border-white/10 p-3 rounded-2xl text-center">
-                    <p className="text-xl sm:text-2xl font-black text-amber-400">448</p>
-                    <p className="text-[10px] uppercase font-bold text-slate-400">Articles Grounded</p>
+                {/* Pitch Live Metrics Badges - Clean Flat Panels */}
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 shrink-0">
+                  <div className="bg-[#11131a] border border-white/[0.06] p-3 rounded-xl text-center">
+                    <p className="text-xl sm:text-2xl font-bold text-violet-400">448</p>
+                    <p className="text-[10px] uppercase font-medium text-zinc-400 mt-0.5">Articles Grounded</p>
                   </div>
-                  <div className="bg-white/5 backdrop-blur-md border border-white/10 p-3 rounded-2xl text-center">
-                    <p className="text-xl sm:text-2xl font-black text-emerald-400">122</p>
-                    <p className="text-[10px] uppercase font-bold text-slate-400">SC Precedents</p>
+                  <div className="bg-[#11131a] border border-white/[0.06] p-3 rounded-xl text-center">
+                    <p className="text-xl sm:text-2xl font-bold text-sky-400">122</p>
+                    <p className="text-[10px] uppercase font-medium text-zinc-400 mt-0.5">SC Precedents</p>
                   </div>
-                  <div className="bg-white/5 backdrop-blur-md border border-white/10 p-3 rounded-2xl text-center">
-                    <p className="text-xl sm:text-2xl font-black text-indigo-400">28</p>
-                    <p className="text-[10px] uppercase font-bold text-slate-400">Languages & Voice</p>
+                  <div className="bg-[#11131a] border border-white/[0.06] p-3 rounded-xl text-center">
+                    <p className="text-xl sm:text-2xl font-bold text-violet-300">28</p>
+                    <p className="text-[10px] uppercase font-medium text-zinc-400 mt-0.5">Languages & Voice</p>
                   </div>
-                  <div className="bg-white/5 backdrop-blur-md border border-white/10 p-3 rounded-2xl text-center">
-                    <p className="text-xl sm:text-2xl font-black text-sky-400">Kanoon</p>
-                    <p className="text-[10px] uppercase font-bold text-slate-400">Live API Citations</p>
+                  <div className="bg-[#11131a] border border-white/[0.06] p-3 rounded-xl text-center">
+                    <p className="text-xl sm:text-2xl font-bold text-emerald-400">Kanoon</p>
+                    <p className="text-[10px] uppercase font-medium text-zinc-400 mt-0.5">Live Citations</p>
                   </div>
-                  <div className="bg-white/5 backdrop-blur-md border border-white/10 p-3 rounded-2xl text-center">
-                    <p className="text-xl sm:text-2xl font-black text-violet-400">85%</p>
-                    <p className="text-[10px] uppercase font-bold text-slate-400">Compliance Health</p>
+                  <div className="bg-[#11131a] border border-white/[0.06] p-3 rounded-xl text-center">
+                    <p className="text-xl sm:text-2xl font-bold text-amber-400">85%</p>
+                    <p className="text-[10px] uppercase font-medium text-zinc-400 mt-0.5">Health Score</p>
                   </div>
-                  <div className="bg-white/5 backdrop-blur-md border border-white/10 p-3 rounded-2xl text-center">
-                    <p className="text-xl sm:text-2xl font-black text-rose-400">Zero</p>
-                    <p className="text-[10px] uppercase font-bold text-slate-400">Hallucinations</p>
+                  <div className="bg-[#11131a] border border-white/[0.06] p-3 rounded-xl text-center">
+                    <p className="text-xl sm:text-2xl font-bold text-violet-400">Zero</p>
+                    <p className="text-[10px] uppercase font-medium text-zinc-400 mt-0.5">Hallucinations</p>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* 1.5 DEDICATED 24/7 AI TELEPHONY HELPLINE BANNER */}
-            <div className="bg-gradient-to-r from-emerald-950 via-slate-900 to-teal-950 border border-emerald-500/30 rounded-3xl p-5 sm:p-6 shadow-xl relative overflow-hidden">
-              <div className="absolute right-0 top-0 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="bg-[#141721] border border-white/[0.08] rounded-2xl p-5 sm:p-6 shadow-sm relative overflow-hidden">
               <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-5">
                 <div className="space-y-1.5 max-w-xl">
                   <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-400">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                    <span className="text-[11px] font-medium uppercase tracking-wider text-emerald-400">
                       Sarvam Samvaad Live Telephony Agent Connected
                     </span>
                   </div>
-                  <h3 className="text-xl font-black text-white flex items-center gap-2">
+                  <h3 className="text-lg font-bold text-white flex items-center gap-2">
                     <span>24/7 Citizen Legal Voice Helpline</span>
-                    <span className="text-xs font-bold font-mono px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                    <span className="text-xs font-mono font-semibold px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">
                       +91 7965480318
                     </span>
                   </h3>
-                  <p className="text-xs text-slate-300 leading-relaxed">
+                  <p className="text-xs text-zinc-400 leading-relaxed">
                     Dial directly from any phone for instant Hindi conversational legal guidance on IPC/BNS, Property disputes, FIR procedures, and NALSA free legal aid.
                   </p>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-3">
+                <div className="flex flex-wrap items-center gap-2.5">
                   <a
                     href="tel:+917965480318"
                     id="dashboard-call-bot-btn"
-                    className="flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-slate-950 font-black text-sm px-5 py-3 rounded-xl shadow-lg shadow-emerald-500/20 hover:scale-105 active:scale-95 transition-all text-center"
+                    className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-xs px-4 py-2.5 rounded-xl border border-emerald-500/30 transition-all text-center"
                   >
-                    <PhoneCall className="w-4 h-4 animate-bounce" />
-                    <span>📞 Call Bot (+91 7965480318)</span>
+                    <PhoneCall className="w-3.5 h-3.5" />
+                    <span>Call Bot (+91 7965480318)</span>
                   </a>
 
                   <button
                     onClick={() => navigate('/dashboard/sarvam-voice')}
-                    className="flex items-center gap-2 bg-slate-800/90 hover:bg-slate-700 text-white font-bold text-xs px-4 py-3 rounded-xl border border-slate-700 hover:border-slate-600 transition-all cursor-pointer"
+                    className="flex items-center gap-2 bg-[#161922] hover:bg-[#1b202c] text-slate-300 hover:text-white font-medium text-xs px-4 py-2.5 rounded-xl border border-white/[0.08] transition-all cursor-pointer"
                   >
-                    <Headphones className="w-4 h-4 text-emerald-400" />
-                    <span>View Call History & Transcripts</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
+                    <Headphones className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>View Call History</span>
+                    <ArrowRight className="w-3 h-3 text-zinc-500" />
                   </button>
                 </div>
               </div>
@@ -548,36 +550,38 @@ export default function Dashboard() {
             <div>
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
-                    <Zap className="w-4 h-4 text-amber-500" /> Platform Superpowers
+                  <h3 className="text-base font-bold text-white flex items-center gap-2">
+                    <Zap className="w-4 h-4 text-violet-400" /> Platform Superpowers
                   </h3>
-                  <p className="text-xs text-slate-500">Every feature is directly actionable with 1-click launch</p>
+                  <p className="text-xs text-zinc-400">Actionable SaaS legal intelligence suites with 1-click launch</p>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 
                 {/* 1. Obsidian Graph RAG Launcher */}
                 <div 
                   onClick={() => window.dispatchEvent(new CustomEvent('open-obsidian-graph', { detail: { artNo: '21' } }))}
-                  className="bg-white rounded-2xl p-5 border border-slate-200/80 hover:border-amber-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer group relative overflow-hidden"
+                  className="bg-[#161922] rounded-2xl p-5 border border-white/[0.08] hover:border-violet-500/30 hover:bg-[#1b202c] transition-all duration-200 cursor-pointer group relative overflow-hidden flex flex-col justify-between"
                 >
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="w-11 h-11 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-600 group-hover:scale-110 group-hover:bg-amber-500 group-hover:text-slate-950 transition-all duration-300 shadow-sm">
-                      <Network className="w-5 h-5" />
+                  <div>
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="w-10 h-10 rounded-xl bg-violet-500/10 border border-violet-500/25 flex items-center justify-center text-violet-400 group-hover:scale-105 transition-all">
+                        <Network className="w-5 h-5" />
+                      </div>
+                      <span className="badge-purple">
+                        448 Articles
+                      </span>
                     </div>
-                    <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200">
-                      448 Articles • Graph RAG
-                    </span>
+                    <h4 className="font-bold text-white text-sm mb-1 group-hover:text-violet-300 transition-colors">
+                      Constitutional Knowledge Graph
+                    </h4>
+                    <p className="text-xs text-zinc-400 leading-relaxed line-clamp-2">
+                      Force-directed 3D network mapping Articles 1–395, landmark Supreme Court cases & Indian Kanoon citations.
+                    </p>
                   </div>
-                  <h4 className="font-bold text-slate-900 text-sm mb-1 group-hover:text-amber-700 transition-colors">
-                    Constitutional Knowledge Graph
-                  </h4>
-                  <p className="text-xs text-slate-500 leading-relaxed line-clamp-2">
-                    Interactive Obsidian force-directed network mapping Articles 1–395, landmark Supreme Court cases & Indian Kanoon citations.
-                  </p>
-                  <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-amber-600">
-                    <span>Launch Knowledge Cosmos</span>
+                  <div className="mt-4 pt-3 border-t border-white/[0.06] flex items-center justify-between text-xs font-semibold text-violet-400 group-hover:text-violet-300">
+                    <span>Launch Knowledge Graph</span>
                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                   </div>
                 </div>
@@ -585,23 +589,25 @@ export default function Dashboard() {
                 {/* 2. AI Advisory & Multilingual Voice */}
                 <div 
                   onClick={() => navigate('/dashboard/chat')}
-                  className="bg-white rounded-2xl p-5 border border-slate-200/80 hover:border-indigo-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer group relative overflow-hidden"
+                  className="bg-[#161922] rounded-2xl p-5 border border-white/[0.08] hover:border-violet-500/30 hover:bg-[#1b202c] transition-all duration-200 cursor-pointer group relative overflow-hidden flex flex-col justify-between"
                 >
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="w-11 h-11 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 group-hover:scale-110 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300 shadow-sm">
-                      <MessageSquare className="w-5 h-5" />
+                  <div>
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="w-10 h-10 rounded-xl bg-violet-500/10 border border-violet-500/25 flex items-center justify-center text-violet-400 group-hover:scale-105 transition-all">
+                        <MessageSquare className="w-5 h-5" />
+                      </div>
+                      <span className="badge-medium">
+                        28 Languages
+                      </span>
                     </div>
-                    <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">
-                      28 Languages • Voice
-                    </span>
+                    <h4 className="font-bold text-white text-sm mb-1 group-hover:text-violet-300 transition-colors">
+                      AI Legal Advisory & Voice Call
+                    </h4>
+                    <p className="text-xs text-zinc-400 leading-relaxed line-clamp-2">
+                      Conversational counsel with verified statutory sections, zero hallucinations, and multilingual voice interaction.
+                    </p>
                   </div>
-                  <h4 className="font-bold text-slate-900 text-sm mb-1 group-hover:text-indigo-700 transition-colors">
-                    AI Legal Advisory & Voice Call
-                  </h4>
-                  <p className="text-xs text-slate-500 leading-relaxed line-clamp-2">
-                    Instant conversational counsel with verified statutory sections, zero hallucinations, voice interaction, and multi-turn legal synthesis.
-                  </p>
-                  <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-indigo-600">
+                  <div className="mt-4 pt-3 border-t border-white/[0.06] flex items-center justify-between text-xs font-semibold text-violet-400 group-hover:text-violet-300">
                     <span>Start Consultation</span>
                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                   </div>
@@ -610,23 +616,25 @@ export default function Dashboard() {
                 {/* 3. Contract & Risk Clause Analyzer */}
                 <div 
                   onClick={() => navigate('/dashboard/contracts')}
-                  className="bg-white rounded-2xl p-5 border border-slate-200/80 hover:border-emerald-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer group relative overflow-hidden"
+                  className="bg-[#161922] rounded-2xl p-5 border border-white/[0.08] hover:border-violet-500/30 hover:bg-[#1b202c] transition-all duration-200 cursor-pointer group relative overflow-hidden flex flex-col justify-between"
                 >
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="w-11 h-11 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 group-hover:scale-110 group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300 shadow-sm">
-                      <FileSearch className="w-5 h-5" />
+                  <div>
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="w-10 h-10 rounded-xl bg-violet-500/10 border border-violet-500/25 flex items-center justify-center text-violet-400 group-hover:scale-105 transition-all">
+                        <FileSearch className="w-5 h-5" />
+                      </div>
+                      <span className="badge-high">
+                        PDF Audit
+                      </span>
                     </div>
-                    <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
-                      PDF Audit • Red Flags
-                    </span>
+                    <h4 className="font-bold text-white text-sm mb-1 group-hover:text-violet-300 transition-colors">
+                      Contract & Risk Clause Analyzer
+                    </h4>
+                    <p className="text-xs text-zinc-400 leading-relaxed line-clamp-2">
+                      Audit leases, commercial agreements & NDAs. Auto-extract uncapped liabilities and termination traps.
+                    </p>
                   </div>
-                  <h4 className="font-bold text-slate-900 text-sm mb-1 group-hover:text-emerald-700 transition-colors">
-                    Contract & Risk Clause Analyzer
-                  </h4>
-                  <p className="text-xs text-slate-500 leading-relaxed line-clamp-2">
-                    Upload leases, agreements, and NDAs. Auto-extract uncapped liabilities, non-competes, and termination traps with risk ratings.
-                  </p>
-                  <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-emerald-600">
+                  <div className="mt-4 pt-3 border-t border-white/[0.06] flex items-center justify-between text-xs font-semibold text-violet-400 group-hover:text-violet-300">
                     <span>Audit New Agreement</span>
                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                   </div>
@@ -635,23 +643,25 @@ export default function Dashboard() {
                 {/* 4. Verified Advocates Directory */}
                 <div 
                   onClick={() => setShowLocationFinder(true)}
-                  className="bg-white rounded-2xl p-5 border border-slate-200/80 hover:border-blue-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer group relative overflow-hidden"
+                  className="bg-[#161922] rounded-2xl p-5 border border-white/[0.08] hover:border-violet-500/30 hover:bg-[#1b202c] transition-all duration-200 cursor-pointer group relative overflow-hidden flex flex-col justify-between"
                 >
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="w-11 h-11 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300 shadow-sm">
-                      <Users className="w-5 h-5" />
+                  <div>
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="w-10 h-10 rounded-xl bg-violet-500/10 border border-violet-500/25 flex items-center justify-center text-violet-400 group-hover:scale-105 transition-all">
+                        <Users className="w-5 h-5" />
+                      </div>
+                      <span className="badge-low">
+                        1,200+ Verified
+                      </span>
                     </div>
-                    <span className="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200">
-                      1,200+ Verified Advocates
-                    </span>
+                    <h4 className="font-bold text-white text-sm mb-1 group-hover:text-violet-300 transition-colors">
+                      Verified Advocate Network
+                    </h4>
+                    <p className="text-xs text-zinc-400 leading-relaxed line-clamp-2">
+                      GPS-enabled legal counsel matching across Supreme Court, High Courts, and District Tribunals.
+                    </p>
                   </div>
-                  <h4 className="font-bold text-slate-900 text-sm mb-1 group-hover:text-blue-700 transition-colors">
-                    Verified Advocate Network
-                  </h4>
-                  <p className="text-xs text-slate-500 leading-relaxed line-clamp-2">
-                    GPS-enabled legal counsel matching across Supreme Court, High Courts, and District Forums by jurisdiction and practice area.
-                  </p>
-                  <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-blue-600">
+                  <div className="mt-4 pt-3 border-t border-white/[0.06] flex items-center justify-between text-xs font-semibold text-violet-400 group-hover:text-violet-300">
                     <span>Find Local Counsel</span>
                     <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                   </div>
@@ -667,40 +677,30 @@ export default function Dashboard() {
               <div className="lg:col-span-8 space-y-6">
                 
                 {/* Segmented Workspace Container */}
-                <div className="bg-white rounded-3xl p-5 sm:p-6 shadow-sm border border-slate-200/80">
+                <div className="bg-[#161922] rounded-3xl p-5 sm:p-6 border border-white/[0.08]">
                   
-                  {/* Tab Navigation Header */}
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+                  {/* Tab Navigation Header styled like reference board tabs */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/[0.08]">
                     <div>
-                      <h3 className="text-base font-bold text-slate-900">Legal Operations Workspace</h3>
-                      <p className="text-xs text-slate-500">Explore interactive system topologies, progressive milestones & documents</p>
+                      <h3 className="text-base font-bold text-white">Legal Operations Workspace</h3>
+                      <p className="text-xs text-zinc-400">Interactive system topologies, compliance graph & verified documents</p>
                     </div>
 
-                    {/* Clean Tab Switcher */}
-                    <div className="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200/80 self-start sm:self-auto overflow-x-auto max-w-full">
+                    {/* Orax Nav Tabs */}
+                    <div className="flex items-center gap-1 self-start sm:self-auto overflow-x-auto max-w-full">
                       <button
                         onClick={() => setActiveTab('ecosystem')}
-                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-                          activeTab === 'ecosystem'
-                            ? 'bg-white text-indigo-600 shadow-xs'
-                            : 'text-slate-600 hover:text-slate-900'
-                        }`}
+                        className={`orax-nav-tab ${activeTab === 'ecosystem' ? 'active' : ''}`}
                       >
-                        <Network className="w-3.5 h-3.5" />
+                        <Network className="w-4 h-4 text-violet-400" />
                         <span>Ecosystem Map</span>
                       </button>
 
-
-
                       <button
                         onClick={() => setActiveTab('documents')}
-                        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
-                          activeTab === 'documents'
-                            ? 'bg-white text-indigo-600 shadow-xs'
-                            : 'text-slate-600 hover:text-slate-900'
-                        }`}
+                        className={`orax-nav-tab ${activeTab === 'documents' ? 'active' : ''}`}
                       >
-                        <FileText className="w-3.5 h-3.5" />
+                        <FileText className="w-4 h-4 text-violet-400" />
                         <span>Documents ({documents.length})</span>
                       </button>
                     </div>
@@ -709,26 +709,24 @@ export default function Dashboard() {
                   {/* Tab Body 1: Interactive Legal Ecosystem Graph */}
                   {activeTab === 'ecosystem' && (
                     <div className="pt-4 animate-in fade-in duration-200">
-                      <div className="mb-3 flex items-center justify-between text-xs text-slate-500 bg-slate-50 p-2.5 rounded-xl border border-slate-100">
+                      <div className="mb-3 flex items-center justify-between text-xs text-zinc-400 bg-[#11131a] p-3 rounded-xl border border-white/[0.06]">
                         <span>Interactive node visualization connecting business licenses, active vault documents & statutory obligations.</span>
-                        <span className="font-bold text-indigo-600 shrink-0 ml-2">Click nodes to inspect</span>
+                        <span className="font-medium text-violet-400 shrink-0 ml-2">Click nodes to inspect</span>
                       </div>
-                      <div className="rounded-2xl overflow-hidden border border-slate-100">
+                      <div className="rounded-2xl overflow-hidden border border-white/[0.06]">
                         <EcosystemGraph />
                       </div>
                     </div>
                   )}
 
-
-
-                  {/* Tab Body 3: Document Vault & Notices */}
+                  {/* Tab Body 2: Document Vault & Notices */}
                   {activeTab === 'documents' && (
                     <div className="pt-4 animate-in fade-in duration-200 space-y-3">
                       <div className="flex items-center justify-between mb-2">
-                        <p className="text-xs text-slate-500">Legal documents generated and stored securely with hash verification</p>
+                        <p className="text-xs text-zinc-400">Legal documents generated and stored securely with SHA-256 hash verification</p>
                         <button
                           onClick={() => navigate('/dashboard/documents')}
-                          className="flex items-center gap-1 text-xs font-bold text-indigo-600 hover:text-indigo-800"
+                          className="flex items-center gap-1 text-xs font-semibold text-violet-400 hover:text-violet-300"
                         >
                           <Plus className="w-3.5 h-3.5" /> Generate Document
                         </button>
@@ -738,19 +736,19 @@ export default function Dashboard() {
                         {documents.map((doc) => (
                           <div 
                             key={doc.id}
-                            className="flex flex-col sm:flex-row sm:items-center justify-between p-3.5 bg-slate-50/70 hover:bg-slate-50 rounded-2xl border border-slate-200/60 hover:border-slate-300 transition-all gap-3"
+                            className="flex flex-col sm:flex-row sm:items-center justify-between p-3.5 bg-[#11131a] hover:bg-[#141721] rounded-2xl border border-white/[0.06] hover:border-white/[0.12] transition-all gap-3"
                           >
                             <div className="flex items-start gap-3">
-                              <div className="w-9 h-9 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-indigo-600 shrink-0 mt-0.5">
+                              <div className="w-9 h-9 rounded-xl bg-violet-500/10 border border-violet-500/25 flex items-center justify-center text-violet-400 shrink-0 mt-0.5">
                                 <FileText className="w-4 h-4" />
                               </div>
                               <div>
-                                <h4 className="font-bold text-xs text-slate-900 leading-tight">{doc.title}</h4>
-                                <div className="flex flex-wrap items-center gap-2 mt-1 text-[10px] text-slate-500">
-                                  <span className="font-medium">{new Date(doc.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
-                                  <span className="w-1 h-1 rounded-full bg-slate-300"></span>
-                                  <span className="bg-slate-200/70 text-slate-700 px-1.5 py-0.2 rounded font-semibold">{doc.category || doc.type}</span>
-                                  <span className="bg-emerald-50 text-emerald-700 border border-emerald-200 px-1.5 py-0.2 rounded font-bold">Verified</span>
+                                <h4 className="font-semibold text-xs text-white leading-tight">{doc.title}</h4>
+                                <div className="flex flex-wrap items-center gap-2 mt-1.5 text-[10px] text-zinc-400">
+                                  <span>{new Date(doc.createdAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
+                                  <span className="w-1 h-1 rounded-full bg-zinc-600"></span>
+                                  <span className="badge-low">{doc.category || doc.type}</span>
+                                  <span className="badge-medium">Verified</span>
                                 </div>
                               </div>
                             </div>
@@ -759,7 +757,7 @@ export default function Dashboard() {
                             <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
                               <button
                                 onClick={() => setPreviewDocument(doc)}
-                                className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 hover:text-indigo-600 hover:border-indigo-300 text-xs font-semibold shadow-2xs transition-all cursor-pointer"
+                                className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-[#161922] border border-white/10 text-zinc-300 hover:text-white hover:border-violet-500/30 text-xs font-medium transition-all cursor-pointer"
                                 title="View Document Details"
                               >
                                 <Eye className="w-3.5 h-3.5" />
@@ -768,7 +766,7 @@ export default function Dashboard() {
 
                               <button
                                 onClick={() => handleDownloadDocument(doc)}
-                                className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 text-xs font-semibold shadow-2xs transition-all cursor-pointer"
+                                className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold shadow-[0_0_12px_rgba(168,85,247,0.3)] transition-all cursor-pointer"
                                 title="Download Document"
                               >
                                 <Download className="w-3.5 h-3.5" />
@@ -780,7 +778,7 @@ export default function Dashboard() {
                       </div>
 
                       <div className="pt-2 text-right">
-                        <Link to="/dashboard/documents" className="text-xs font-bold text-indigo-600 hover:text-indigo-800 hover:underline inline-flex items-center gap-1">
+                        <Link to="/dashboard/documents" className="text-xs font-semibold text-purple-400 hover:text-purple-300 hover:underline inline-flex items-center gap-1">
                           Open Full Document Vault <ChevronRight className="w-3.5 h-3.5" />
                         </Link>
                       </div>
@@ -800,45 +798,45 @@ export default function Dashboard() {
                 <RiskRadarWidget />
 
                 {/* 3. Top Verified Advocates Network */}
-                <div className="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/80 shadow-sm">
+                <div className="bg-[#161922] rounded-3xl p-5 sm:p-6 border border-white/[0.08]">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="font-bold text-sm text-slate-900 flex items-center gap-2">
-                      <Award className="w-4 h-4 text-amber-500" />
+                    <h3 className="font-bold text-sm text-white flex items-center gap-2">
+                      <Award className="w-4 h-4 text-purple-400" />
                       Top Verified Advocates
                     </h3>
                     <button 
                       onClick={() => setShowLocationFinder(true)}
-                      className="text-xs font-bold text-indigo-600 hover:text-indigo-800"
+                      className="text-xs font-semibold text-purple-400 hover:text-purple-300"
                     >
                       Find Nearby
                     </button>
                   </div>
 
-                  <div className="space-y-3">
+                  <div className="space-y-2.5">
                     {TOP_LAWYERS.map((lawyer) => (
                       <div 
                         key={lawyer.id}
                         onClick={() => setSelectedLawyer(lawyer)}
-                        className="p-3 bg-slate-50 hover:bg-indigo-50/50 rounded-2xl border border-slate-100 hover:border-indigo-200 transition-all cursor-pointer group"
+                        className="p-3 bg-[#11131a] hover:bg-[#141721] rounded-2xl border border-white/[0.06] hover:border-purple-500/30 transition-all cursor-pointer group"
                       >
                         <div className="flex items-start justify-between gap-2">
                           <div className="flex items-center gap-2.5">
-                            <div className="w-9 h-9 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center text-xs shadow-sm">
+                            <div className="w-9 h-9 rounded-xl bg-purple-500/15 border border-purple-500/30 text-purple-300 font-bold flex items-center justify-center text-xs">
                               {lawyer.name.split(' ')[1] ? lawyer.name.split(' ')[1][0] : 'L'}
                             </div>
                             <div>
-                              <h4 className="font-bold text-xs text-slate-900 group-hover:text-indigo-600 transition-colors leading-tight">{lawyer.name}</h4>
-                              <p className="text-[10px] text-slate-500 font-medium mt-0.5">{lawyer.specialization}</p>
+                              <h4 className="font-semibold text-xs text-white group-hover:text-purple-300 transition-colors leading-tight">{lawyer.name}</h4>
+                              <p className="text-[10px] text-zinc-400 font-medium mt-0.5">{lawyer.specialization}</p>
                             </div>
                           </div>
-                          <span className="text-[10px] font-black text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded border border-amber-200">
+                          <span className="badge-high">
                             ★ {lawyer.rating}
                           </span>
                         </div>
 
-                        <div className="mt-2.5 pt-2 border-t border-slate-200/50 flex items-center justify-between text-[10px] text-slate-500">
+                        <div className="mt-2.5 pt-2 border-t border-white/[0.05] flex items-center justify-between text-[10px] text-zinc-400">
                           <span>{lawyer.court}</span>
-                          <span className="font-bold text-indigo-600 group-hover:underline">Contact & Consult</span>
+                          <span className="font-semibold text-purple-400 group-hover:underline">Contact & Consult</span>
                         </div>
                       </div>
                     ))}
@@ -846,7 +844,7 @@ export default function Dashboard() {
 
                   <button
                     onClick={() => setShowLocationFinder(true)}
-                    className="w-full mt-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition-all shadow-md shadow-indigo-100 cursor-pointer flex items-center justify-center gap-2"
+                    className="w-full mt-4 py-2.5 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-semibold transition-all shadow-[0_0_15px_rgba(168,85,247,0.3)] cursor-pointer flex items-center justify-center gap-2"
                   >
                     <MapPin className="w-3.5 h-3.5" />
                     <span>Locate Advocates by City</span>
@@ -863,55 +861,55 @@ export default function Dashboard() {
 
       {/* MODAL 1: Document Preview & Download Modal */}
       {previewDocument && (
-        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-150">
-          <div className="bg-white rounded-3xl max-w-2xl w-full max-h-[85vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden">
+        <div className="fixed inset-0 z-50 bg-[#0c0e14]/85 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-150">
+          <div className="bg-[#161922] rounded-3xl max-w-2xl w-full max-h-[85vh] flex flex-col shadow-2xl border border-white/[0.12] overflow-hidden text-white">
             
             {/* Modal Header */}
-            <div className="p-4 sm:p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+            <div className="p-4 sm:p-5 border-b border-white/[0.08] flex items-center justify-between bg-[#11131a]">
               <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-indigo-50 border border-indigo-200 flex items-center justify-center text-indigo-600">
+                <div className="w-8 h-8 rounded-xl bg-purple-500/15 border border-purple-500/30 flex items-center justify-center text-purple-400">
                   <FileText className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-sm text-slate-900 leading-tight">{previewDocument.title}</h3>
-                  <p className="text-[10px] text-slate-500 font-medium">Category: {previewDocument.category || previewDocument.type}</p>
+                  <h3 className="font-bold text-sm text-white leading-tight">{previewDocument.title}</h3>
+                  <p className="text-[10px] text-zinc-400 font-medium">Category: {previewDocument.category || previewDocument.type}</p>
                 </div>
               </div>
               <button 
                 onClick={() => setPreviewDocument(null)} 
-                className="p-1.5 hover:bg-slate-200 rounded-lg text-slate-400 hover:text-slate-600 transition-colors"
+                className="p-1.5 hover:bg-white/[0.06] rounded-lg text-zinc-400 hover:text-white transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             {/* Modal Content */}
-            <div className="flex-1 p-5 overflow-y-auto font-mono text-xs text-slate-800 leading-relaxed bg-[#fcfcfd] select-text">
-              <pre className="whitespace-pre-wrap font-sans bg-white p-4 rounded-xl border border-slate-200/80 shadow-inner">
+            <div className="flex-1 p-5 overflow-y-auto font-mono text-xs text-zinc-300 leading-relaxed bg-[#0c0e14] select-text">
+              <pre className="whitespace-pre-wrap font-sans bg-[#11131a] p-4 rounded-2xl border border-white/[0.06]">
                 {previewDocument.content || 'Document content ready for formal filing.'}
               </pre>
             </div>
 
             {/* Modal Footer with Working Actions */}
-            <div className="p-4 border-t border-slate-100 flex items-center justify-between bg-slate-50">
+            <div className="p-4 border-t border-white/[0.08] flex items-center justify-between bg-[#11131a]">
               <button
                 onClick={() => handleCopyText(previewDocument.content || previewDocument.title)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-100 text-xs font-semibold text-slate-700 transition-colors"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-white/10 bg-[#161922] hover:bg-[#1f2433] text-xs font-semibold text-zinc-200 transition-colors"
               >
-                {copySuccess ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                {copySuccess ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
                 <span>{copySuccess ? 'Copied to Clipboard!' : 'Copy Text'}</span>
               </button>
 
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => setPreviewDocument(null)}
-                  className="px-3.5 py-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900"
+                  className="px-3.5 py-1.5 text-xs font-semibold text-zinc-400 hover:text-white"
                 >
                   Close
                 </button>
                 <button
                   onClick={() => handleDownloadDocument(previewDocument)}
-                  className="flex items-center gap-1.5 px-4 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-md shadow-indigo-100 transition-colors"
+                  className="flex items-center gap-1.5 px-4 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold shadow-[0_0_15px_rgba(168,85,247,0.3)] transition-colors"
                 >
                   <Download className="w-3.5 h-3.5" />
                   <span>Download Document (.txt)</span>
@@ -925,46 +923,46 @@ export default function Dashboard() {
 
       {/* MODAL 2: Advocate Details Modal */}
       {selectedLawyer && (
-        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-150">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4">
+        <div className="fixed inset-0 z-50 bg-[#0c0e14]/85 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-150">
+          <div className="bg-[#161922] rounded-3xl max-w-md w-full p-6 shadow-2xl border border-white/[0.12] space-y-4 text-white">
             <div className="flex items-start justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-2xl bg-indigo-600 text-white font-bold flex items-center justify-center text-lg shadow-md">
+                <div className="w-12 h-12 rounded-2xl bg-purple-500/20 border border-purple-500/40 text-purple-300 font-bold flex items-center justify-center text-lg shadow-[0_0_15px_rgba(168,85,247,0.25)]">
                   {selectedLawyer.name.charAt(0)}
                 </div>
                 <div>
-                  <h3 className="font-bold text-base text-slate-900">{selectedLawyer.name}</h3>
-                  <p className="text-xs text-indigo-600 font-semibold">{selectedLawyer.specialization}</p>
+                  <h3 className="font-bold text-base text-white">{selectedLawyer.name}</h3>
+                  <p className="text-xs text-purple-400 font-semibold">{selectedLawyer.specialization}</p>
                 </div>
               </div>
-              <button onClick={() => setSelectedLawyer(null)} className="p-1 hover:bg-slate-100 rounded-lg text-slate-400">
+              <button onClick={() => setSelectedLawyer(null)} className="p-1 hover:bg-white/[0.06] rounded-lg text-zinc-400 hover:text-white">
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <div className="bg-slate-50 p-3.5 rounded-2xl border border-slate-100 space-y-2 text-xs">
+            <div className="bg-[#11131a] p-3.5 rounded-2xl border border-white/[0.06] space-y-2 text-xs">
               <div className="flex justify-between">
-                <span className="text-slate-500 font-medium">Court Jurisdiction:</span>
-                <span className="font-bold text-slate-800">{selectedLawyer.court}</span>
+                <span className="text-zinc-400 font-medium">Court Jurisdiction:</span>
+                <span className="font-semibold text-white">{selectedLawyer.court}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-500 font-medium">Bar Experience:</span>
-                <span className="font-bold text-slate-800">{selectedLawyer.experience}</span>
+                <span className="text-zinc-400 font-medium">Bar Experience:</span>
+                <span className="font-semibold text-white">{selectedLawyer.experience}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-500 font-medium">Direct Phone:</span>
-                <span className="font-bold text-indigo-600">{selectedLawyer.phone}</span>
+                <span className="text-zinc-400 font-medium">Direct Phone:</span>
+                <span className="font-semibold text-purple-400">{selectedLawyer.phone}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-500 font-medium">Completed Sessions:</span>
-                <span className="font-bold text-emerald-600">{selectedLawyer.consultations} Cases Handled</span>
+                <span className="text-zinc-400 font-medium">Completed Sessions:</span>
+                <span className="badge-medium">{selectedLawyer.consultations} Cases Handled</span>
               </div>
             </div>
 
             <div className="flex gap-2.5 pt-2">
               <a
                 href={`tel:${selectedLawyer.phone}`}
-                className="flex-1 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold rounded-xl text-xs text-center flex items-center justify-center gap-1.5 transition-colors"
+                className="flex-1 py-2.5 bg-[#11131a] hover:bg-[#161a25] border border-white/10 text-white font-semibold rounded-xl text-xs text-center flex items-center justify-center gap-1.5 transition-colors"
               >
                 <Phone className="w-3.5 h-3.5" /> Call Now
               </a>
@@ -973,7 +971,7 @@ export default function Dashboard() {
                   setSelectedLawyer(null);
                   navigate('/dashboard/chat');
                 }}
-                className="flex-1 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs text-center flex items-center justify-center gap-1.5 transition-colors shadow-md shadow-indigo-100"
+                className="flex-1 py-2.5 bg-purple-600 hover:bg-purple-500 text-white font-semibold rounded-xl text-xs text-center flex items-center justify-center gap-1.5 transition-colors shadow-[0_0_15px_rgba(168,85,247,0.3)]"
               >
                 <MessageSquare className="w-3.5 h-3.5" /> Consult via AI
               </button>

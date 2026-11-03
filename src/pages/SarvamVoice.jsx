@@ -147,29 +147,29 @@ export default function SarvamVoice() {
   });
 
   return (
-    <div className="flex h-screen bg-slate-950 text-slate-100 font-sans antialiased overflow-hidden">
+    <div className="flex h-screen bg-[#0c0e14] text-[#f1f5f9] font-sans antialiased overflow-hidden">
       {/* Sidebar Navigation */}
       <Sidebar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col h-full overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
+      <div className="flex-1 flex flex-col h-full overflow-hidden bg-[#0c0e14]">
         
         {/* Top Header Bar */}
-        <header className="h-16 border-b border-slate-800/80 px-6 flex items-center justify-between shrink-0 bg-slate-950/70 backdrop-blur-md z-10">
+        <header className="h-16 border-b border-white/[0.08] px-6 flex items-center justify-between shrink-0 bg-[#141721]/90 backdrop-blur-md z-10">
           <div className="flex items-center gap-3">
             <button
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className="lg:hidden p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800"
+              className="lg:hidden p-2 text-slate-400 hover:text-white rounded-xl hover:bg-white/[0.06]"
             >
               <Phone className="w-5 h-5" />
             </button>
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-700 flex items-center justify-center shadow-lg shadow-emerald-500/20 text-white font-bold">
+            <div className="w-9 h-9 rounded-xl bg-purple-600/20 border border-purple-500/30 flex items-center justify-center text-purple-400 font-bold shadow-sm">
               <Headphones className="w-5 h-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="text-base font-bold text-white tracking-tight">Sarvam 24/7 AI Telephony Helpline</h1>
-                <span className="text-[10px] font-bold uppercase tracking-wider bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2 py-0.5 rounded-full flex items-center gap-1">
+                <span className="text-[10px] font-bold uppercase tracking-wider bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2.5 py-0.5 rounded-full flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
                   Live Connected
                 </span>
@@ -182,15 +182,15 @@ export default function SarvamVoice() {
             <button
               onClick={loadCallHistory}
               disabled={loadingHistory}
-              className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-white px-3 py-1.5 bg-slate-800/60 border border-slate-700/60 rounded-lg hover:bg-slate-800 transition-all cursor-pointer"
+              className="flex items-center gap-1.5 text-xs text-slate-300 hover:text-white px-3.5 py-1.5 bg-[#161922] border border-white/[0.08] hover:border-white/20 rounded-xl transition-all cursor-pointer font-medium"
             >
-              <RefreshCw className={`w-3.5 h-3.5 ${loadingHistory ? 'animate-spin text-emerald-400' : ''}`} />
+              <RefreshCw className={`w-3.5 h-3.5 ${loadingHistory ? 'animate-spin text-purple-400' : ''}`} />
               Sync Call Logs
             </button>
             
             <a
               href={agentDetails.telHref}
-              className="hidden sm:flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-bold text-xs px-3.5 py-1.5 rounded-lg shadow-md shadow-emerald-500/20 transition-all hover:scale-105"
+              className="hidden sm:flex items-center gap-2 bg-violet-600 hover:bg-violet-500 text-white font-medium text-xs px-4 py-1.5 rounded-xl shadow-sm transition-all hover:scale-105 active:scale-95"
             >
               <PhoneCall className="w-3.5 h-3.5" />
               Call {agentDetails.phoneNumber}
@@ -205,24 +205,24 @@ export default function SarvamVoice() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             
             {/* Main Phone Call Card */}
-            <div className="lg:col-span-7 bg-gradient-to-br from-slate-900/90 via-slate-900/60 to-emerald-950/20 border border-emerald-500/30 rounded-2xl p-6 shadow-xl relative overflow-hidden flex flex-col justify-between">
-              <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="lg:col-span-7 bg-[#161922] border border-violet-500/25 rounded-2xl p-6 shadow-xl shadow-black/40 relative overflow-hidden flex flex-col justify-between">
+              <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-violet-600/5 rounded-full blur-3xl pointer-events-none" />
               
               <div>
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
-                    <span className="text-xs font-semibold text-emerald-400 tracking-wide uppercase">Official AI Legal Helpline</span>
+                    <span className="w-2.5 h-2.5 rounded-full bg-violet-400"></span>
+                    <span className="text-xs font-semibold text-violet-400 tracking-wide uppercase">Official AI Legal Helpline</span>
                   </div>
-                  <div className="text-[11px] font-mono text-slate-400 bg-slate-800/80 px-2 py-0.5 rounded border border-slate-700">
+                  <div className="text-[11px] font-mono text-slate-400 bg-[#11131a] px-2.5 py-0.5 rounded-md border border-white/[0.06]">
                     Agent ID: {agentDetails.agentId}
                   </div>
                 </div>
 
-                <h2 className="text-xl sm:text-2xl font-extrabold text-white mb-2 leading-tight">
+                <h2 className="text-xl sm:text-2xl font-bold text-white mb-2 leading-tight">
                   Toll-Free Telephony Access for Every Citizen
                 </h2>
-                <p className="text-sm text-slate-300 mb-6 leading-relaxed">
+                <p className="text-xs sm:text-sm text-slate-400 mb-6 leading-relaxed">
                   Call our live conversational AI helpline directly from any mobile or landline. Understand Indian Penal Code, BNS updates, property fraud steps, and free NALSA legal aid in pure vernacular Hindi.
                 </p>
 
@@ -231,52 +231,52 @@ export default function SarvamVoice() {
                   <a
                     href={agentDetails.telHref}
                     id="sarvam-call-button"
-                    className="flex-1 group relative flex items-center justify-center gap-3 bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-400 hover:from-emerald-400 hover:to-teal-400 text-slate-950 font-extrabold text-lg sm:text-xl py-4 px-6 rounded-xl shadow-lg shadow-emerald-500/30 transition-all duration-300 hover:scale-[1.02] active:scale-[0.99] text-center"
+                    className="flex-1 group relative flex items-center justify-center gap-3 bg-violet-600 hover:bg-violet-500 text-white font-bold text-lg sm:text-xl py-4 px-6 rounded-2xl shadow-md shadow-violet-950/40 transition-all duration-200 hover:scale-[1.01] active:scale-[0.99] text-center"
                   >
-                    <div className="w-10 h-10 rounded-full bg-slate-950/10 flex items-center justify-center shrink-0">
-                      <PhoneCall className="w-6 h-6 text-slate-950 animate-bounce" />
+                    <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
+                      <PhoneCall className="w-5 h-5 text-white" />
                     </div>
                     <div className="text-left">
-                      <div className="text-[11px] uppercase tracking-wider font-bold text-slate-900/80">Click to Call LawBot Now</div>
-                      <div className="font-mono tracking-tight text-xl font-black">{agentDetails.phoneNumber}</div>
+                      <div className="text-[10px] uppercase tracking-wider font-semibold text-violet-200">Click to Call LawBot Now</div>
+                      <div className="font-mono tracking-tight text-xl font-bold">{agentDetails.phoneNumber}</div>
                     </div>
-                    <ArrowUpRight className="w-5 h-5 ml-auto text-slate-950/70 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                    <ArrowUpRight className="w-5 h-5 ml-auto text-white/80 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                   </a>
 
                   {/* Copy button */}
                   <button
                     onClick={handleCopyNumber}
                     title="Copy Phone Number"
-                    className="flex items-center justify-center gap-2 bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700 font-semibold px-4 py-4 rounded-xl transition-all cursor-pointer"
+                    className="flex items-center justify-center gap-2 bg-[#11131a] hover:bg-white/[0.06] text-slate-200 border border-white/[0.08] font-semibold px-4 py-4 rounded-2xl transition-all cursor-pointer active:scale-95"
                   >
-                    {copiedNumber ? <Check className="w-5 h-5 text-emerald-400" /> : <Copy className="w-5 h-5" />}
+                    {copiedNumber ? <Check className="w-5 h-5 text-emerald-400" /> : <Copy className="w-5 h-5 text-slate-400" />}
                     <span className="text-xs">{copiedNumber ? 'Copied!' : 'Copy'}</span>
                   </button>
                 </div>
               </div>
 
               {/* Bot Capabilities Badges */}
-              <div className="pt-4 border-t border-slate-800/80 grid grid-cols-3 gap-2 text-center">
-                <div className="bg-slate-800/40 p-2 rounded-lg border border-slate-800">
-                  <div className="text-[11px] text-slate-400 font-medium">Primary Tongue</div>
-                  <div className="text-xs font-bold text-emerald-400 mt-0.5">Hindi (हिन्दी) & Eng</div>
+              <div className="pt-4 border-t border-white/[0.06] grid grid-cols-3 gap-2 text-center">
+                <div className="bg-[#11131a] p-2.5 rounded-xl border border-white/[0.06]">
+                  <div className="text-[10px] text-slate-400 font-medium">Primary Tongue</div>
+                  <div className="text-xs font-bold text-purple-400 mt-0.5">Hindi (हिन्दी) & Eng</div>
                 </div>
-                <div className="bg-slate-800/40 p-2 rounded-lg border border-slate-800">
-                  <div className="text-[11px] text-slate-400 font-medium">Spoken Latency</div>
-                  <div className="text-xs font-bold text-emerald-400 mt-0.5">~0.66s Ultra-Fast</div>
+                <div className="bg-[#11131a] p-2.5 rounded-xl border border-white/[0.06]">
+                  <div className="text-[10px] text-slate-400 font-medium">Spoken Latency</div>
+                  <div className="text-xs font-bold text-purple-400 mt-0.5">~0.66s Ultra-Fast</div>
                 </div>
-                <div className="bg-slate-800/40 p-2 rounded-lg border border-slate-800">
-                  <div className="text-[11px] text-slate-400 font-medium">Coverage Area</div>
-                  <div className="text-xs font-bold text-emerald-400 mt-0.5">Pan-India Telephony</div>
+                <div className="bg-[#11131a] p-2.5 rounded-xl border border-white/[0.06]">
+                  <div className="text-[10px] text-slate-400 font-medium">Coverage Area</div>
+                  <div className="text-xs font-bold text-purple-400 mt-0.5">Pan-India Telephony</div>
                 </div>
               </div>
             </div>
 
             {/* Instant Callback Trigger (Outbound Calling) */}
-            <div className="lg:col-span-5 bg-slate-900/80 border border-slate-800 rounded-2xl p-6 shadow-xl flex flex-col justify-between">
+            <div className="lg:col-span-5 bg-[#161922] border border-white/[0.08] rounded-2xl p-6 shadow-xl shadow-black/30 flex flex-col justify-between">
               <div>
                 <div className="flex items-center gap-2 mb-3">
-                  <div className="w-7 h-7 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center">
+                  <div className="w-7 h-7 rounded-lg bg-purple-500/10 border border-purple-500/20 text-purple-400 flex items-center justify-center">
                     <PhoneOutgoing className="w-4 h-4" />
                   </div>
                   <h3 className="text-base font-bold text-white">Instant AI Callback</h3>
@@ -291,7 +291,7 @@ export default function SarvamVoice() {
                       Your Mobile Number
                     </label>
                     <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 text-sm font-semibold font-mono">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500 text-sm font-semibold font-mono">
                         +91
                       </div>
                       <input
@@ -299,7 +299,7 @@ export default function SarvamVoice() {
                         placeholder="9876543210"
                         value={callbackNumber}
                         onChange={(e) => setCallbackNumber(e.target.value)}
-                        className="w-full bg-slate-950 border border-slate-700 rounded-xl pl-12 pr-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 font-mono tracking-wider"
+                        className="w-full bg-[#11131a] border border-white/[0.1] rounded-xl pl-12 pr-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-purple-500 font-mono tracking-wider"
                       />
                     </div>
                   </div>
@@ -307,7 +307,7 @@ export default function SarvamVoice() {
                   <button
                     type="submit"
                     disabled={dialing}
-                    className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-white font-bold text-sm py-3 px-4 rounded-xl shadow-lg shadow-indigo-600/20 transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 cursor-pointer"
+                    className="w-full flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-500 text-white font-bold text-sm py-3 px-4 rounded-xl shadow-lg shadow-purple-900/30 transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 cursor-pointer"
                   >
                     {dialing ? (
                       <>
@@ -316,7 +316,7 @@ export default function SarvamVoice() {
                       </>
                     ) : (
                       <>
-                        <PhoneForwarded className="w-4 h-4 text-indigo-200" />
+                        <PhoneForwarded className="w-4 h-4 text-purple-200" />
                         Dial My Phone Now
                       </>
                     )}
@@ -325,7 +325,7 @@ export default function SarvamVoice() {
 
                 {/* Callback Feedback Alerts */}
                 {dialResult?.success && (
-                  <div className="mt-4 p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-xl text-xs text-emerald-300 flex items-start gap-2">
+                  <div className="mt-4 p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-xs text-emerald-300 flex items-start gap-2">
                     <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                     <div>
                       <p className="font-semibold">{dialResult.message}</p>
@@ -337,15 +337,15 @@ export default function SarvamVoice() {
                 )}
 
                 {dialResult?.error && (
-                  <div className="mt-4 p-3 bg-rose-500/10 border border-rose-500/30 rounded-xl text-xs text-rose-300 flex items-start gap-2">
+                  <div className="mt-4 p-3 bg-rose-500/10 border border-rose-500/20 rounded-xl text-xs text-rose-300 flex items-start gap-2">
                     <AlertCircle className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
                     <p>{dialResult.error}</p>
                   </div>
                 )}
               </div>
 
-              <div className="pt-4 mt-4 border-t border-slate-800 text-[11px] text-slate-500 flex items-center gap-2">
-                <Shield className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
+              <div className="pt-4 mt-4 border-t border-white/[0.06] text-[11px] text-slate-500 flex items-center gap-2">
+                <Shield className="w-3.5 h-3.5 text-purple-400 shrink-0" />
                 <span>Call is direct & fully encrypted. Complies with TRAI & DPDP regulations.</span>
               </div>
             </div>
@@ -353,25 +353,25 @@ export default function SarvamVoice() {
 
           {/* Key Metrics Row */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-slate-900/60 border border-slate-800/80 rounded-xl p-4">
+            <div className="bg-[#161922] border border-white/[0.08] rounded-2xl p-4 shadow-lg shadow-black/20">
               <div className="flex items-center justify-between text-slate-400 mb-2">
                 <span className="text-xs font-medium">Logged Calls</span>
-                <PhoneIncoming className="w-4 h-4 text-emerald-400" />
+                <PhoneIncoming className="w-4 h-4 text-purple-400" />
               </div>
               <div className="text-2xl font-black text-white">{totalCalls || callHistory.length || 14}</div>
               <span className="text-[11px] text-emerald-400 font-medium">Live Telephony Sync</span>
             </div>
 
-            <div className="bg-slate-900/60 border border-slate-800/80 rounded-xl p-4">
+            <div className="bg-[#161922] border border-white/[0.08] rounded-2xl p-4 shadow-lg shadow-black/20">
               <div className="flex items-center justify-between text-slate-400 mb-2">
                 <span className="text-xs font-medium">Vernacular Rate</span>
-                <MessageSquare className="w-4 h-4 text-indigo-400" />
+                <MessageSquare className="w-4 h-4 text-purple-400" />
               </div>
               <div className="text-2xl font-black text-white">100%</div>
-              <span className="text-[11px] text-indigo-400 font-medium">Native Hindi Dialect</span>
+              <span className="text-[11px] text-purple-400 font-medium">Native Hindi Dialect</span>
             </div>
 
-            <div className="bg-slate-900/60 border border-slate-800/80 rounded-xl p-4">
+            <div className="bg-[#161922] border border-white/[0.08] rounded-2xl p-4 shadow-lg shadow-black/20">
               <div className="flex items-center justify-between text-slate-400 mb-2">
                 <span className="text-xs font-medium">Response Latency</span>
                 <Clock className="w-4 h-4 text-amber-400" />
@@ -380,23 +380,23 @@ export default function SarvamVoice() {
               <span className="text-[11px] text-amber-400 font-medium">Sub-second Realtime</span>
             </div>
 
-            <div className="bg-slate-900/60 border border-slate-800/80 rounded-xl p-4">
+            <div className="bg-[#161922] border border-white/[0.08] rounded-2xl p-4 shadow-lg shadow-black/20">
               <div className="flex items-center justify-between text-slate-400 mb-2">
                 <span className="text-xs font-medium">Legal Referrals</span>
-                <Sparkles className="w-4 h-4 text-teal-400" />
+                <Sparkles className="w-4 h-4 text-purple-400" />
               </div>
               <div className="text-2xl font-black text-white">NALSA 15100</div>
-              <span className="text-[11px] text-teal-400 font-medium">Free Citizen Aid</span>
+              <span className="text-[11px] text-emerald-400 font-medium">Free Citizen Aid</span>
             </div>
           </div>
 
           {/* Call History & Conversations Section */}
-          <div className="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-5">
+          <div className="bg-[#161922] border border-white/[0.08] rounded-2xl p-6 shadow-xl shadow-black/30 space-y-5">
             
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <div>
-                <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                  <Activity className="w-5 h-5 text-emerald-400" />
+                <h3 className="text-base font-bold text-white flex items-center gap-2">
+                  <Activity className="w-5 h-5 text-purple-400" />
                   Live Helpline Call History & Intelligence
                 </h3>
                 <p className="text-xs text-slate-400">
@@ -413,18 +413,18 @@ export default function SarvamVoice() {
                     placeholder="Search query, phone, or issue..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-lg pl-9 pr-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+                    className="w-full bg-[#11131a] border border-white/[0.08] rounded-xl pl-9 pr-3 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-purple-500"
                   />
                 </div>
 
-                <div className="flex items-center gap-1 bg-slate-950 border border-slate-800 p-1 rounded-lg">
+                <div className="flex items-center gap-1 bg-[#11131a] border border-white/[0.08] p-1 rounded-xl">
                   {['ALL', 'PROPERTY', 'ESCALATED', 'LAWYER_REFERRED'].map(tag => (
                     <button
                       key={tag}
                       onClick={() => setSelectedTag(tag)}
-                      className={`text-[10px] font-bold px-2 py-1 rounded transition-colors ${
+                      className={`text-[10px] font-bold px-2.5 py-1 rounded-lg transition-all ${
                         selectedTag === tag 
-                          ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' 
+                          ? 'bg-purple-600 text-white shadow-sm' 
                           : 'text-slate-400 hover:text-white'
                       }`}
                     >
@@ -437,9 +437,9 @@ export default function SarvamVoice() {
 
             {/* Audio Player Bar if active */}
             {activeAudioUrl && (
-              <div className="p-3 bg-slate-950 border border-emerald-500/40 rounded-xl flex items-center justify-between gap-4 animate-in fade-in">
+              <div className="p-3 bg-[#11131a] border border-purple-500/40 rounded-xl flex items-center justify-between gap-4 animate-in fade-in">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center">
                     <Volume2 className="w-4 h-4 animate-pulse" />
                   </div>
                   <div>
@@ -452,7 +452,7 @@ export default function SarvamVoice() {
                 </div>
                 <button
                   onClick={() => setActiveAudioUrl(null)}
-                  className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800"
+                  className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-white/[0.06]"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -462,15 +462,15 @@ export default function SarvamVoice() {
             {/* Calls Table / List */}
             {loadingHistory ? (
               <div className="py-16 flex flex-col items-center justify-center space-y-3">
-                <div className="w-8 h-8 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
+                <div className="w-8 h-8 border-2 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
                 <p className="text-xs text-slate-400">Fetching call attempts from Sarvam Analytics API...</p>
               </div>
             ) : filteredCalls.length === 0 ? (
               <div className="py-12 text-center text-slate-500 text-xs">
-                No matching call records found. Place a call to <span className="text-emerald-400 font-mono">{agentDetails.phoneNumber}</span> to create your first session!
+                No matching call records found. Place a call to <span className="text-purple-400 font-mono">{agentDetails.phoneNumber}</span> to create your first session!
               </div>
             ) : (
-              <div className="divide-y divide-slate-800/80">
+              <div className="divide-y divide-white/[0.06]">
                 {filteredCalls.map((call, idx) => {
                   const summary = call?.agent_variables?.call_summary || 'Dialogue processed via LawBot 360';
                   const area = call?.agent_variables?.legal_area;
@@ -481,15 +481,15 @@ export default function SarvamVoice() {
                   return (
                     <div 
                       key={`call-${call.interaction_id || 'no-interaction'}-${call.attempt_id || 'no-job'}-${idx}`} 
-                      className="py-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 hover:bg-slate-800/30 px-3 rounded-xl transition-colors"
+                      className="py-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 hover:bg-white/[0.02] px-3 rounded-xl transition-colors"
                     >
                       
                       <div className="flex items-start gap-3.5 min-w-0 flex-1">
-                        <div className="w-9 h-9 rounded-xl bg-slate-800 flex items-center justify-center shrink-0 mt-0.5 border border-slate-700/60">
+                        <div className="w-9 h-9 rounded-xl bg-[#11131a] border border-white/[0.06] flex items-center justify-center shrink-0 mt-0.5">
                           {call.channel_direction === 'outbound' ? (
-                            <PhoneOutgoing className="w-4 h-4 text-indigo-400" />
+                            <PhoneOutgoing className="w-4 h-4 text-purple-400" />
                           ) : (
-                            <PhoneIncoming className="w-4 h-4 text-emerald-400" />
+                            <PhoneIncoming className="w-4 h-4 text-purple-400" />
                           )}
                         </div>
 
@@ -499,29 +499,29 @@ export default function SarvamVoice() {
                               {call.user_contact_masked || call.user_contact || '+91 Helpline User'}
                             </span>
 
-                            <span className="text-[10px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded font-mono">
+                            <span className="text-[10px] bg-[#11131a] text-slate-400 px-2 py-0.5 rounded font-mono border border-white/[0.04]">
                               {sarvamVoiceService.formatDuration(call.duration_in_seconds)}
                             </span>
 
-                            <span className="text-[10px] bg-slate-800/80 text-slate-400 px-2 py-0.5 rounded flex items-center gap-1">
+                            <span className="text-[10px] bg-[#11131a] text-slate-400 px-2 py-0.5 rounded flex items-center gap-1 border border-white/[0.04]">
                               <Calendar className="w-3 h-3 text-slate-500" />
                               {sarvamVoiceService.formatDate(call.start_datetime || call.attempted_at)}
                             </span>
 
                             {area && area !== 'not_reached' && (
-                              <span className="text-[10px] uppercase font-bold bg-indigo-500/10 text-indigo-300 border border-indigo-500/20 px-2 py-0.5 rounded">
+                              <span className="text-[10px] uppercase font-bold bg-purple-500/10 text-purple-300 border border-purple-500/20 px-2 py-0.5 rounded-full">
                                 {area.replace('_', ' ')}
                               </span>
                             )}
 
                             {isEscalated && (
-                              <span className="text-[10px] font-bold bg-rose-500/10 text-rose-400 border border-rose-500/30 px-2 py-0.5 rounded flex items-center gap-1">
+                              <span className="text-[10px] font-bold bg-rose-500/10 text-rose-400 border border-rose-500/30 px-2 py-0.5 rounded-full flex items-center gap-1">
                                 <ShieldAlert className="w-3 h-3" /> Safety Alert
                               </span>
                             )}
 
                             {isReferred && (
-                              <span className="text-[10px] font-bold bg-teal-500/10 text-teal-300 border border-teal-500/20 px-2 py-0.5 rounded">
+                              <span className="text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-full">
                                 Legal Aid Referred
                               </span>
                             )}
@@ -538,7 +538,7 @@ export default function SarvamVoice() {
                         {call.audio_url && call.duration_in_seconds > 0 && (
                           <button
                             onClick={() => setActiveAudioUrl(call.audio_url)}
-                            className="flex items-center gap-1 text-[11px] font-semibold text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 px-2.5 py-1.5 rounded-lg transition-colors cursor-pointer"
+                            className="flex items-center gap-1 text-[11px] font-semibold text-purple-300 bg-purple-500/10 hover:bg-purple-500/20 border border-purple-500/30 px-3 py-1.5 rounded-xl transition-all cursor-pointer"
                           >
                             <Play className="w-3 h-3 fill-current" />
                             Listen Recording
@@ -547,13 +547,13 @@ export default function SarvamVoice() {
 
                         <button
                           onClick={() => handleOpenTranscript(call)}
-                          className={`flex items-center gap-1 text-[11px] font-semibold border px-2.5 py-1.5 rounded-lg transition-colors cursor-pointer ${
+                          className={`flex items-center gap-1 text-[11px] font-semibold border px-3 py-1.5 rounded-xl transition-all cursor-pointer ${
                             hasTranscript
-                              ? 'text-slate-200 bg-slate-800 hover:bg-slate-700 border-slate-700'
-                              : 'text-slate-400 bg-slate-900 hover:bg-slate-800 border-slate-800'
+                              ? 'text-white bg-[#11131a] hover:bg-white/[0.06] border-white/[0.08]'
+                              : 'text-slate-400 bg-[#11131a] hover:bg-white/[0.04] border-white/[0.04]'
                           }`}
                         >
-                          <FileText className={`w-3 h-3 ${hasTranscript ? 'text-indigo-400' : 'text-slate-500'}`} />
+                          <FileText className={`w-3 h-3 ${hasTranscript ? 'text-purple-400' : 'text-slate-500'}`} />
                           {hasTranscript ? 'View Transcript' : 'Call Details'}
                         </button>
                       </div>
@@ -570,13 +570,13 @@ export default function SarvamVoice() {
 
       {/* Transcript Modal */}
       {selectedInteraction && (
-        <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-700/80 rounded-2xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden animate-in zoom-in-95">
+        <div className="fixed inset-0 bg-black/75 backdrop-blur-md z-50 flex items-center justify-center p-4">
+          <div className="bg-[#161922] border border-white/[0.08] rounded-2xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl shadow-black/80 overflow-hidden animate-in zoom-in-95 text-white">
             
             {/* Modal Header */}
-            <div className="px-6 py-4 border-b border-slate-800 flex items-center justify-between shrink-0 bg-slate-950/40">
+            <div className="px-6 py-4 border-b border-white/[0.08] flex items-center justify-between shrink-0 bg-[#141721]">
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-purple-500/10 border border-purple-500/20 text-purple-400 flex items-center justify-center">
                   <FileText className="w-4 h-4" />
                 </div>
                 <div>
@@ -591,14 +591,14 @@ export default function SarvamVoice() {
                 <button
                   onClick={handleCopyTranscriptText}
                   disabled={!transcriptData?.messages}
-                  className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 text-xs flex items-center gap-1"
+                  className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-white/[0.06] text-xs flex items-center gap-1"
                 >
                   {copiedTranscript ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
                   <span className="text-[10px]">{copiedTranscript ? 'Copied' : 'Copy'}</span>
                 </button>
                 <button
                   onClick={() => setSelectedInteraction(null)}
-                  className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800"
+                  className="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-white/[0.06]"
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -606,22 +606,22 @@ export default function SarvamVoice() {
             </div>
 
             {/* Modal Body */}
-            <div className="p-6 overflow-y-auto space-y-4 flex-1 custom-scrollbar">
+            <div className="p-6 overflow-y-auto space-y-4 flex-1 custom-scrollbar bg-[#0c0e14]">
               {loadingTranscript ? (
                 <div className="py-12 flex flex-col items-center justify-center space-y-2">
-                  <div className="w-6 h-6 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+                  <div className="w-6 h-6 border-2 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
                   <p className="text-xs text-slate-400">Loading dialogue transcript...</p>
                 </div>
               ) : transcriptData?.note ? (
-                <div className="p-4 bg-amber-500/10 border border-amber-500/30 rounded-xl text-xs text-amber-300 flex items-start gap-2.5">
+                <div className="p-4 bg-amber-500/10 border border-amber-500/20 rounded-xl text-xs text-amber-300 flex items-start gap-2.5">
                   <AlertCircle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
                   <div>
                     <p className="font-semibold text-white">Call Not Connected / Completed</p>
-                    <p className="mt-1 text-slate-300 leading-relaxed">{transcriptData.note}</p>
+                    <p className="mt-1 text-slate-400 leading-relaxed">{transcriptData.note}</p>
                   </div>
                 </div>
               ) : transcriptData?.error ? (
-                <div className="p-4 bg-rose-500/10 border border-rose-500/30 rounded-xl text-xs text-rose-300">
+                <div className="p-4 bg-rose-500/10 border border-rose-500/20 rounded-xl text-xs text-rose-300">
                   {transcriptData.error}
                 </div>
               ) : transcriptData?.messages?.length > 0 ? (
@@ -634,15 +634,15 @@ export default function SarvamVoice() {
                         className={`flex gap-3 ${isBot ? 'justify-start' : 'justify-end'}`}
                       >
                         {isBot && (
-                          <div className="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 mt-1">
+                          <div className="w-7 h-7 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center shrink-0 mt-1">
                             <Bot className="w-4 h-4" />
                           </div>
                         )}
                         <div
                           className={`max-w-[85%] rounded-2xl p-3.5 text-xs leading-relaxed ${
                             isBot
-                              ? 'bg-slate-800/90 text-slate-200 border border-slate-700/60 rounded-tl-sm'
-                              : 'bg-indigo-600 text-white rounded-tr-sm shadow-md'
+                              ? 'bg-[#161922] text-slate-200 border border-white/[0.08] rounded-tl-sm'
+                              : 'bg-purple-600 text-white rounded-tr-sm shadow-md'
                           }`}
                         >
                           <div className="flex items-center justify-between gap-3 mb-1 text-[10px] opacity-75 font-mono">
@@ -654,7 +654,7 @@ export default function SarvamVoice() {
                           <div className="whitespace-pre-wrap">{msg.content}</div>
                         </div>
                         {!isBot && (
-                          <div className="w-7 h-7 rounded-lg bg-indigo-500/20 text-indigo-400 flex items-center justify-center shrink-0 mt-1">
+                          <div className="w-7 h-7 rounded-lg bg-purple-500/20 text-purple-400 flex items-center justify-center shrink-0 mt-1">
                             <Phone className="w-4 h-4" />
                           </div>
                         )}
@@ -670,11 +670,11 @@ export default function SarvamVoice() {
             </div>
 
             {/* Modal Footer */}
-            <div className="px-6 py-3 border-t border-slate-800 bg-slate-950/60 flex items-center justify-between text-[11px] text-slate-400">
+            <div className="px-6 py-3 border-t border-white/[0.08] bg-[#141721] flex items-center justify-between text-[11px] text-slate-400">
               <span>Sarvam Samvaad AI Speech Analytics Engine</span>
               <button
                 onClick={() => setSelectedInteraction(null)}
-                className="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-xs font-semibold cursor-pointer"
+                className="px-3.5 py-1 bg-[#161922] hover:bg-white/[0.06] text-white rounded-lg text-xs font-semibold cursor-pointer border border-white/[0.08]"
               >
                 Close
               </button>

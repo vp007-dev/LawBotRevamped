@@ -9,31 +9,30 @@ const feedItems = [
 
 const RegulatoryFeed = () => {
   return (
-    <div className="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-100 h-full flex flex-col">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
-            <Newspaper className="w-6 h-6 text-blue-500" />
+    <div className="bg-[#161922] rounded-2xl p-6 shadow-xl border border-white/[0.08] h-full flex flex-col">
+      <div className="flex items-center justify-between mb-5">
+        <h2 className="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+            <Newspaper className="w-4 h-4 text-purple-400" />
             AI Regulatory Feed
         </h2>
-        <button className="text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors bg-blue-50 px-3 py-1.5 rounded-lg">
+        <button className="text-xs font-semibold text-purple-400 hover:text-purple-300 transition-colors bg-purple-500/10 border border-purple-500/20 px-2.5 py-1 rounded-lg">
           View All
         </button>
       </div>
-      <div className="space-y-4 flex-1">
+      <div className="space-y-3 flex-1">
         {feedItems.map(item => (
-          <div key={item.id} className="p-4 rounded-2xl border border-slate-100 hover:border-blue-200 hover:shadow-md transition-all group cursor-pointer relative overflow-hidden bg-gradient-to-br from-white to-slate-50">
-            <div className="absolute top-0 right-0 w-16 h-16 bg-blue-50 rounded-bl-full -z-10 group-hover:scale-150 transition-transform duration-500"></div>
-            <div className="flex justify-between items-start mb-3">
-              <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 bg-white border border-slate-200 text-slate-600 rounded-lg group-hover:border-blue-200 group-hover:text-blue-600 transition-colors shadow-sm">{item.tag}</span>
-              <span className="text-[11px] font-medium text-slate-400 bg-slate-100 px-2 py-1 rounded-md">{item.date}</span>
+          <div key={item.id} className="p-4 rounded-xl border border-white/[0.06] hover:border-purple-500/30 hover:bg-[#1a1e2b] transition-all group cursor-pointer relative overflow-hidden bg-[#141721]">
+            <div className="flex justify-between items-start mb-2.5">
+              <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 bg-white/[0.04] border border-white/[0.08] text-purple-400 rounded-md">{item.tag}</span>
+              <span className="text-[10px] font-medium text-slate-500">{item.date}</span>
             </div>
-            <h3 className="text-sm font-bold text-slate-800 leading-snug group-hover:text-blue-700 transition-colors">{item.title}</h3>
+            <h3 className="text-xs font-semibold text-slate-200 leading-snug group-hover:text-purple-300 transition-colors">{item.title}</h3>
             
-            <div className="mt-4 flex items-center justify-between">
-                <div className={`flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider ${item.impact === 'High' ? 'text-rose-500' : 'text-amber-500'}`}>
+            <div className="mt-3 flex items-center justify-between pt-2 border-t border-white/[0.04]">
+                <div className={`flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider ${item.impact === 'High' ? 'text-rose-400' : 'text-amber-400'}`}>
                     <Zap className="w-3 h-3" /> {item.impact} Impact
                 </div>
-                <div className="flex items-center text-xs text-blue-600 font-bold opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0 duration-300">
+                <div className="flex items-center text-xs text-purple-400 font-semibold opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0 duration-300">
                     Read analysis <ChevronRight className="w-3 h-3 ml-0.5" />
                 </div>
             </div>

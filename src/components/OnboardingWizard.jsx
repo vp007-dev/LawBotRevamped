@@ -63,12 +63,12 @@ const OnboardingWizard = ({ onComplete }) => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto bg-white rounded-2xl border border-slate-200 shadow-xl overflow-hidden">
+    <div className="max-w-3xl mx-auto bg-[#161922] rounded-2xl border border-white/[0.08] shadow-2xl overflow-hidden text-white">
       {/* Header Banner */}
-      <div className="bg-gradient-to-r from-indigo-600 via-indigo-700 to-purple-700 p-6 text-white relative">
+      <div className="bg-[#141721] border-b border-white/[0.08] p-6 text-white relative">
         <div className="flex items-center gap-3">
-          <div className="p-3 bg-white/10 backdrop-blur-md rounded-xl">
-            <Building2 className="w-6 h-6 text-indigo-200" />
+          <div className="p-3 bg-violet-500/10 border border-violet-500/25 rounded-xl">
+            <Building2 className="w-6 h-6 text-violet-400" />
           </div>
           <div>
             <h2 className="text-xl font-bold">Smart Legal & Business Onboarding</h2>

@@ -202,19 +202,19 @@ const Vault = () => {
   };
 
   return (
-    <div className="flex h-screen bg-slate-50 overflow-hidden font-sans">
+    <div className="flex h-screen bg-[#0c0e14] text-[#f1f5f9] overflow-hidden font-sans">
       <Sidebar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
 
       <div className="flex-1 flex flex-col min-w-0 overflow-y-auto">
         {/* Header */}
-        <header className="h-16 bg-white border-b border-slate-200 px-6 flex items-center justify-between shrink-0 sticky top-0 z-30">
+        <header className="h-16 bg-[#141721]/90 backdrop-blur-md border-b border-white/[0.08] px-6 flex items-center justify-between shrink-0 sticky top-0 z-30">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-indigo-50 border border-indigo-200 rounded-xl flex items-center justify-center text-indigo-700">
+            <div className="w-10 h-10 bg-[#161922] border border-purple-500/30 rounded-xl flex items-center justify-center text-purple-400 shadow-sm">
               <FolderLock className="w-5 h-5" />
             </div>
             <div>
-              <h1 className="text-base font-bold text-slate-900">User Knowledge Vault & SIS Store</h1>
-              <p className="text-xs text-slate-500">Encrypted business document repository & Knowledge Graph</p>
+              <h1 className="text-base font-bold text-white">User Knowledge Vault & SIS Store</h1>
+              <p className="text-xs text-slate-400">Encrypted business document repository & Knowledge Graph</p>
             </div>
           </div>
 
@@ -222,14 +222,14 @@ const Vault = () => {
             {!userProfile ? (
               <button
                 onClick={() => setShowWizard(true)}
-                className="flex items-center gap-2 px-4 h-9 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition-all shadow-md shadow-indigo-100"
+                className="flex items-center gap-2 px-3.5 h-9 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-bold transition-all shadow-md shadow-purple-900/20 active:scale-95"
               >
-                <Sparkles className="w-4 h-4" />
+                <Sparkles className="w-3.5 h-3.5" />
                 <span>Complete Business Profile</span>
               </button>
             ) : (
-              <div className="flex items-center gap-2 px-3 py-1.5 bg-indigo-50 border border-indigo-200 rounded-xl text-xs font-bold text-indigo-700">
-                <ShieldCheck className="w-4 h-4 text-indigo-600" />
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-[#161922] border border-purple-500/30 rounded-xl text-xs font-bold text-purple-300">
+                <ShieldCheck className="w-4 h-4 text-purple-400" />
                 <span>{userProfile.entityName || userProfile.businessType?.toUpperCase()}</span>
               </div>
             )}
@@ -239,14 +239,14 @@ const Vault = () => {
                 setDlStep(1);
                 setShowDigiLocker(true);
               }}
-              className="flex items-center gap-2 px-4 h-9 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl text-xs font-bold transition-all shadow-md shadow-blue-100"
+              className="flex items-center gap-2 px-3.5 h-9 bg-[#161922] hover:bg-white/[0.06] border border-white/[0.08] hover:border-white/20 text-slate-300 rounded-xl text-xs font-semibold transition-all active:scale-95"
             >
-              <FolderLock className="w-4 h-4" />
+              <FolderLock className="w-3.5 h-3.5 text-purple-400" />
               <span>Import from DigiLocker</span>
             </button>
 
-            <label className="flex items-center gap-2 px-4 h-9 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold cursor-pointer transition-all shadow-md">
-              <UploadCloud className="w-4 h-4" />
+            <label className="flex items-center gap-2 px-3.5 h-9 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-bold cursor-pointer transition-all shadow-md shadow-purple-900/20 active:scale-95">
+              <UploadCloud className="w-3.5 h-3.5" />
               <span>Upload Document</span>
               <input type="file" onChange={handleFileUpload} className="hidden" />
             </label>
@@ -256,33 +256,33 @@ const Vault = () => {
         {/* Main Content */}
         <main className="flex-1 p-6 max-w-7xl w-full mx-auto space-y-6">
           {/* Tab Switcher */}
-          <div className="flex items-center justify-between border-b border-slate-200 pb-4">
-            <div className="flex items-center gap-2 bg-slate-200/60 p-1 rounded-xl">
+          <div className="flex items-center justify-between border-b border-white/[0.08] pb-4">
+            <div className="flex items-center gap-1.5 bg-[#11131a] border border-white/[0.08] p-1 rounded-xl">
               <button
                 onClick={() => setActiveTab('docs')}
-                className={`flex items-center gap-2 px-4 h-9 rounded-lg text-xs font-bold transition-all ${
-                  activeTab === 'docs' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-600 hover:text-slate-900'
+                className={`flex items-center gap-2 px-3.5 h-8 rounded-lg text-xs font-semibold transition-all ${
+                  activeTab === 'docs' ? 'bg-[#161922] text-purple-300 border border-purple-500/30 shadow-sm' : 'text-slate-400 hover:text-white'
                 }`}
               >
-                <FileText className="w-4 h-4" />
+                <FileText className="w-3.5 h-3.5" />
                 <span>Documents & Vault ({docs.length})</span>
               </button>
               <button
                 onClick={() => setActiveTab('policies')}
-                className={`flex items-center gap-2 px-4 h-9 rounded-lg text-xs font-bold transition-all ${
-                  activeTab === 'policies' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-600 hover:text-slate-900'
+                className={`flex items-center gap-2 px-3.5 h-8 rounded-lg text-xs font-semibold transition-all ${
+                  activeTab === 'policies' ? 'bg-[#161922] text-purple-300 border border-purple-500/30 shadow-sm' : 'text-slate-400 hover:text-white'
                 }`}
               >
-                <BookOpen className="w-4 h-4" />
+                <BookOpen className="w-3.5 h-3.5" />
                 <span>Company Policies & SIS</span>
               </button>
               <button
                 onClick={() => setActiveTab('graph')}
-                className={`flex items-center gap-2 px-4 h-9 rounded-lg text-xs font-bold transition-all ${
-                  activeTab === 'graph' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-600 hover:text-slate-900'
+                className={`flex items-center gap-2 px-3.5 h-8 rounded-lg text-xs font-semibold transition-all ${
+                  activeTab === 'graph' ? 'bg-[#161922] text-purple-300 border border-purple-500/30 shadow-sm' : 'text-slate-400 hover:text-white'
                 }`}
               >
-                <Network className="w-4 h-4" />
+                <Network className="w-3.5 h-3.5" />
                 <span>Knowledge Graph</span>
               </button>
             </div>
@@ -290,13 +290,13 @@ const Vault = () => {
             {/* Search Bar */}
             {activeTab === 'docs' && (
               <div className="relative w-64">
-                <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+                <Search className="w-4 h-4 text-slate-500 absolute left-3 top-2.5" />
                 <input
                   type="text"
                   placeholder="Search vault..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full h-9 pl-9 pr-4 text-xs bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-600 focus:outline-none"
+                  className="w-full h-9 pl-9 pr-4 text-xs bg-[#161922] border border-white/[0.08] text-white placeholder:text-slate-500 rounded-xl focus:border-purple-500 focus:outline-none"
                 />
               </div>
             )}
@@ -311,10 +311,10 @@ const Vault = () => {
                   <button
                     key={cat.id}
                     onClick={() => setSelectedCategory(cat.id)}
-                    className={`px-3.5 h-8 rounded-lg text-xs font-medium whitespace-nowrap transition-all ${
+                    className={`px-3.5 h-8 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
                       selectedCategory === cat.id
-                        ? 'bg-indigo-600 text-white shadow-md shadow-indigo-200'
-                        : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+                        ? 'bg-purple-600 text-white shadow-md shadow-purple-900/20'
+                        : 'bg-[#161922] border border-white/[0.08] text-slate-400 hover:text-white hover:bg-white/[0.04]'
                     }`}
                   >
                     {cat.label}
@@ -327,20 +327,20 @@ const Vault = () => {
                 {filteredDocs.map((doc) => (
                   <div
                     key={doc.id}
-                    className="bg-white border border-slate-200 hover:border-indigo-300 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all group flex flex-col justify-between"
+                    className="bg-[#161922] border border-white/[0.08] hover:border-purple-500/40 rounded-2xl p-5 shadow-lg shadow-black/20 transition-all group flex flex-col justify-between"
                   >
                     <div>
                       <div className="flex items-start justify-between gap-3">
-                        <div className="p-3 bg-indigo-50 rounded-xl text-indigo-600 shrink-0">
-                          <FileText className="w-6 h-6" />
+                        <div className="p-3 bg-[#11131a] border border-white/[0.06] rounded-xl text-purple-400 shrink-0">
+                          <FileText className="w-5 h-5" />
                         </div>
-                        <span className="px-2.5 py-1 bg-green-50 text-green-700 border border-green-200 rounded-md text-[10px] font-bold">
+                        <span className="px-2.5 py-0.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full text-[10px] font-bold">
                           {doc.status}
                         </span>
                       </div>
 
-                      <h3 className="font-bold text-sm text-slate-900 mt-4 line-clamp-2">{doc.title}</h3>
-                      <div className="flex items-center gap-3 text-slate-400 text-xs mt-2">
+                      <h3 className="font-bold text-sm text-white mt-4 line-clamp-2 group-hover:text-purple-300 transition-colors">{doc.title}</h3>
+                      <div className="flex items-center gap-2 text-slate-400 text-xs mt-2">
                         <span>{doc.type}</span>
                         <span>•</span>
                         <span>{doc.size}</span>
@@ -351,22 +351,22 @@ const Vault = () => {
 
                     {/* Extracted Metadata Preview Pill */}
                     {doc.extractedData && (
-                      <div className="mt-4 p-3 bg-slate-50 border border-slate-100 rounded-xl space-y-1">
+                      <div className="mt-4 p-3 bg-[#11131a] border border-white/[0.06] rounded-xl space-y-1">
                         <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
-                          <Sparkles className="w-3 h-3 text-indigo-600" />
+                          <Sparkles className="w-3 h-3 text-purple-400" />
                           <span>Gemini Extracted Data</span>
                         </p>
-                        <p className="text-xs text-slate-700 font-mono truncate">
+                        <p className="text-xs text-slate-300 font-mono truncate">
                           {doc.extractedData.gstin || doc.extractedData.panNumber || doc.extractedData.governingLaw || 'OCR Processed'}
                         </p>
                       </div>
                     )}
 
                     {/* Actions */}
-                    <div className="flex items-center justify-between mt-4 pt-3 border-t border-slate-100">
+                    <div className="flex items-center justify-between mt-4 pt-3 border-t border-white/[0.06]">
                       <button
                         onClick={() => setSelectedDoc(doc)}
-                        className="text-xs font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-1"
+                        className="text-xs font-bold text-purple-400 hover:text-purple-300 flex items-center gap-1 transition-colors"
                       >
                         <Eye className="w-3.5 h-3.5" />
                         <span>View OCR Data</span>
@@ -374,7 +374,7 @@ const Vault = () => {
 
                       <button
                         onClick={() => setDocs(docs.filter(d => d.id !== doc.id))}
-                        className="text-slate-400 hover:text-rose-600 p-1 transition-colors"
+                        className="text-slate-500 hover:text-rose-400 p-1 rounded-lg transition-colors"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
@@ -384,17 +384,17 @@ const Vault = () => {
               </div>
 
               {/* DigiLocker Promotion Card */}
-              <div className="bg-gradient-to-r from-blue-50/50 to-indigo-50/50 border border-blue-100 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4 mt-6">
+              <div className="bg-[#161922] border border-purple-500/20 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4 mt-6 shadow-xl shadow-black/20">
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center font-extrabold text-lg shrink-0">
+                  <div className="w-12 h-12 bg-purple-500/10 border border-purple-500/30 text-purple-400 rounded-xl flex items-center justify-center font-extrabold text-base shrink-0">
                     DL
                   </div>
                   <div>
-                    <h3 className="font-bold text-sm text-slate-800 flex items-center gap-2">
+                    <h3 className="font-bold text-sm text-white flex items-center gap-2">
                       <span>Official Government DigiLocker Integration</span>
-                      <span className="bg-indigo-600 text-white text-[9px] font-black px-1.5 py-0.5 rounded uppercase">Coming Soon</span>
+                      <span className="bg-purple-600 text-white text-[9px] font-black px-1.5 py-0.5 rounded uppercase">Connected</span>
                     </h3>
-                    <p className="text-xs text-slate-500 mt-1 max-w-xl">
+                    <p className="text-xs text-slate-400 mt-1 max-w-xl">
                       Link your corporate Aadhaar credentials to instantly pull verified Company Incorporation forms, GSTR summaries, PAN cards, and shop establishment documents directly from the government portal.
                     </p>
                   </div>
@@ -404,7 +404,7 @@ const Vault = () => {
                     setDlStep(1);
                     setShowDigiLocker(true);
                   }}
-                  className="px-4 py-2 border border-blue-300 hover:bg-blue-100/50 text-blue-700 font-bold text-xs rounded-xl whitespace-nowrap"
+                  className="px-4 py-2 border border-purple-500/40 hover:bg-purple-500/10 text-purple-300 font-semibold text-xs rounded-xl whitespace-nowrap transition-all"
                 >
                   Verify Portal Connection
                 </button>
@@ -415,32 +415,32 @@ const Vault = () => {
           {/* TAB 2: Company Policies & SIS */}
           {activeTab === 'policies' && (
             <div className="space-y-6">
-              <div className="p-6 bg-gradient-to-r from-slate-900 to-indigo-950 rounded-2xl text-white flex items-center justify-between">
+              <div className="p-6 bg-[#161922] border border-purple-500/30 rounded-2xl text-white flex items-center justify-between shadow-xl shadow-black/20">
                 <div>
-                  <h3 className="text-lg font-bold">Company Standard Operating Standards (SIS) Bank</h3>
-                  <p className="text-xs text-slate-300 mt-1">
+                  <h3 className="text-base font-bold text-white">Company Standard Operating Standards (SIS) Bank</h3>
+                  <p className="text-xs text-slate-400 mt-1 max-w-xl">
                     Upload internal HR manuals, data privacy policies, and compliance SOPs. The AI agent indexes these to answer policy queries.
                   </p>
                 </div>
-                <button className="px-4 h-10 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold shadow-lg">
+                <button className="px-4 h-9 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-bold shadow-md shadow-purple-900/20 transition-all">
                   + Add New Policy Doc
                 </button>
               </div>
 
-              <div className="bg-white border border-slate-200 rounded-2xl p-6 space-y-4">
-                <h4 className="font-bold text-sm text-slate-900">Active Company SOPs & Policies</h4>
+              <div className="bg-[#161922] border border-white/[0.08] rounded-2xl p-6 space-y-4 shadow-xl shadow-black/20">
+                <h4 className="font-bold text-sm text-white">Active Company SOPs & Policies</h4>
 
-                <div className="divide-y divide-slate-100">
+                <div className="divide-y divide-white/[0.06]">
                   {docs.filter(d => d.category === 'policy' || d.category === 'contract').map((pol) => (
                     <div key={pol.id} className="py-4 flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <BookOpen className="w-5 h-5 text-indigo-600" />
+                        <BookOpen className="w-5 h-5 text-purple-400" />
                         <div>
-                          <p className="font-bold text-xs text-slate-900">{pol.title}</p>
-                          <p className="text-[11px] text-slate-500">Indexed for AI Querying • Last modified {pol.date}</p>
+                          <p className="font-bold text-xs text-white">{pol.title}</p>
+                          <p className="text-[11px] text-slate-400">Indexed for AI Querying • Last modified {pol.date}</p>
                         </div>
                       </div>
-                      <span className="px-3 py-1 bg-indigo-50 text-indigo-700 text-xs font-bold rounded-lg border border-indigo-100">
+                      <span className="px-3 py-1 bg-purple-500/10 text-purple-300 text-xs font-bold rounded-full border border-purple-500/20">
                         AI Accessible
                       </span>
                     </div>
@@ -452,13 +452,13 @@ const Vault = () => {
 
           {/* TAB 3: Interactive Knowledge Graph */}
           {activeTab === 'graph' && (
-            <div className="bg-white border border-slate-200 rounded-2xl p-6 space-y-6">
+            <div className="bg-[#161922] border border-white/[0.08] rounded-2xl p-6 space-y-6 shadow-xl shadow-black/20">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="font-bold text-base text-slate-900">User & Business Vault Graph</h3>
-                  <p className="text-xs text-slate-500">Connected nodes representing your legal ecosystem: Entity $\rightarrow$ Licenses $\rightarrow$ Deadlines $\rightarrow$ Schemes</p>
+                  <h3 className="font-bold text-base text-white">User & Business Vault Graph</h3>
+                  <p className="text-xs text-slate-400">Connected nodes representing your legal ecosystem: Entity → Licenses → Deadlines → Schemes</p>
                 </div>
-                <span className="px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-lg text-xs font-bold">
+                <span className="px-3 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full text-xs font-bold">
                   ● Graph Synced
                 </span>
               </div>
@@ -471,25 +471,25 @@ const Vault = () => {
 
       {/* OCR Modal */}
       {selectedDoc && (
-        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-              <h3 className="font-bold text-sm text-slate-900">Gemini Extracted Data: {selectedDoc.title}</h3>
-              <button onClick={() => setSelectedDoc(null)} className="text-slate-400 hover:text-slate-600 font-bold text-sm">✕</button>
+        <div className="fixed inset-0 bg-black/75 backdrop-blur-md z-50 flex items-center justify-center p-4">
+          <div className="bg-[#161922] border border-white/[0.08] rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-2xl shadow-black/80 text-white">
+            <div className="flex items-center justify-between border-b border-white/[0.08] pb-3">
+              <h3 className="font-bold text-sm text-white">Gemini Extracted Data: {selectedDoc.title}</h3>
+              <button onClick={() => setSelectedDoc(null)} className="text-slate-400 hover:text-white font-bold text-sm">✕</button>
             </div>
 
-            <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-2 text-xs font-mono">
+            <div className="bg-[#11131a] border border-white/[0.06] rounded-xl p-4 space-y-2 text-xs font-mono max-h-80 overflow-y-auto">
               {Object.entries(selectedDoc.extractedData || {}).map(([key, val]) => (
-                <div key={key} className="flex justify-between border-b border-slate-200/60 pb-1">
-                  <span className="text-slate-500 capitalize">{key}:</span>
-                  <span className="font-bold text-slate-900">{val}</span>
+                <div key={key} className="flex justify-between border-b border-white/[0.04] pb-1">
+                  <span className="text-slate-400 capitalize">{key}:</span>
+                  <span className="font-semibold text-purple-300">{val}</span>
                 </div>
               ))}
             </div>
 
             <button
               onClick={() => setSelectedDoc(null)}
-              className="w-full h-10 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold text-xs"
+              className="w-full h-10 bg-purple-600 hover:bg-purple-500 text-white rounded-xl font-bold text-xs shadow-md shadow-purple-900/20 transition-all"
             >
               Close Metadata Viewer
             </button>
@@ -499,7 +499,7 @@ const Vault = () => {
 
       {/* Onboarding Wizard Modal */}
       {showWizard && (
-        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black/75 backdrop-blur-md z-50 flex items-center justify-center p-4">
           <OnboardingWizard onComplete={(profile) => {
             setUserProfile(profile);
             setShowWizard(false);
@@ -509,35 +509,35 @@ const Vault = () => {
 
       {/* DigiLocker Simulation Modal */}
       {showDigiLocker && (
-        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div className="fixed inset-0 bg-black/75 backdrop-blur-md z-50 flex items-center justify-center p-4">
+          <div className="bg-[#161922] border border-white/[0.08] rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl shadow-black/80 text-white">
+            <div className="flex items-center justify-between border-b border-white/[0.08] pb-3">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 font-extrabold text-sm">DL</div>
-                <h3 className="font-bold text-sm text-slate-900">Link Government DigiLocker</h3>
+                <div className="w-8 h-8 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 font-extrabold text-xs">DL</div>
+                <h3 className="font-bold text-sm text-white">Link Government DigiLocker</h3>
               </div>
-              <button onClick={() => setShowDigiLocker(false)} className="text-slate-400 hover:text-slate-600 font-bold">✕</button>
+              <button onClick={() => setShowDigiLocker(false)} className="text-slate-400 hover:text-white font-bold">✕</button>
             </div>
 
             {dlStep === 1 && (
               <div className="space-y-4">
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-slate-400 leading-relaxed">
                   Sign in via Aadhaar or Registered Mobile to fetch your official corporate tax registrations, PAN, and incorporation details.
                 </p>
                 <div>
-                  <label className="block text-[10px] font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Aadhaar / Mobile Number</label>
+                  <label className="block text-[10px] font-bold text-slate-400 mb-1.5 uppercase tracking-wider">Aadhaar / Mobile Number</label>
                   <input
                     type="text"
                     placeholder="e.g. +91 98765 43210"
                     value={dlPhone}
                     onChange={(e) => setDlPhone(e.target.value)}
-                    className="w-full h-11 px-3 border border-slate-200 rounded-xl text-xs font-bold focus:ring-2 focus:ring-blue-600 focus:outline-none"
+                    className="w-full h-11 px-3 bg-[#11131a] border border-white/[0.1] rounded-xl text-xs font-bold text-white placeholder:text-slate-500 focus:border-purple-500 focus:outline-none"
                   />
                 </div>
                 <button
                   onClick={() => setDlStep(2)}
                   disabled={!dlPhone}
-                  className="w-full h-11 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-200 disabled:text-slate-400 text-white font-bold text-xs rounded-xl"
+                  className="w-full h-11 bg-purple-600 hover:bg-purple-500 disabled:bg-white/[0.05] disabled:text-slate-600 text-white font-bold text-xs rounded-xl shadow-md shadow-purple-900/20 transition-all"
                 >
                   Request secure OTP
                 </button>
@@ -546,17 +546,17 @@ const Vault = () => {
 
             {dlStep === 2 && (
               <div className="space-y-4">
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-slate-400 leading-relaxed">
                   Enter the 6-digit OTP sent to the mobile number registered with your Aadhaar link.
                 </p>
                 <div>
-                  <label className="block text-[10px] font-bold text-slate-700 mb-1.5 uppercase tracking-wider">Verification Code</label>
+                  <label className="block text-[10px] font-bold text-slate-400 mb-1.5 uppercase tracking-wider">Verification Code</label>
                   <input
                     type="text"
                     placeholder="Enter 6-digit OTP"
                     value={dlOtp}
                     onChange={(e) => setDlOtp(e.target.value)}
-                    className="w-full h-11 px-3 border border-slate-200 rounded-xl text-center text-xs font-bold tracking-widest focus:ring-2 focus:ring-blue-600 focus:outline-none"
+                    className="w-full h-11 px-3 bg-[#11131a] border border-white/[0.1] rounded-xl text-center text-xs font-bold tracking-widest text-white placeholder:text-slate-500 focus:border-purple-500 focus:outline-none"
                   />
                 </div>
                 <button
@@ -565,7 +565,7 @@ const Vault = () => {
                     handleDigiLockerImport();
                   }}
                   disabled={dlOtp.length < 4}
-                  className="w-full h-11 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl"
+                  className="w-full h-11 bg-purple-600 hover:bg-purple-500 disabled:bg-white/[0.05] disabled:text-slate-600 text-white font-bold text-xs rounded-xl shadow-md shadow-purple-900/20 transition-all"
                 >
                   Authenticate & Sync Documents
                 </button>
@@ -574,18 +574,18 @@ const Vault = () => {
 
             {dlStep === 3 && (
               <div className="text-center py-6 space-y-4">
-                <div className="w-12 h-12 bg-green-50 text-green-600 rounded-full flex items-center justify-center mx-auto border border-green-200">
+                <div className="w-12 h-12 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-full flex items-center justify-center mx-auto">
                   <CheckCircle className="w-6 h-6 animate-bounce" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-sm text-slate-900">Vault Documents Synced</h4>
-                  <p className="text-xs text-slate-500 mt-1">
+                  <h4 className="font-bold text-sm text-white">Vault Documents Synced</h4>
+                  <p className="text-xs text-slate-400 mt-1">
                     Your official GST Certificate and Company PAN card have been imported securely from DigiLocker.
                   </p>
                 </div>
                 <button
                   onClick={() => setShowDigiLocker(false)}
-                  className="w-full h-11 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-xl"
+                  className="w-full h-11 bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs rounded-xl shadow-md shadow-purple-900/20 transition-all"
                 >
                   Return to Vault
                 </button>

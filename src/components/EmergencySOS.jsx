@@ -203,10 +203,10 @@ const EmergencySOS = ({ onClose }) => {
   };
 
   return (
-    <div className="w-full max-w-4xl bg-slate-950 text-white rounded-3xl border border-red-900/50 shadow-[0_0_50px_rgba(239,68,68,0.15)] overflow-hidden flex flex-col md:flex-row">
+    <div className="w-full max-w-4xl bg-[#161922] text-white rounded-3xl border border-white/[0.08] shadow-2xl overflow-hidden flex flex-col md:flex-row">
       
       {/* Left panel: Control Room & Interactive SOS Trigger */}
-      <div className="w-full md:w-5/12 bg-gradient-to-b from-slate-900 via-slate-950 to-red-950/40 p-6 md:p-8 flex flex-col justify-between border-b md:border-b-0 md:border-r border-red-950/50">
+      <div className="w-full md:w-5/12 bg-[#141721] p-6 md:p-8 flex flex-col justify-between border-b md:border-b-0 md:border-r border-white/[0.08]">
         
         <div>
           <div className="flex items-center justify-between mb-6">

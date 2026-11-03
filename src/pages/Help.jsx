@@ -41,76 +41,76 @@ const Help = () => {
       id: 2,
       category: 'ai-features',
       question: 'Is the AI advice admissible in court?',
-      answer: 'No. LawBot360 acts as a research assistant and drafting tool. While it cites specific Indian Penal Code sections, all outputs must be reviewed by a qualified attorney before use in legal proceedings.'
+      answer: 'No. LawBot360 acts as a research assistant and drafting tool. While it cites specific Indian Penal Code & BNS sections, all outputs must be reviewed by a qualified attorney before use in legal proceedings.'
     },
     {
       id: 3,
       category: 'legal-tools',
       question: 'Does the OCR support handwritten affidavits?',
-      answer: 'Our OCR engine is optimized for printed text. Handwritten recognition is currently in Beta (Pro Plan only) and works best with high-contrast scans.'
+      answer: 'Our OCR engine is optimized for printed text. Handwritten recognition is currently supported through Gemini Multimodal Vision and works best with high-contrast scans.'
     },
     {
       id: 4,
       category: 'account',
       question: 'Can I pause my subscription?',
-      answer: 'Yes, you can pause your subscription for up to 3 months. Go to Account > Billing > Manage Subscription. Your data will be archived safely during this period.'
+      answer: 'Yes, you can pause your subscription for up to 3 months. Go to Account > Billing > Manage Subscription. Your data will be archived safely in your encrypted vault.'
     },
     {
       id: 5,
       category: 'security',
       question: 'Where is my client data hosted?',
-      answer: 'All data is hosted on AWS servers located within India (Mumbai region) to comply with the Digital Personal Data Protection Act, 2023.'
+      answer: 'All data is hosted on AWS servers located within India (Mumbai region) with AES-256 encryption to strictly comply with the Digital Personal Data Protection Act, 2023.'
     }
   ];
 
   const supportChannels = [
     {
       title: 'Priority Chat',
-      description: 'Best for quick technical queries',
+      description: 'Instant technical & legal queries',
       icon: MessageCircle,
-      action: 'Start Chat',
+      action: 'Start Live Chat',
       status: 'Online',
-      statusColor: 'text-emerald-600 bg-emerald-50 border-emerald-100',
+      statusColor: 'badge-low',
       wait: '< 2 min wait'
     },
     {
       title: 'Legal Engineering',
-      description: 'Complex integration support',
+      description: 'Custom API and integration support',
       icon: Mail,
       action: 'Email Us',
       status: 'Response in 4h',
-      statusColor: 'text-blue-600 bg-blue-50 border-blue-100',
+      statusColor: 'badge-purple',
       wait: 'Ticket based'
     },
     {
-      title: 'Client Success Line',
-      description: 'Mon-Fri 9AM-6PM IST',
+      title: 'Sarvam Telephony Desk',
+      description: 'Toll-free 24/7 vernacular phone assist',
       icon: Phone,
-      action: '+91 8800 555 123',
+      action: '+91 80 0012 3456',
       status: 'Available',
-      statusColor: 'text-slate-600 bg-slate-100 border-slate-200',
-      wait: 'Direct line'
+      statusColor: 'badge-medium',
+      wait: 'Direct dial'
     }
   ];
 
   const resources = [
     {
       title: 'Video Academy',
-      description: 'Master the platform in minutes',
+      description: 'Master LawBot360 workflows in minutes',
       icon: Video,
-      color: 'bg-rose-50 text-rose-600 border-rose-100 group-hover:bg-rose-600 group-hover:text-white'
+      color: 'bg-rose-500/10 text-rose-400 border-rose-500/20'
     },
     {
       title: 'API Documentation',
-      description: 'Integration guides for developers',
+      description: 'REST and WebSocket documentation',
       icon: FileText,
-      color: 'bg-indigo-50 text-indigo-600 border-indigo-100 group-hover:bg-indigo-600 group-hover:text-white'
+      color: 'bg-purple-500/10 text-purple-400 border-purple-500/20'
     },
     {
-      title: 'Legal Community',
-      description: 'Connect with 10k+ lawyers',
+      title: 'Bar Community',
+      description: 'Connect with 10k+ verified legal counsel',
       icon: Users,
-      color: 'bg-emerald-50 text-emerald-600 border-emerald-100 group-hover:bg-emerald-600 group-hover:text-white'
+      color: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
     }
   ];
 
@@ -124,7 +124,6 @@ const Help = () => {
   const handleContactSubmit = (e) => {
     e.preventDefault();
     setFormStatus('submitting');
-    // Simulate API call
     setTimeout(() => {
       setFormStatus('success');
       setContactForm({ name: '', email: '', subject: '', message: '' });
@@ -133,175 +132,184 @@ const Help = () => {
   };
 
   return (
-    <div className="flex h-screen bg-slate-50 font-sans antialiased text-slate-900 selection:bg-blue-100 selection:text-blue-900">
+    <div className="flex h-screen bg-[#0c0e14] text-[#f1f5f9] font-sans selection:bg-purple-500/30 selection:text-white">
       <Sidebar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
       
       <div className="flex-1 flex flex-col h-full overflow-hidden relative">
-        {/* Mobile Header */}
-        <div className="md:hidden bg-white border-b border-slate-200 px-4 py-3 flex items-center gap-3 sticky top-0 z-30">
-          <button onClick={() => setIsSidebarOpen(true)} className="p-2 -ml-2 hover:bg-slate-100 rounded-lg text-slate-600 transition-colors">
-            <Menu className="w-6 h-6" />
-          </button>
-          <span className="font-semibold text-slate-900">Support Center</span>
+        {/* Top Header */}
+        <div className="bg-[#0c0e14]/90 backdrop-blur-md border-b border-white/[0.08] px-6 py-4 flex items-center justify-between sticky top-0 z-30">
+          <div className="flex items-center gap-4">
+            <button onClick={() => setIsSidebarOpen(true)} className="md:hidden p-2 hover:bg-white/[0.04] rounded-lg text-slate-400">
+              <Menu className="w-5 h-5" />
+            </button>
+            <div>
+              <div className="flex items-center gap-2 text-xs text-slate-500 font-medium mb-0.5">
+                <span>Support</span>
+                <span>/</span>
+                <span className="text-purple-400">Help & Knowledge Desk</span>
+              </div>
+              <h1 className="text-xl font-bold text-white tracking-tight">Support Center</h1>
+            </div>
+          </div>
         </div>
 
         <div className="flex-1 overflow-y-auto scroll-smooth">
           {/* Hero Section */}
-          <div className="bg-slate-950 pt-20 pb-32 px-6 relative overflow-hidden isolate">
-            {/* Elegant Background Gradients */}
-            <div className="absolute top-0 right-0 -z-10 w-[40rem] h-[40rem] bg-indigo-600/20 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 opacity-50"></div>
-            <div className="absolute bottom-0 left-0 -z-10 w-[30rem] h-[30rem] bg-blue-500/10 rounded-full blur-[80px] translate-y-1/2 -translate-x-1/2"></div>
-            <div className="absolute inset-0 bg-white/5 opacity-20"></div>
+          <div className="bg-[#141721] pt-12 pb-24 px-6 relative overflow-hidden border-b border-white/[0.08]">
+            <div className="absolute top-0 right-0 w-[35rem] h-[35rem] bg-purple-600/10 rounded-full blur-[100px] pointer-events-none"></div>
             
             <div className="max-w-3xl mx-auto text-center relative z-10">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-800/50 text-blue-300 text-xs font-semibold border border-slate-700/50 mb-8 backdrop-blur-sm shadow-xl">
-                <Sparkles className="w-3.5 h-3.5 text-yellow-400" />
-                <span>New: AI Contract Analysis Documentation</span>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-500/10 text-violet-400 text-xs font-medium border border-violet-500/20 mb-6 backdrop-blur-sm">
+                <Sparkles className="w-3.5 h-3.5" />
+                <span>AI-Powered Legal Help Desk & Documentation</span>
               </div>
               
-              <h1 className="text-4xl md:text-5xl font-bold text-white mb-6 tracking-tight leading-tight">
-                How can LawBot360 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-indigo-400">help you?</span>
-              </h1>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 tracking-tight">
+                How can we <span className="text-violet-400">assist your practice?</span>
+              </h2>
+              <p className="text-sm text-slate-400 max-w-xl mx-auto mb-8">
+                Search answers across our knowledge base, read feature guides, or submit a direct ticket to legal engineering.
+              </p>
               
-              {/* Enhanced Search Box */}
-              <div className="relative max-w-2xl mx-auto group mt-8">
-                <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none">
-                  <Search className="w-5 h-5 text-slate-400 group-focus-within:text-blue-400 transition-colors duration-300" />
+              {/* Search Box */}
+              <div className="relative max-w-2xl mx-auto">
+                <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+                  <Search className="w-4 h-4 text-slate-500" />
                 </div>
                 <input
                   type="text"
-                  placeholder="Ask a question (e.g., 'API keys', 'Billing', 'Export PDF')"
+                  placeholder="Ask a question (e.g., 'API keys', 'BNS sections', 'Export PDF', 'Telephony')"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-14 pr-6 py-5 bg-white/10 backdrop-blur-xl border border-white/10 rounded-2xl text-white placeholder:text-slate-400 focus:bg-white focus:text-slate-900 focus:placeholder:text-slate-500 focus:ring-4 focus:ring-blue-500/30 focus:border-transparent outline-none transition-all duration-300 shadow-2xl"
+                  className="w-full pl-11 pr-5 py-3.5 bg-[#0c0e14] border border-white/[0.08] rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30 text-sm shadow-inner transition-all"
                 />
               </div>
               
-              <div className="mt-8 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-slate-400">
-                <span className="opacity-70">Common topics:</span>
-                <button onClick={() => setSearchTerm('Invoice')} className="hover:text-blue-300 transition-colors">Invoice & Billing</button>
-                <button onClick={() => setSearchTerm('API')} className="hover:text-blue-300 transition-colors">API Access</button>
-                <button onClick={() => setSearchTerm('Privacy')} className="hover:text-blue-300 transition-colors">Privacy Policy</button>
+              <div className="mt-4 flex flex-wrap justify-center gap-x-5 gap-y-1 text-xs text-slate-500">
+                <span>Frequent tags:</span>
+                <button onClick={() => setSearchTerm('Telephony')} className="hover:text-purple-400 transition-colors">Sarvam Telephony</button>
+                <button onClick={() => setSearchTerm('API')} className="hover:text-purple-400 transition-colors">Bedrock API</button>
+                <button onClick={() => setSearchTerm('Privacy')} className="hover:text-purple-400 transition-colors">DPDP Act Compliance</button>
               </div>
             </div>
           </div>
 
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-20 relative z-20 pb-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-12 relative z-20 pb-20">
             
             {/* Support Channels Cards */}
-            <div className="grid md:grid-cols-3 gap-6 mb-12">
+            <div className="grid md:grid-cols-3 gap-5 mb-10">
               {supportChannels.map((channel, index) => (
-                <div key={index} className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/60 hover:shadow-xl hover:shadow-slate-200/50 hover:border-blue-300 hover:-translate-y-1 transition-all duration-300 group cursor-pointer relative overflow-hidden">
-                  <div className="flex justify-between items-start mb-6">
-                    <div className="p-3.5 bg-slate-50 rounded-2xl group-hover:bg-blue-600 transition-all duration-300 shadow-sm border border-slate-100 group-hover:border-blue-500">
-                      <channel.icon className="w-6 h-6 text-slate-700 group-hover:text-white transition-colors" />
+                <div key={index} className="bg-[#161922] rounded-2xl p-6 border border-white/[0.08] hover:border-purple-500/40 hover:bg-[#1a1e2b] hover:-translate-y-0.5 transition-all duration-300 group cursor-pointer relative overflow-hidden">
+                  <div className="flex justify-between items-start mb-5">
+                    <div className="p-3 bg-[#141721] rounded-xl group-hover:bg-purple-600 transition-all text-purple-400 group-hover:text-white border border-white/[0.08]">
+                      <channel.icon className="w-5 h-5" />
                     </div>
-                    <span className={`text-[11px] uppercase tracking-wide font-bold px-2.5 py-1 rounded-full border flex items-center gap-1.5 ${channel.statusColor}`}>
-                      <span className="relative flex h-2 w-2">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 bg-current"></span>
-                        <span className="relative inline-flex rounded-full h-2 w-2 bg-current"></span>
-                      </span>
+                    <span className={`text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full ${channel.statusColor}`}>
                       {channel.status}
                     </span>
                   </div>
-                  <h3 className="font-bold text-slate-900 text-lg mb-1.5">{channel.title}</h3>
-                  <p className="text-slate-500 text-sm mb-6">{channel.description}</p>
-                  <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-sm">
-                    <span className="text-slate-400 font-medium flex items-center gap-1.5">
+                  <h3 className="font-semibold text-white text-base mb-1">{channel.title}</h3>
+                  <p className="text-slate-400 text-xs mb-5 leading-relaxed">{channel.description}</p>
+                  <div className="pt-4 border-t border-white/[0.06] flex items-center justify-between text-xs">
+                    <span className="text-slate-500 font-medium flex items-center gap-1.5">
                       <Clock className="w-3.5 h-3.5" /> {channel.wait}
                     </span>
-                    <span className="text-blue-600 font-bold group-hover:translate-x-1 transition-transform flex items-center gap-1">
-                      {channel.action} <ArrowRight className="w-4 h-4" />
+                    <span className="text-purple-400 font-semibold group-hover:text-purple-300 transition-colors flex items-center gap-1">
+                      {channel.action} <ArrowRight className="w-3.5 h-3.5" />
                     </span>
                   </div>
                 </div>
               ))}
             </div>
 
-            <div className="grid lg:grid-cols-12 gap-10">
+            <div className="grid lg:grid-cols-12 gap-8">
               {/* Main Content: FAQ */}
               <div className="lg:col-span-8">
-                <div className="mb-8">
-                  <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Knowledge Base</h2>
-                  <p className="text-slate-500 mt-1">Instant answers to the most common questions.</p>
+                <div className="mb-6">
+                  <h2 className="text-lg font-bold text-white tracking-tight">Frequently Answered Questions</h2>
+                  <p className="text-xs text-slate-400 mt-0.5">Instant answers to typical platform and legal questions.</p>
                 </div>
 
                 {/* Filter Tabs */}
-                <div className="flex flex-wrap gap-2 mb-8">
+                <div className="flex flex-wrap gap-2 mb-6">
                   {categories.map((category) => (
                     <button
                       key={category.id}
                       onClick={() => setSelectedCategory(category.id)}
-                      className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 border ${
+                      className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-all border ${
                         selectedCategory === category.id
-                          ? 'bg-slate-900 text-white border-slate-900 shadow-lg shadow-slate-900/20'
-                          : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+                          ? 'bg-purple-600 text-white border-purple-500 shadow-lg shadow-purple-600/25'
+                          : 'bg-[#161922] text-slate-400 border-white/[0.08] hover:text-white hover:bg-[#1a1e2b]'
                       }`}
                     >
-                      <category.icon className={`w-4 h-4 ${selectedCategory === category.id ? 'text-blue-400' : 'text-slate-400'}`} />
+                      <category.icon className={`w-3.5 h-3.5 ${selectedCategory === category.id ? 'text-white' : 'text-slate-500'}`} />
                       {category.label}
                     </button>
                   ))}
                 </div>
 
                 {/* FAQ List */}
-                <div className="space-y-4">
+                <div className="space-y-3">
                   {filteredFaqs.length > 0 ? filteredFaqs.map((faq) => (
                     <div 
                       key={faq.id} 
-                      className={`group bg-white rounded-2xl border transition-all duration-300 overflow-hidden ${
+                      className={`group bg-[#161922] rounded-2xl border transition-all duration-300 overflow-hidden ${
                         expandedFaq === faq.id 
-                          ? 'border-blue-200 shadow-lg shadow-blue-900/5 ring-1 ring-blue-500/20' 
-                          : 'border-slate-200 hover:border-slate-300 hover:shadow-sm'
+                          ? 'border-purple-500/50 bg-[#191c27]' 
+                          : 'border-white/[0.08] hover:border-purple-500/30'
                       }`}
                     >
                       <button
                         onClick={() => setExpandedFaq(expandedFaq === faq.id ? null : faq.id)}
-                        className="w-full flex items-start justify-between p-6 text-left"
+                        className="w-full flex items-start justify-between p-5 text-left"
                       >
-                        <div className="flex gap-4">
-                          <span className={`mt-0.5 flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-colors ${expandedFaq === faq.id ? 'bg-blue-100 text-blue-700' : 'bg-slate-100 text-slate-500'}`}>Q</span>
-                          <span className={`font-semibold text-lg transition-colors ${expandedFaq === faq.id ? 'text-blue-700' : 'text-slate-900 group-hover:text-blue-700'}`}>
+                        <div className="flex gap-3.5 items-center">
+                          <span className={`flex-shrink-0 w-6 h-6 rounded-lg flex items-center justify-center text-xs font-bold border ${
+                            expandedFaq === faq.id 
+                              ? 'bg-purple-600 text-white border-purple-400' 
+                              : 'bg-[#141721] text-purple-400 border-white/[0.08]'
+                          }`}>Q</span>
+                          <span className={`font-semibold text-sm transition-colors ${expandedFaq === faq.id ? 'text-white' : 'text-slate-300 group-hover:text-white'}`}>
                             {faq.question}
                           </span>
                         </div>
-                        <ChevronDown className={`w-5 h-5 text-slate-400 flex-shrink-0 mt-1 transition-transform duration-300 ${expandedFaq === faq.id ? 'rotate-180 text-blue-500' : ''}`} />
+                        <ChevronDown className={`w-4 h-4 text-slate-500 flex-shrink-0 transition-transform duration-300 ${expandedFaq === faq.id ? 'rotate-180 text-purple-400' : ''}`} />
                       </button>
                       <div 
-                        className={`pl-[4.5rem] pr-8 text-slate-600 leading-relaxed overflow-hidden transition-all duration-300 ease-in-out ${
-                          expandedFaq === faq.id ? 'max-h-96 opacity-100 pb-8' : 'max-h-0 opacity-0'
+                        className={`pl-14 pr-6 text-xs text-slate-400 leading-relaxed overflow-hidden transition-all duration-300 ease-in-out ${
+                          expandedFaq === faq.id ? 'max-h-96 opacity-100 pb-5' : 'max-h-0 opacity-0'
                         }`}
                       >
-                         <p className="border-l-2 border-slate-100 pl-4">{faq.answer}</p>
+                         <p className="border-l-2 border-purple-500/40 pl-4 text-slate-300">{faq.answer}</p>
                       </div>
                     </div>
                   )) : (
-                    <div className="text-center py-16 bg-white rounded-3xl border border-dashed border-slate-300">
-                        <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4">
-                          <Search className="w-8 h-8 text-slate-300" />
+                    <div className="text-center py-12 bg-[#161922] rounded-2xl border border-dashed border-white/[0.12] p-6">
+                        <div className="w-12 h-12 bg-[#141721] rounded-xl border border-white/[0.08] flex items-center justify-center mx-auto mb-3">
+                          <Search className="w-6 h-6 text-slate-500" />
                         </div>
-                        <h3 className="text-lg font-semibold text-slate-900">No matching results</h3>
-                        <p className="text-slate-500 mb-4">We couldn't find an answer for "{searchTerm}"</p>
-                        <button onClick={() => setSearchTerm('')} className="text-blue-600 font-bold text-sm hover:underline hover:text-blue-700 transition-colors">Clear filters & search</button>
+                        <h3 className="text-sm font-semibold text-white">No matching results</h3>
+                        <p className="text-xs text-slate-400 mb-3">We couldn't find an answer matching "{searchTerm}"</p>
+                        <button onClick={() => setSearchTerm('')} className="text-purple-400 font-semibold text-xs hover:underline">Clear filters & search</button>
                     </div>
                   )}
                 </div>
 
                 {/* External Resources */}
-                <div className="mt-16">
-                   <h3 className="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2">
-                     <BookOpen className="w-5 h-5 text-slate-400" /> Additional Resources
+                <div className="mt-10">
+                   <h3 className="text-sm font-bold text-white mb-4 flex items-center gap-2 uppercase tracking-wider">
+                     <BookOpen className="w-4 h-4 text-purple-400" /> Additional Resources
                    </h3>
-                   <div className="grid sm:grid-cols-3 gap-5">
+                   <div className="grid sm:grid-cols-3 gap-4">
                      {resources.map((res, i) => (
-                       <a href="#" key={i} className="flex flex-col p-6 bg-white border border-slate-200 rounded-2xl hover:border-blue-200 hover:shadow-lg hover:shadow-blue-900/5 transition-all group">
-                          <div className={`w-12 h-12 rounded-xl border flex items-center justify-center mb-4 transition-colors duration-300 ${res.color}`}>
-                             <res.icon className="w-6 h-6" />
+                       <a href="#" key={i} className="flex flex-col p-5 bg-[#161922] border border-white/[0.08] rounded-2xl hover:border-purple-500/40 hover:bg-[#1a1e2b] transition-all group">
+                          <div className={`w-10 h-10 rounded-xl border flex items-center justify-center mb-3 ${res.color}`}>
+                             <res.icon className="w-5 h-5" />
                           </div>
-                          <h4 className="font-bold text-slate-900 mb-1 flex items-center gap-2 group-hover:text-blue-600 transition-colors">
-                            {res.title} <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-all -translate-x-1 group-hover:translate-x-0" />
+                          <h4 className="font-semibold text-white text-xs mb-1 flex items-center gap-1.5 group-hover:text-purple-400 transition-colors">
+                            {res.title} <ExternalLink className="w-3 h-3 opacity-0 group-hover:opacity-100 transition-all -translate-x-0.5 group-hover:translate-x-0" />
                           </h4>
-                          <p className="text-xs text-slate-500 font-medium leading-relaxed">{res.description}</p>
+                          <p className="text-[11px] text-slate-400 leading-relaxed">{res.description}</p>
                        </a>
                      ))}
                    </div>
@@ -309,90 +317,91 @@ const Help = () => {
               </div>
 
               {/* Sidebar: Sticky Contact Form */}
-              <div className="lg:col-span-4 space-y-8">
-                <div className="bg-white rounded-2xl p-1 border border-slate-200/80 shadow-xl shadow-slate-200/40 sticky top-6">
-                  <div className="p-6 md:p-7 rounded-xl bg-slate-50/50">
-                    {formStatus === 'success' ? (
-                      <div className="text-center py-12 animate-in fade-in zoom-in duration-500">
-                        <div className="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-sm">
-                          <CheckCircle2 className="w-10 h-10" />
-                        </div>
-                        <h3 className="text-2xl font-bold text-slate-900 mb-2">Message Sent</h3>
-                        <p className="text-slate-500 mb-8 text-sm leading-relaxed px-4">We've received your inquiry. A confirmation email with Ticket #4922 has been sent to you.</p>
-                        <button onClick={() => setFormStatus('idle')} className="text-slate-900 font-bold text-sm border-b-2 border-slate-200 hover:border-blue-600 hover:text-blue-600 transition-colors pb-0.5">Send another message</button>
+              <div className="lg:col-span-4 space-y-6">
+                <div className="bg-[#161922] rounded-2xl border border-white/[0.08] p-6 sticky top-24">
+                  {formStatus === 'success' ? (
+                    <div className="text-center py-8 animate-in fade-in zoom-in duration-300">
+                      <div className="w-14 h-14 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                        <CheckCircle2 className="w-7 h-7" />
                       </div>
-                    ) : (
-                      <>
-                        <div className="mb-8">
-                          <h3 className="text-xl font-bold text-slate-900 mb-1">Direct Message</h3>
-                          <p className="text-sm text-slate-500 font-medium">Get help from our Legal Engineering team.</p>
+                      <h3 className="text-base font-bold text-white mb-1">Inquiry Submitted</h3>
+                      <p className="text-xs text-slate-400 mb-6 leading-relaxed">Ticket #4922 created. An engineer will follow up within 4 hours.</p>
+                      <button onClick={() => setFormStatus('idle')} className="text-purple-400 font-semibold text-xs hover:underline">Send another message</button>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="mb-6">
+                        <h3 className="text-base font-bold text-white mb-1">Direct Message</h3>
+                        <p className="text-xs text-slate-400">Reach our Legal Engineering & Compliance squad.</p>
+                      </div>
+                      
+                      <form onSubmit={handleContactSubmit} className="space-y-4">
+                        <div className="space-y-1">
+                          <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Your Work Email</label>
+                          <input
+                            required
+                            type="email"
+                            value={contactForm.email}
+                            onChange={e => setContactForm({...contactForm, email: e.target.value})}
+                            className="w-full px-3.5 py-2.5 bg-[#0c0e14] border border-white/[0.08] rounded-xl focus:border-purple-500/50 outline-none text-xs text-white placeholder-slate-500 transition-all"
+                            placeholder="counsel@firm.com"
+                          />
                         </div>
                         
-                        <form onSubmit={handleContactSubmit} className="space-y-5">
-                          <div className="space-y-1.5">
-                            <label className="text-[11px] font-bold text-slate-500 uppercase tracking-wider pl-1">Your Email</label>
-                            <input
-                              required
-                              type="email"
-                              value={contactForm.email}
-                              onChange={e => setContactForm({...contactForm, email: e.target.value})}
-                              className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all text-sm font-medium placeholder:text-slate-300 hover:border-slate-300"
-                              placeholder="name@company.com"
-                            />
+                        <div className="space-y-1">
+                          <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Topic</label>
+                          <div className="relative">
+                            <select 
+                              className="w-full px-3.5 py-2.5 bg-[#0c0e14] border border-white/[0.08] rounded-xl focus:border-purple-500/50 outline-none text-xs text-slate-300 appearance-none cursor-pointer"
+                              value={contactForm.subject}
+                              onChange={e => setContactForm({...contactForm, subject: e.target.value})}
+                            >
+                               <option value="" disabled selected>Select category...</option>
+                               <option>Bedrock API & Models</option>
+                               <option>Contract OCR Issue</option>
+                               <option>Sarvam Telephony Callback</option>
+                               <option>Billing & Enterprise Plan</option>
+                            </select>
+                            <ChevronDown className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500 pointer-events-none" />
                           </div>
-                          
-                          <div className="space-y-1.5">
-                            <label className="text-[11px] font-bold text-slate-500 uppercase tracking-wider pl-1">Topic</label>
-                            <div className="relative">
-                              <select 
-                                className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all text-sm font-medium text-slate-700 appearance-none hover:border-slate-300 cursor-pointer"
-                                value={contactForm.subject}
-                                onChange={e => setContactForm({...contactForm, subject: e.target.value})}
-                              >
-                                 <option value="" disabled selected>Select a topic...</option>
-                                 <option>Billing Issue</option>
-                                 <option>Technical Support</option>
-                                 <option>Feature Request</option>
-                              </select>
-                              <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
-                            </div>
-                          </div>
-                          
-                          <div className="space-y-1.5">
-                            <label className="text-[11px] font-bold text-slate-500 uppercase tracking-wider pl-1">How can we help?</label>
-                            <textarea
-                              required
-                              rows="4"
-                              value={contactForm.message}
-                              onChange={e => setContactForm({...contactForm, message: e.target.value})}
-                              className="w-full px-4 py-3 bg-white border border-slate-200 rounded-xl focus:bg-white focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 outline-none transition-all text-sm font-medium resize-none placeholder:text-slate-300 hover:border-slate-300"
-                              placeholder="Please describe your issue in detail..."
-                            ></textarea>
-                          </div>
-                          
-                          <button
-                            disabled={formStatus === 'submitting'}
-                            type="submit"
-                            className="w-full py-3.5 bg-slate-900 hover:bg-blue-600 text-white rounded-xl font-bold shadow-lg shadow-slate-900/20 hover:shadow-blue-600/30 hover:-translate-y-0.5 transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
-                          >
-                            {formStatus === 'submitting' ? (
-                               <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
-                            ) : (
-                               <>Send Message <Send className="w-4 h-4" /></>
-                            )}
-                          </button>
-                        </form>
-                      </>
-                    )}
-                  </div>
+                        </div>
+                        
+                        <div className="space-y-1">
+                          <label className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Describe the issue</label>
+                          <textarea
+                            required
+                            rows="4"
+                            value={contactForm.message}
+                            onChange={e => setContactForm({...contactForm, message: e.target.value})}
+                            className="w-full px-3.5 py-2.5 bg-[#0c0e14] border border-white/[0.08] rounded-xl focus:border-purple-500/50 outline-none text-xs text-white placeholder-slate-500 transition-all resize-none"
+                            placeholder="Detail steps to reproduce or legal questions..."
+                          ></textarea>
+                        </div>
+                        
+                        <button
+                          disabled={formStatus === 'submitting'}
+                          type="submit"
+                          className="w-full py-2.5 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-semibold shadow-lg shadow-purple-600/20 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                        >
+                          {formStatus === 'submitting' ? (
+                             <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                          ) : (
+                             <>Send Ticket <Send className="w-3.5 h-3.5" /></>
+                          )}
+                        </button>
+                      </form>
+                    </>
+                  )}
                 </div>
                 
-                <div className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl p-8 text-white text-center shadow-xl shadow-blue-900/20 relative overflow-hidden group">
-                   <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2 group-hover:scale-110 transition-transform duration-500"></div>
+                {/* Enterprise Box */}
+                <div className="bg-[#141721] border border-purple-500/20 rounded-2xl p-6 text-white text-center relative overflow-hidden group">
                    <div className="relative z-10">
-                     <h4 className="font-bold text-lg mb-2">Enterprise Solutions</h4>
-                     <p className="text-blue-100 text-sm mb-6 leading-relaxed">For large firms needing dedicated servers, custom API limits, and 24/7 SLA support.</p>
-                     <button className="px-6 py-2.5 bg-white text-blue-700 rounded-lg text-sm font-bold hover:bg-blue-50 transition-colors shadow-sm">Contact Sales</button>
+                     <h4 className="font-bold text-sm mb-1.5">Enterprise Legal SLA</h4>
+                     <p className="text-slate-400 text-xs mb-4 leading-relaxed">Dedicated VPC, custom fine-tuned Indian legal models, and 99.99% uptime guarantee.</p>
+                     <button className="px-5 py-2 bg-white/[0.06] hover:bg-white/[0.1] border border-white/[0.1] text-white rounded-xl text-xs font-semibold transition-colors">
+                       Contact Enterprise Sales
+                     </button>
                    </div>
                 </div>
               </div>

@@ -256,7 +256,7 @@ const ElevenLabsJSClient = () => {
             className={`group w-full flex items-center justify-center gap-3 px-6 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform active:scale-95 ${
               isConnected
                 ? 'bg-red-500/10 text-red-400 border border-red-500/50 hover:bg-red-500 hover:text-white'
-                : 'bg-gradient-to-r from-blue-700 to-indigo-800 text-white shadow-lg hover:shadow-blue-500/25 hover:translate-y-[-2px]'
+                : 'bg-violet-600 hover:bg-violet-500 text-white font-medium shadow-sm hover:translate-y-[-1px]'
             }`}
           >
             {isConnected ? (

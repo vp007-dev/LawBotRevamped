@@ -686,10 +686,10 @@ Supreme Court of India
                         </div>
                         <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
                           <div 
-                            className={`h-full bg-gradient-to-r ${
+                            className={`h-full ${
                               wf.workflow_type === 'gst_prep' 
-                                ? 'from-emerald-500 to-teal-400' 
-                                : (wf.workflow_type === 'legal_notice' ? 'from-amber-500 to-orange-400' : 'from-indigo-500 to-purple-400')
+                                ? 'bg-emerald-500' 
+                                : (wf.workflow_type === 'legal_notice' ? 'bg-amber-500' : 'bg-violet-500')
                             }`} 
                             style={{ width: `${progress}%` }} 
                           />
@@ -1526,7 +1526,7 @@ Supreme Court of India
                       className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm hover:shadow-lg transition-all flex flex-col justify-between group"
                     >
                       <div>
-                        <div className={`w-12 h-12 rounded-2xl bg-gradient-to-tr ${wf.type === 'gst_prep' ? 'from-emerald-500 to-teal-400 shadow-emerald-100' : (wf.type === 'legal_notice' ? 'from-amber-500 to-orange-400 shadow-amber-100' : 'from-indigo-500 to-purple-400 shadow-indigo-100')} flex items-center justify-center text-white shadow-lg mb-5 group-hover:scale-105 transition-transform`}>
+                        <div className={`w-12 h-12 rounded-2xl ${wf.type === 'gst_prep' ? 'bg-emerald-600' : (wf.type === 'legal_notice' ? 'bg-amber-600' : 'bg-violet-600')} flex items-center justify-center text-white shadow-sm mb-5 group-hover:scale-105 transition-transform`}>
                           {wf.type === 'gst_prep' && <FileSpreadsheet className="w-6 h-6" />}
                           {wf.type === 'legal_notice' && <FileText className="w-6 h-6" />}
                           {wf.type === 'business_setup' && <Building className="w-6 h-6" />}

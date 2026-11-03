@@ -87,7 +87,7 @@ const SectionHeading = ({ title, subtitle, center = true }) => (
       {title}
     </h2>
     {subtitle && (
-      <div className="w-24 h-1.5 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full mx-auto mb-6 opacity-80" />
+      <div className="w-16 h-1 bg-violet-600 rounded-full mx-auto mb-6 opacity-80" />
     )}
     <p className="text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
       {subtitle}
@@ -104,10 +104,10 @@ const FeatureCard = ({ icon: Icon, title, description, highlight, delay }) => {
         />
         <div className="relative z-10">
           <div
-            className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 transition-all duration-500 ${
+            className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-6 transition-all duration-300 ${
               highlight
-                ? "bg-gradient-to-br from-blue-600 to-purple-600 shadow-lg shadow-blue-500/30 text-white"
-                : "bg-white shadow-md text-blue-600 group-hover:bg-blue-600 group-hover:text-white"
+                ? "bg-violet-600 shadow-sm text-white"
+                : "bg-white shadow-md text-violet-600 group-hover:bg-violet-600 group-hover:text-white"
             }`}
           >
             <Icon className="w-7 h-7" />
@@ -125,7 +125,7 @@ const FeatureCard = ({ icon: Icon, title, description, highlight, delay }) => {
 const AnimatedStat = ({ number, label, delay }) => (
   <Reveal delay={delay}>
     <div className="text-center group cursor-default">
-      <div className="text-5xl md:text-6xl font-black bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2 group-hover:scale-110 transition-transform duration-500 ease-out">
+      <div className="text-5xl md:text-6xl font-black text-slate-900 mb-2 group-hover:scale-105 transition-transform duration-300 ease-out">
         {number}
       </div>
       <div className="text-slate-600 font-medium tracking-wide uppercase text-sm">
@@ -147,7 +147,7 @@ const HowItWorksStep = ({ number, title, description, icon: Icon, delay }) => (
         <div className="w-20 h-20 rounded-2xl bg-white border border-blue-100 shadow-xl flex items-center justify-center z-10 relative group-hover:rotate-6 transition-transform duration-500">
           <Icon className="w-8 h-8 text-blue-600" />
         </div>
-        <div className="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-gradient-to-br from-blue-600 to-purple-600 text-white flex items-center justify-center font-bold text-sm shadow-lg">
+        <div className="absolute -top-3 -right-3 w-8 h-8 rounded-full bg-violet-600 text-white flex items-center justify-center font-bold text-sm shadow-md">
           {number}
         </div>
         <div className="absolute inset-0 bg-blue-100 blur-xl opacity-0 group-hover:opacity-60 transition-opacity duration-500" />
@@ -296,9 +296,8 @@ export default function LandingPage() {
                 </a>
               ))}
               <Link to="/dashboard">
-                <button className="group relative px-6 py-2.5 bg-slate-900 text-white rounded-full font-semibold overflow-hidden transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/30 hover:-translate-y-0.5">
-                  <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-blue-600 to-purple-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <span className="relative z-10 flex items-center gap-2">
+                <button className="group relative px-6 py-2.5 bg-violet-600 hover:bg-violet-500 text-white rounded-full font-medium transition-all duration-200 shadow-sm hover:-translate-y-0.5">
+                  <span className="flex items-center gap-2">
                     Open Dashboard
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </span>
@@ -356,7 +355,7 @@ export default function LandingPage() {
             <Reveal delay={100}>
               <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-slate-900 mb-8 leading-[1.1] tracking-tight">
                 Your Personal <br className="hidden md:block" />
-                <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                <span className="text-violet-600">
                   Legal Assistant
                 </span>
               </h1>
@@ -372,8 +371,7 @@ export default function LandingPage() {
             <Reveal delay={300}>
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <Link to="/dashboard">
-                  <button className="group relative px-8 py-4 bg-blue-600 text-white rounded-2xl font-bold text-lg overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/40 w-full sm:w-auto">
-                    <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-shine" />
+                  <button className="group relative px-8 py-4 bg-violet-600 hover:bg-violet-500 text-white rounded-2xl font-semibold text-lg transition-all duration-200 shadow-md w-full sm:w-auto">
                     <span className="flex items-center justify-center gap-2">
                       Launch Legal Dashboard
                       <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -540,21 +538,16 @@ export default function LandingPage() {
       <section className="relative py-24 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <Reveal>
-                <div className="relative bg-gradient-to-br from-blue-700 via-purple-700 to-slate-900 rounded-[2.5rem] p-12 md:p-24 shadow-2xl overflow-hidden text-center">
-                    {/* Abstract Shapes */}
-                    <div className="absolute top-0 left-0 w-full h-full opacity-30 bg-white/5 mix-blend-overlay"></div>
-                    <div className="absolute top-[-50%] left-[-20%] w-[800px] h-[800px] bg-blue-500/30 rounded-full blur-[120px]" />
-                    <div className="absolute bottom-[-50%] right-[-20%] w-[800px] h-[800px] bg-purple-500/30 rounded-full blur-[120px]" />
-
+                <div className="relative bg-[#141721] border border-white/[0.08] rounded-[2.5rem] p-12 md:p-24 shadow-2xl overflow-hidden text-center">
                     <div className="relative z-10">
                     <h2 className="text-4xl md:text-6xl font-bold text-white mb-8 tracking-tight">
                         Ready to Access Justice?
                     </h2>
-                    <p className="text-xl text-blue-100 mb-12 max-w-2xl mx-auto font-light">
+                    <p className="text-xl text-slate-400 mb-12 max-w-2xl mx-auto font-light">
                         Join thousands of Indians using LawBot 360. Your personal legal assistant is just a click away.
                     </p>
-                    <Link to="/home">
-                        <button className="group px-10 py-5 bg-white text-blue-900 rounded-full font-bold text-lg hover:shadow-2xl hover:shadow-white/20 transition-all duration-300 hover:-translate-y-1">
+                    <Link to="/dashboard">
+                        <button className="group px-10 py-5 bg-violet-600 hover:bg-violet-500 text-white rounded-full font-semibold text-lg transition-all duration-200 hover:-translate-y-0.5 shadow-lg shadow-violet-950/40">
                             <span className="flex items-center gap-3">
                             Launch LawBot 360
                             <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />

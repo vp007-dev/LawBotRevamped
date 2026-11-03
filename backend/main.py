@@ -10,6 +10,7 @@ from voice_agent import router as voice_router
 from workflows import router as workflows_router
 from aws_bedrock import router as aws_router
 from sarvam_voice import router as sarvam_router
+from court_sim.api import router as court_sim_router
 
 app = FastAPI(
     title="LawAgent360 Backend API",
@@ -25,6 +26,11 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.on_event("startup")
+async def startup_db():
+    from court_sim.store.db import db as sim_db
+    await sim_db.init_db()
 
 class UserProfile(BaseModel):
     user_id: str
@@ -126,6 +132,8 @@ app.include_router(voice_router)
 app.include_router(workflows_router)
 app.include_router(aws_router)
 app.include_router(sarvam_router)
+app.include_router(court_sim_router, prefix="/api/v1")
+app.include_router(court_sim_router, prefix="/api")
 
 if __name__ == "__main__":
     import uvicorn

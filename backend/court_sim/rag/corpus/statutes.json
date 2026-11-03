@@ -1,0 +1,62 @@
+{
+  "LAW-BNS-103": {
+    "statute": "Bharatiya Nyaya Sanhita, 2023",
+    "section": "103",
+    "title": "Punishment for Murder",
+    "text": "(1) Whoever commits murder shall be punished with death or imprisonment for life, and shall also be liable to fine. (2) When a group of five or more persons acting in concert commits murder on the ground of race, caste or community, sex, place of birth, language, personal belief or any other similar ground, each member of such group shall be punished with death or with imprisonment for life, and shall also be liable to fine."
+  },
+  "LAW-BNS-316": {
+    "statute": "Bharatiya Nyaya Sanhita, 2023",
+    "section": "316",
+    "title": "Criminal Breach of Trust",
+    "text": "(1) Whoever, being in any manner entrusted with property, or with any dominion over property, dishonestly misappropriates or converts to his own use that property, or dishonestly uses or disposes of that property in violation of any direction of law prescribing the mode in which such trust is to be discharged, commits criminal breach of trust."
+  },
+  "LAW-BNS-318": {
+    "statute": "Bharatiya Nyaya Sanhita, 2023",
+    "section": "318",
+    "title": "Cheating",
+    "text": "(1) Whoever, by deceiving any person, fraudulently or dishonestly induces the person so deceived to deliver any property to any person, or to consent that any person shall retain any property, or intentionally induces the person so deceived to do or omit to do anything which he would not do or omit if he were not so deceived, commits cheating."
+  },
+  "LAW-BNSS-480": {
+    "statute": "Bharatiya Nagarik Suraksha Sanhita, 2023",
+    "section": "480",
+    "title": "When bail may be taken in case of non-bailable offence",
+    "text": "When any person accused of, or suspected of, the commission of any non-bailable offence is arrested or detained without warrant by an officer in charge of a police station, or appears or is brought before a Court, he may be released on bail, but he shall not be so released if there appear reasonable grounds for believing that he has been guilty of an offence punishable with death or imprisonment for life."
+  },
+  "LAW-BNSS-251": {
+    "statute": "Bharatiya Nagarik Suraksha Sanhita, 2023",
+    "section": "251",
+    "title": "Framing of charge",
+    "text": "If, upon consideration of the police report and documents sent with it and after examining the accused, the Magistrate is of opinion that there is ground for presuming that the accused has committed an offence triable under this Chapter, which such Magistrate is competent to try and which, in his opinion, could be adequately punished by him, he shall frame in writing a charge against the accused."
+  },
+  "LAW-BNSS-351": {
+    "statute": "Bharatiya Nagarik Suraksha Sanhita, 2023",
+    "section": "351",
+    "title": "Power to examine the accused",
+    "text": "(1) In every inquiry or trial, for the purpose of enabling the accused personally to explain any circumstances appearing in the evidence against him, the Court may at any stage, without previously warning the accused, put such questions to him as the Court considers necessary. (2) The accused shall not render himself liable to punishment by refusing to answer such questions, or by giving false answers to them."
+  },
+  "LAW-BSA-63": {
+    "statute": "Bharatiya Sakshya Adhiniyam, 2023",
+    "section": "63",
+    "title": "Admissibility of Electronic Records",
+    "text": "(1) Any information contained in an electronic record which is printed on paper, stored, recorded or copied in optical or magnetic media shall be deemed to be also a document. (4) In any proceedings where it is desired to give a statement in evidence by virtue of this section, a certificate doing any of the following things, namely: identifying the electronic record and describing the manner in which it was produced, giving particulars of any device involved, signed by a person in official charge of the responsible device, shall be mandatory evidence of any matter stated in the certificate. Failure to produce Section 63 certificate renders electronic evidence strictly inadmissible as primary or secondary proof."
+  },
+  "LAW-BSA-104": {
+    "statute": "Bharatiya Sakshya Adhiniyam, 2023",
+    "section": "104",
+    "title": "Burden of proof as to particular fact",
+    "text": "The burden of proof as to any particular fact lies on that person who wishes the Court to believe in its existence, unless it is provided by any law that the proof of that fact shall lie on any particular person."
+  },
+  "LAW-CPC-O14": {
+    "statute": "Code of Civil Procedure, 1908",
+    "section": "Order XIV",
+    "title": "Settlement of Issues and Determination of Suit on Issues of Law or on Issues Agreed Upon",
+    "text": "Rule 1: Issues arise when a material proposition of fact or law is affirmed by the one party and denied by the other. Material propositions are those propositions of law or fact which a plaintiff must allege in order to show a right to sue or a defendant must allege in order to constitute his defence."
+  },
+  "LAW-CPC-S33": {
+    "statute": "Code of Civil Procedure, 1908",
+    "section": "33",
+    "title": "Judgment and decree",
+    "text": "The Court, after the case has been heard, shall pronounce judgment, and on such judgment a decree shall follow."
+  }
+}

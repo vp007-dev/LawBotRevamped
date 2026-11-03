@@ -389,11 +389,11 @@ const VoiceCallModal = ({ isOpen, onClose, userId = "user_123" }) => {
         </div>
 
         {status === 'idle' ? (
-          <div className="flex-1 flex flex-col items-center justify-center p-8 bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950/50">
-            <div className="w-16 h-16 rounded-2xl bg-indigo-600/10 border border-indigo-500/20 text-indigo-400 flex items-center justify-center mb-6 animate-pulse">
+          <div className="flex-1 flex flex-col items-center justify-center p-8 bg-[#141721]">
+            <div className="w-16 h-16 rounded-2xl bg-violet-500/10 border border-violet-500/25 text-violet-400 flex items-center justify-center mb-6">
               <Phone className="w-8 h-8" />
             </div>
-            <h2 className="text-white font-extrabold text-lg tracking-wide mb-1">AI Telephony Dialer</h2>
+            <h2 className="text-white font-bold text-lg tracking-tight mb-1">AI Telephony Dialer</h2>
             <p className="text-slate-400 text-xs text-center leading-normal mb-8 max-w-xs">
               Connect Advocate LawAgent360 directly via outbound bridge or call using your browser mic.
             </p>
@@ -416,7 +416,7 @@ const VoiceCallModal = ({ isOpen, onClose, userId = "user_123" }) => {
                       const clean = e.target.value.replace(/\D/g, "");
                       setPhoneNumber(clean ? "+91" + clean : "");
                     }}
-                    className="w-full h-11 bg-slate-950 border border-slate-800 rounded-xl pl-14 pr-4 text-sm font-semibold tracking-wide text-white focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/25 placeholder:text-slate-700"
+                    className="w-full h-11 bg-[#11131a] border border-white/[0.08] rounded-xl pl-14 pr-4 text-sm font-medium tracking-wide text-white focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500/25 placeholder:text-slate-600"
                   />
                 </div>
               </div>
@@ -424,14 +424,14 @@ const VoiceCallModal = ({ isOpen, onClose, userId = "user_123" }) => {
               <div className="flex gap-3 pt-2">
                 <button
                   onClick={() => startCall("")}
-                  className="flex-1 h-11 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl text-xs transition-all active:scale-95"
+                  className="flex-1 h-11 bg-[#161922] hover:bg-[#1b202c] border border-white/[0.08] text-white font-medium rounded-xl text-xs transition-all active:scale-95 cursor-pointer"
                 >
                   Browser WebRTC
                 </button>
                 <button
                   disabled={!phoneNumber || phoneNumber.length < 13}
                   onClick={() => startCall(phoneNumber)}
-                  className="flex-1 h-11 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold rounded-xl text-xs transition-all active:scale-95 disabled:opacity-50 disabled:scale-100"
+                  className="flex-1 h-11 bg-violet-600 hover:bg-violet-500 text-white font-medium rounded-xl text-xs transition-all active:scale-95 disabled:opacity-50 disabled:scale-100 cursor-pointer shadow-sm"
                 >
                   Dial Outbound
                 </button>
@@ -441,13 +441,13 @@ const VoiceCallModal = ({ isOpen, onClose, userId = "user_123" }) => {
         ) : (
           <>
             {/* Call Visualizer Area */}
-            <div className="flex-1 flex flex-col items-center justify-center p-8 bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950/50">
+            <div className="flex-1 flex flex-col items-center justify-center p-8 bg-[#141721]">
               
-              {/* Glowing Avatar */}
+              {/* Avatar */}
               <div className="relative mb-6">
-                <div className={`w-24 h-24 rounded-full bg-indigo-600 flex items-center justify-center border-2 border-indigo-400/30 transition-all duration-500 ${
-                  status === 'speaking' ? 'scale-105 shadow-[0_0_30px_rgba(99,102,241,0.5)]' :
-                  status === 'listening' ? 'scale-95 shadow-[0_0_20px_rgba(239,68,68,0.3)]' :
+                <div className={`w-24 h-24 rounded-full bg-violet-600 flex items-center justify-center border-2 border-violet-400/30 transition-all duration-300 ${
+                  status === 'speaking' ? 'scale-105' :
+                  status === 'listening' ? 'scale-95' :
                   status === 'thinking' ? 'animate-pulse' : ''
                 }`}>
                   <Phone className={`w-10 h-10 text-white ${status === 'connecting' ? 'animate-bounce' : ''}`} />

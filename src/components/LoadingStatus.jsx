@@ -75,10 +75,10 @@ const LoadingStatus = ({ className = "", compact = false }) => {
             </svg>
           </div>
           <div className="flex flex-col">
-            <span className={`text-sm font-semibold transition-all duration-300 ${isTransitioning ? 'opacity-0 -translate-y-2' : 'opacity-100 translate-y-0'} text-slate-800`}>
+            <span className={`text-sm font-semibold transition-all duration-300 ${isTransitioning ? 'opacity-0 -translate-y-2' : 'opacity-100 translate-y-0'} text-slate-200`}>
               {current.label}
             </span>
-            <span className="text-[10px] text-slate-400 font-medium uppercase tracking-wider mt-0.5">
+            <span className="text-[10px] text-slate-500 font-medium uppercase tracking-wider mt-0.5">
               Step {activeStep + 1} of {STEPS.length}
             </span>
           </div>
@@ -91,10 +91,10 @@ const LoadingStatus = ({ className = "", compact = false }) => {
               key={i}
               className={`h-1 rounded-full transition-all duration-500 ${
                 i < activeStep
-                  ? 'w-3 bg-indigo-500'
+                  ? 'w-3 bg-purple-500/80'
                   : i === activeStep
-                    ? 'w-6 bg-indigo-600 animate-pulse'
-                    : 'w-2 bg-slate-200'
+                    ? 'w-6 bg-purple-500 shadow-sm shadow-purple-500/50 animate-pulse'
+                    : 'w-2 bg-white/[0.08]'
               }`}
             />
           ))}

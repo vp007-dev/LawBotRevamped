@@ -1,114 +1,95 @@
 import React from 'react';
-import { ShieldAlert, AlertTriangle, AlertCircle, Clock, Info, ShieldCheck } from 'lucide-react';
+import { ShieldAlert, AlertTriangle, Clock, Info, ShieldCheck } from 'lucide-react';
 
 const RISK_EVENTS = [
   {
     id: 1,
     title: 'TDS Return Filing (Form 26Q) Overdue',
-    severity: 'high',
-    date: '2026-07-31',
+    severity: 'urgent',
+    date: '31 Jul 2026',
     description: 'Overdue by 7 days. Penalty accruing at ₹200/day (Sec 234E).',
     actionNeeded: 'File return immediately'
   },
   {
     id: 2,
     title: 'Tenant Rights - Eviction Response Due',
-    severity: 'medium',
-    date: '2026-08-02',
+    severity: 'high',
+    date: '02 Aug 2026',
     description: 'Eviction notice legal consultation pending action.',
-    actionNeeded: 'Approve drafted reply notice'
+    actionNeeded: 'Approve drafted reply'
   },
   {
     id: 3,
     title: 'EPFO & ESIC Contribution Deposit',
     severity: 'low',
-    date: '2026-08-15',
+    date: '15 Aug 2026',
     description: 'Filing window open. Avoid 12% p.a. statutory interest penalty.',
     actionNeeded: 'Upload payroll sheet'
   }
 ];
 
 const RiskRadarWidget = () => {
-  const getSeverityStyles = (severity) => {
+  const getBadgeClass = (severity) => {
     switch (severity) {
+      case 'urgent':
+        return 'badge-urgent';
       case 'high':
-        return {
-          bg: 'bg-red-500/10 border-red-500/30',
-          text: 'text-red-400',
-          icon: ShieldAlert,
-          dotColor: 'bg-red-500'
-        };
+        return 'badge-high';
       case 'medium':
-        return {
-          bg: 'bg-amber-500/10 border-amber-500/30',
-          text: 'text-amber-400',
-          icon: AlertTriangle,
-          dotColor: 'bg-amber-500'
-        };
+        return 'badge-medium';
       default:
-        return {
-          bg: 'bg-blue-500/10 border-blue-500/30',
-          text: 'text-blue-400',
-          icon: Clock,
-          dotColor: 'bg-blue-500'
-        };
+        return 'badge-low';
     }
   };
 
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 shadow-xl text-slate-300">
-      <div className="flex items-center justify-between mb-6">
+    <div className="bg-[#161922] border border-white/[0.08] rounded-3xl p-6 text-zinc-300">
+      <div className="flex items-center justify-between mb-5">
         <div className="flex items-center gap-2">
           <div className="relative">
-            <span className="absolute inline-flex h-2.5 w-2.5 rounded-full bg-red-500 opacity-75 animate-ping"></span>
-            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-600"></span>
+            <span className="absolute inline-flex h-2 w-2 rounded-full bg-rose-500 opacity-75 animate-ping"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
           </div>
-          <h3 className="font-bold text-sm uppercase tracking-wider text-slate-200">Statutory Risk Radar</h3>
+          <h3 className="font-bold text-xs uppercase tracking-wider text-white">Statutory Risk Radar</h3>
         </div>
-        <span className="text-[10px] font-bold bg-red-500/20 text-red-400 border border-red-500/20 px-2 py-0.5 rounded-full">
-          1 High Risk
+        <span className="badge-urgent">
+          1 Action Required
         </span>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-3">
         {RISK_EVENTS.map((event) => {
-          const style = getSeverityStyles(event.severity);
-          const Icon = style.icon;
-
           return (
             <div 
               key={event.id}
-              className={`p-4 border rounded-2xl flex gap-4 transition-all hover:bg-slate-800/40 ${style.bg}`}
+              className="p-3.5 bg-[#11131a] border border-white/[0.06] hover:border-white/[0.12] rounded-2xl transition-all"
             >
-              <div className="flex-shrink-0 mt-0.5">
-                <div className={`w-8 h-8 rounded-xl bg-slate-950 flex items-center justify-center ${style.text}`}>
-                  <Icon className="w-4.5 h-4.5" />
-                </div>
+              <div className="flex items-start justify-between gap-2">
+                <h4 className="font-semibold text-xs text-white leading-tight">{event.title}</h4>
+                <span className={getBadgeClass(event.severity)}>
+                  {event.severity.charAt(0).toUpperCase() + event.severity.slice(1)}
+                </span>
               </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between gap-2 flex-wrap">
-                  <h4 className="font-bold text-xs text-white truncate">{event.title}</h4>
-                  <span className="text-[9px] text-slate-400 font-medium">{event.date}</span>
-                </div>
-                <p className="text-[11px] text-slate-400 mt-1 leading-normal">{event.description}</p>
-                <div className="flex items-center justify-between gap-2 mt-3 pt-2.5 border-t border-slate-800/60">
-                  <span className="text-[10px] text-slate-500 font-medium flex items-center gap-1">
-                    <Info className="w-3 h-3" />
-                    <span>Action Required</span>
-                  </span>
-                  <button className="text-[10px] text-indigo-400 hover:text-indigo-300 font-bold transition-colors">
-                    {event.actionNeeded} &rarr;
-                  </button>
-                </div>
+              <p className="text-[11px] text-zinc-400 mt-1.5 leading-relaxed">{event.description}</p>
+              
+              <div className="flex items-center justify-between gap-2 mt-3 pt-2.5 border-t border-white/[0.05] text-[10px]">
+                <span className="text-zinc-500 flex items-center gap-1">
+                  <Clock className="w-3 h-3" />
+                  <span>{event.date}</span>
+                </span>
+                <button className="text-violet-400 hover:text-violet-300 font-medium transition-colors flex items-center gap-1">
+                  <span>{event.actionNeeded}</span>
+                  <span>&rarr;</span>
+                </button>
               </div>
             </div>
           );
         })}
       </div>
       
-      <div className="mt-4 p-3 bg-slate-950 rounded-2xl border border-slate-800/80 flex items-center gap-2.5 text-[11px] text-slate-400">
-        <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
-        <span>Your GSTR-1, Shop Act, and PF filings are compliant and clear of penal risk.</span>
+      <div className="mt-4 p-3 bg-[#11131a] rounded-xl border border-white/[0.05] flex items-center gap-2.5 text-[11px] text-zinc-400">
+        <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
+        <span>GSTR-1 and MCA annual return status compliant with 0 statutory flags.</span>
       </div>
     </div>
   );
